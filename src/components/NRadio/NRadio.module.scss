@@ -1,0 +1,9 @@
+
+.NRadio {
+  color: var(--color);
+  background-color: var(--bg-color);
+  font-size: var(--font-size);
+  display: grid;
+  grid-template-rows: 50px calc(100vh - 200px) 150px;
+  grid-gap: 0;
+}

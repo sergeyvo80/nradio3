@@ -1,0 +1,8 @@
+sudo ln -s /var/www/nradio/.docker/nradio.service /lib/systemd/system/nradio.service
+systemctl enable nradio.service
+systemctl start nradio.service
+sudo systemctl daemon-reload
+
+
+
+# sudo ln -s ~/www/nradio/.docker/ippk-nginx.local.conf /opt/homebrew/etc/nginx/servers/ippk-nginx.local.conf

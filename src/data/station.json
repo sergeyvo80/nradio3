@@ -1,0 +1,14 @@
+{
+  "slug": "groove-salad-soma-fm",
+  "dateAdded": "2018-05-10",
+  "dateUpdated": "2018-05-10",
+  "title": "Groove Salad [SomaFM]",
+  "description": "Groove Salad: a nicely chilled plate of ambient beats and grooves. [SomaFM]",
+  "website": "https://somafm.com",
+  "bitrate": 128,
+  "tags": [
+    "chillout",
+    "ambient"
+  ],
+  "stream": "http://ice1.somafm.com/groovesalad-128-mp3"
+}
