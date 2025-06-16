@@ -1,15 +1,5 @@
-// import Image from "next/image";
-import { NRadioContainer } from "@/containers/NRadioContainer";
-import styles from "./page.module.css";
+import { NRadioContainer } from '@/containers/NRadioContainer';
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <NRadioContainer />
-      </main>
-      <footer className={styles.footer}>
-      </footer>
-    </div>
-  );
-}
+const Home = (): React.ReactNode => <NRadioContainer />
+
+export default Home;

@@ -1,20 +1,25 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faSpinner, faHeart } from '@fortawesome/free-solid-svg-icons';
-import StationInterface from '../../types/interfaces/Station';
-import PlayerEnum from '../../types/enums/Player';
+import StationInterface from '@/types/interfaces/Station';
+import PlayerEnum from '@/types/enums/Player';
 import styles from './Station.module.scss';
 
-interface StationProps {
+interface Props {
   station: StationInterface;
   player: PlayerEnum | undefined;
-  onPlay: () => void;
-  onPause: () => void;
-  error: string | undefined;
+  onPlay?: () => void;
+  onPause?: () => void;
+  error?: string | undefined;
 }
 
-const Station = ({ station, player, onPlay, onPause, error }: StationProps) => (
-  <div className={styles.station}>
+const Station = ({
+  station,
+  player,
+  onPlay = () => {},
+  onPause = () => {},
+  error,
+}: Props): React.ReactNode => (
+  <div className={styles.Station}>
     <div className={styles.player}>
       {(player === PlayerEnum.Paused || player === undefined) && (
         <FontAwesomeIcon icon={faPlay} size="3x" onClick={onPlay} />

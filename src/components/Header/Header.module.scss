@@ -10,18 +10,17 @@
   border-bottom: var(--current-color) solid 1px;
   box-shadow: 0 0px 8px 0px var(--current-color);
   background-color: var(--second-bg-color);
+}
 
-  &--logo {
-    margin-right: 30px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--current-color);
-  }
-  &--color {
-    margin-right: 20px;
-  }
-  &--info {
-    color: var(--border-color);
-  }
-
+.logo {
+  margin-right: 30px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--current-color);
+}
+.color {
+  margin-right: 20px;
+}
+.info {
+  color: var(--border-color);
 }

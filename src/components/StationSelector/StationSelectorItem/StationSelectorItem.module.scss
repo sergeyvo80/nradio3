@@ -1,0 +1,36 @@
+.StationListItem {
+
+  border: var(--border-color) solid 1px;
+  box-shadow: -1px 1px 12px 0 var(--shadow-color);
+
+  margin: 5px 0;
+  border-radius: 3px;
+  padding: 10px 10px;
+  color: var(--item-color);
+  background-color: var(--second-bg-color);
+  font-size: 1.3em;
+  font-weight: bold;
+  
+}
+
+.link {
+  text-decoration: none;
+
+  &:link {
+    color: var(--link-color);
+  }
+  &:visited {
+    color: var(--visited-color);
+  }
+}
+
+.like {
+  color: var(--border-color);
+  height: 27px;
+}
+
+
+.--current {
+  border-color: var(--current-color);
+  box-shadow: -1px 1px 12px 0 var(--current-color);
+}

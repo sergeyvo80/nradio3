@@ -1,9 +1,8 @@
-import React from "react";
 import Header from '../Header/Header';
 import StationSelector from '../StationSelector/StationSelector';
 import Station from '../Station/Station';
-import StationInterface from '../../types/interfaces/Station';
-import PlayerEnum from '../../types/enums/Player';
+import StationInterface from '@/types/interfaces/Station';
+import PlayerEnum from '@/types/enums/Player';
 import styles from './NRadio.module.scss';
 
 interface NRadioProps {
@@ -24,12 +23,12 @@ export const NRadio = ({
   onPlay,
   onPause,
   error,
-}: NRadioProps) => {
+}: NRadioProps): React.ReactNode => {
   return (
     <div className={styles.NRadio}>
       <Header title={title} />
       <StationSelector list={stationList} slug={station.slug} />
-      {/* <Station station={station} player={player} onPlay={onPlay} onPause={onPause} error={error} /> */}
+      <Station station={station} player={player} onPlay={onPlay} onPause={onPause} error={error} />
     </div>
   );
 };
