@@ -23,15 +23,13 @@ const NRadioContainer = ({ stations, station }: Props) => {
       setPlayerState(PlayerStateEnum.Play);
 
       if (player) {
-        console.log('>> onPlay', station);
-
         player.src = station.stream;
         player.play();
 
         setPlayerState(PlayerStateEnum.Playing);
       }
-    } catch (err: any) {
-      setError(`Error playing: ${err.message}`);
+    } catch (err: unknown) {
+      setError((err instanceof Error) ? `Error playing: ${err.message}` : 'Unknown error');
     }
   }, [player, station]);
 
@@ -42,8 +40,8 @@ const NRadioContainer = ({ stations, station }: Props) => {
         player.pause();
         setPlayerState(PlayerStateEnum.Paused);
       }
-    } catch (err: any) {
-      setError(`Error playing: ${err.message}`);
+    } catch (err: unknown) {
+      setError((err instanceof Error) ? `Error pause: ${err.message}` : 'Unknown error');
     }
   }, [player]);
 
