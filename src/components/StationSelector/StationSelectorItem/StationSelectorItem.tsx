@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import StationInterface from '@/types/interfaces/Station';
+import StationInterface from '@/types/interfaces/StationInterface';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './StationSelectorItem.module.scss';
 
 interface Props {
-  readonly station: StationInterface;
-  readonly isCurrent?: boolean;
+  station: StationInterface;
+  isCurrent?: boolean;
 }
 
 const StationListItem = ({ station, isCurrent }: Props): React.ReactNode => (

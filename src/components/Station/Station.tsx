@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faSpinner, faHeart } from '@fortawesome/free-solid-svg-icons';
-import StationInterface from '@/types/interfaces/Station';
+import StationInterface from '@/types/interfaces/StationInterface';
 import PlayerEnum from '@/types/enums/Player';
 import styles from './Station.module.scss';
 
@@ -38,7 +38,7 @@ const Station = ({
       <FontAwesomeIcon icon={faHeart} size="3x" className={styles.heart} />
     </div>
 
-    <h1 className={styles.title}>{station.title}</h1>
+    <h1 className={styles.title}>====={station.title}</h1>
 
     {error !== undefined && <div className={styles.error}>Error: {error}</div>}
   </div>

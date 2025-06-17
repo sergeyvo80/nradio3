@@ -1,4 +1,4 @@
-import { NRadioContainer } from '@/containers/NRadioContainer';
+import NRadioContainer from '@/containers/NRadioContainer';
 
 const Home = (): React.ReactNode => <NRadioContainer />
 

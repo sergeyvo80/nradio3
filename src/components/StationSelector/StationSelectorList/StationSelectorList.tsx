@@ -1,17 +1,16 @@
-import React from 'react';
-import StationInterface from '../../../types/interfaces/Station';
+import StationInterface from '@/types/interfaces/StationInterface';
 import StationSelectorItem from '../StationSelectorItem/StationSelectorItem';
-import Styles from './StationSelectorList.module.scss';
+import styles from './StationSelectorList.module.scss';
 
 interface Props {
-  list: StationInterface[];
+  stations: StationInterface[];
   slug: string;
 }
 
-const StationSelectorList = ({ list, slug }: Props) => (
-  <ul className={Styles.StationSelectorList}>
-    {list.map((item) => (
-      <StationSelectorItem station={item} key={item.slug} isCurrent={item.slug === slug} />
+const StationSelectorList = ({ stations = [], slug }: Props) => (
+  <ul className={styles.StationSelectorList}>
+    {stations.map((station) => (
+      <StationSelectorItem station={station} key={station.slug} isCurrent={station.slug === slug} />
     ))}
   </ul>
 );

@@ -1,34 +1,40 @@
 import Header from '../Header/Header';
 import StationSelector from '../StationSelector/StationSelector';
 import Station from '../Station/Station';
-import StationInterface from '@/types/interfaces/Station';
+import StationInterface from '@/types/interfaces/StationInterface';
 import PlayerEnum from '@/types/enums/Player';
 import styles from './NRadio.module.scss';
 
 interface NRadioProps {
   title: string;
   station: StationInterface;
-  stationList: StationInterface[];
+  stations: StationInterface[];
   player: PlayerEnum | undefined;
   onPlay: () => void;
   onPause: () => void;
   error: string | undefined;
 }
 
-export const NRadio = ({
+const NRadio = ({
   title,
   station,
-  stationList,
+  stations,
   player,
   onPlay,
   onPause,
   error,
-}: NRadioProps): React.ReactNode => {
-  return (
-    <div className={styles.NRadio}>
-      <Header title={title} />
-      <StationSelector list={stationList} slug={station.slug} />
-      <Station station={station} player={player} onPlay={onPlay} onPause={onPause} error={error} />
-    </div>
-  );
-};
+}: NRadioProps): React.ReactNode => (
+  <div className={styles.NRadio}>
+    <Header title={title} />
+    <StationSelector stations={stations} slug={station.slug} />
+    <Station
+      station={station}
+      player={player}
+      onPlay={onPlay}
+      onPause={onPause}
+      error={error}
+    />
+  </div>
+);
+
+export default NRadio;

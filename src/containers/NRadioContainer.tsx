@@ -1,44 +1,22 @@
 'use client';
 
-import React from 'react';
-// import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { NRadio } from '@/components/NRadio/NRadio';
-import stationData from '@/data/station.json';
-import stationList from '@/data/stations.json';
-// import { getStationList, getStation, play, pause } from '../features/nradio/nradioSlice';
-// import {
-//   getStationListState,
-//   getStationState,
-//   getPlayerState,
-//   getErrorState,
-// } from '../selectors/nradio';
+import NRadio from '@/components/NRadio/NRadio';
+// import stationData from '@/data/station.json';
+// import stations from '@/data/stations.json';
+import StationInterface from '@/types/interfaces/StationInterface';
 
-export const NRadioContainer = () => {
-  // const dispatch = useDispatch();
-  // const stationList = useSelector(getStationListState);
-  // const station = useSelector(getStationState);
-  // const player = useSelector(getPlayerState);
-  // const error = useSelector(getErrorState);
-  // const { slug } = useRouter().query;
+interface Props {
+  // slug?: string;
+  stations: StationInterface[];
+  station: StationInterface;
+}
 
-  // Moved on server
-  //     React.useEffect(
-  //         () => {
-  //             dispatch(getStationList());
-  //         },
-  //         [dispatch]
-  //     );
 
-  // React.useEffect(() => {
-  //   dispatch(getStation(!Array.isArray(slug) ? slug : stationData.slug));
-  // }, [dispatch, slug]);
 
-  // React.useEffect(() => {
-  //   if (station) {
-  //     dispatch(play(station.stream));
-  //   }
-  // }, [dispatch, station]);
+const NRadioContainer = ({ stations, station }: Props) => {
+  // const [station, setStation] = useState<StationInterface>(getStation(slug));
 
   const onPlay = React.useCallback(() => {
     // if (station) {
@@ -50,12 +28,15 @@ export const NRadioContainer = () => {
     // dispatch(pause());
   }, []); //dispatch, station
 
+  
+  // useEffect(() => {
+  //   setStation(getStation(slug));
+  // }, [stations, slug]);
+
 
 // TODO:
 const error = undefined;
 const player = undefined;
-const station = stationData;
-
 
   return (
     <>
@@ -79,8 +60,8 @@ const station = stationData;
       </Head>
       <NRadio
         title="NRadio.space"
-        stationList={stationList}
-        station={station || stationData}
+        stations={stations}
+        station={station}
         error={error}
         player={player}
         onPlay={onPlay}
@@ -89,3 +70,5 @@ const station = stationData;
     </>
   );
 };
+
+export default NRadioContainer;

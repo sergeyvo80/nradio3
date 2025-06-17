@@ -1,4 +1,4 @@
-import Station from './Station';
+import Station from './StationInterface';
 import PlayerEnum from '../enums/Player';
 
 export default interface NRadio {

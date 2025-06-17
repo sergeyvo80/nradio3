@@ -1,16 +1,16 @@
 import React from 'react';
-import StationInterface from '../../types/interfaces/Station';
+import StationInterface from '../../types/interfaces/StationInterface';
 import StationList from './StationSelectorList/StationSelectorList';
-import Styles from './StationSelector.module.scss';
+import styles from './StationSelector.module.scss';
 
 interface Props {
-  list: StationInterface[];
+  stations: StationInterface[];
   slug: string;
 }
 
-const StationSelector = ({ list, slug }: Props) => (
-  <div className={Styles.StationSelector}>
-    <StationList list={list} slug={slug} />
+const StationSelector = ({ stations, slug }: Props) => (
+  <div className={styles.StationSelector}>
+    <StationList stations={stations} slug={slug} />
   </div>
 );
 
