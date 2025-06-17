@@ -2,14 +2,14 @@ import Header from '../Header/Header';
 import StationSelector from '../StationSelector/StationSelector';
 import Station from '../Station/Station';
 import StationInterface from '@/types/interfaces/StationInterface';
-import PlayerEnum from '@/types/enums/Player';
+import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import styles from './NRadio.module.scss';
 
 interface NRadioProps {
   title: string;
   station: StationInterface;
   stations: StationInterface[];
-  player: PlayerEnum | undefined;
+  playerState: PlayerStateEnum | undefined;
   onPlay: () => void;
   onPause: () => void;
   error: string | undefined;
@@ -19,7 +19,7 @@ const NRadio = ({
   title,
   station,
   stations,
-  player,
+  playerState,
   onPlay,
   onPause,
   error,
@@ -29,7 +29,7 @@ const NRadio = ({
     <StationSelector stations={stations} slug={station.slug} />
     <Station
       station={station}
-      player={player}
+      playerState={playerState}
       onPlay={onPlay}
       onPause={onPause}
       error={error}

@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faSpinner, faHeart } from '@fortawesome/free-solid-svg-icons';
 import StationInterface from '@/types/interfaces/StationInterface';
-import PlayerEnum from '@/types/enums/Player';
+import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import styles from './Station.module.scss';
 
 interface Props {
   station: StationInterface;
-  player: PlayerEnum | undefined;
+  playerState?: PlayerStateEnum;
   onPlay?: () => void;
   onPause?: () => void;
   error?: string | undefined;
@@ -14,22 +14,22 @@ interface Props {
 
 const Station = ({
   station,
-  player,
+  playerState,
   onPlay = () => {},
   onPause = () => {},
   error,
 }: Props): React.ReactNode => (
   <div className={styles.Station}>
     <div className={styles.player}>
-      {(player === PlayerEnum.Paused || player === undefined) && (
+      {(playerState === PlayerStateEnum.Paused || playerState === undefined) && (
         <FontAwesomeIcon icon={faPlay} size="3x" onClick={onPlay} />
       )}
 
-      {player === PlayerEnum.Playing && (
+      {playerState === PlayerStateEnum.Playing && (
         <FontAwesomeIcon icon={faPause} size="3x" onClick={onPause} />
       )}
 
-      {(player === PlayerEnum.Play || player === PlayerEnum.Pause) && (
+      {(playerState === PlayerStateEnum.Play || playerState === PlayerStateEnum.Pause) && (
         <FontAwesomeIcon icon={faSpinner} pulse size="3x" />
       )}
     </div>
@@ -38,7 +38,7 @@ const Station = ({
       <FontAwesomeIcon icon={faHeart} size="3x" className={styles.heart} />
     </div>
 
-    <h1 className={styles.title}>====={station.title}</h1>
+    <h1 className={styles.title}>{station.title}</h1>
 
     {error !== undefined && <div className={styles.error}>Error: {error}</div>}
   </div>

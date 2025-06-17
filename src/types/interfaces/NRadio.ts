@@ -1,5 +1,5 @@
 import Station from './StationInterface';
-import PlayerEnum from '../enums/Player';
+import PlayerEnum from '../enums/PlayerStateEnum';
 
 export default interface NRadio {
     readonly stationList: Station[];

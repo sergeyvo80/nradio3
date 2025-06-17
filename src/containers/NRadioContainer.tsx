@@ -1,42 +1,56 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import NRadio from '@/components/NRadio/NRadio';
-// import stationData from '@/data/station.json';
-// import stations from '@/data/stations.json';
 import StationInterface from '@/types/interfaces/StationInterface';
+import { useCallback, useEffect, useState } from 'react';
+import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
+
+const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
 interface Props {
-  // slug?: string;
   stations: StationInterface[];
   station: StationInterface;
 }
 
-
-
 const NRadioContainer = ({ stations, station }: Props) => {
-  // const [station, setStation] = useState<StationInterface>(getStation(slug));
+  const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
+  const [error, setError] = useState<string>();
 
-  const onPlay = React.useCallback(() => {
-    // if (station) {
-    //   dispatch(play(station.stream));
-    // }
-  }, []); // dispatch, station
+  const play = useCallback(() => {
+    try {
+      setError(undefined);
+      setPlayerState(PlayerStateEnum.Play);
 
-  const onPause = React.useCallback(() => {
-    // dispatch(pause());
-  }, []); //dispatch, station
+      if (player) {
+        console.log('>> onPlay', station);
+
+        player.src = station.stream;
+        player.play();
+
+        setPlayerState(PlayerStateEnum.Playing);
+      }
+    } catch (err: any) {
+      setError(`Error playing: ${err.message}`);
+    }
+  }, [player, station]);
+
+  const pause = useCallback(() => {
+    try {
+      setPlayerState(PlayerStateEnum.Pause);
+      if (player) {
+        player.pause();
+        setPlayerState(PlayerStateEnum.Paused);
+      }
+    } catch (err: any) {
+      setError(`Error playing: ${err.message}`);
+    }
+  }, [player]);
 
   
-  // useEffect(() => {
-  //   setStation(getStation(slug));
-  // }, [stations, slug]);
-
-
-// TODO:
-const error = undefined;
-const player = undefined;
+  useEffect(() => {
+    play();
+  }, [stations, station]);
 
   return (
     <>
@@ -63,9 +77,9 @@ const player = undefined;
         stations={stations}
         station={station}
         error={error}
-        player={player}
-        onPlay={onPlay}
-        onPause={onPause}
+        playerState={playerState}
+        onPlay={play}
+        onPause={pause}
       />
     </>
   );
