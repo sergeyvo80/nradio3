@@ -1,5 +1,5 @@
 [Unit]
-Description=nradio
+Description=nradio3
 
 [Service]
 Type=simple
@@ -7,10 +7,10 @@ ExecStart=npm start
 Restart=always
 User=www-data
 Group=www-data
-Environment=PATH=/var/www/nradio:/usr/bin:/usr/local/bin
+Environment=PATH=/var/www/nradio3:/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
-WorkingDirectory=/var/www/nradio
-StandardOutput=append:/var/log/nradio.log
+WorkingDirectory=/var/www/nradio3
+StandardOutput=append:/var/log/nradio3.log
 StandardError=inherit
 
 [Install]

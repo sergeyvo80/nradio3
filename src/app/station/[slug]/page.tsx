@@ -9,8 +9,11 @@ interface Props {
   slug: string;
 }
 
+interface PageProps {
+  params: Promise<Props>;
+}
 
-export const generateMetadata = async ({ params }: { params: Props }): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { slug } = await params;
   const station = getStation(slug);
 
@@ -21,9 +24,7 @@ export const generateMetadata = async ({ params }: { params: Props }): Promise<M
 };
 
 
-
-const StationPage = async ({ params }: { params: Props }): Promise<React.ReactNode> => {
-
+const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
   const { slug } = await params;
 
   return (
