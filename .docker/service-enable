@@ -1,4 +1,4 @@
-sudo ln -s /var/www/nradio3/.docker/nradio.service /lib/systemd/system/nradio3.service
+sudo ln -s /var/www/nradio3/.docker/nradio3.service /lib/systemd/system/nradio3.service
 systemctl enable nradio3.service
 systemctl start nradio3.service
 sudo systemctl daemon-reload
