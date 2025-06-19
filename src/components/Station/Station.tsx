@@ -17,9 +17,10 @@ const Station = ({
   playerState,
   onPlay = () => {},
   onPause = () => {},
-  error,
+  error = 'error message',
 }: Props): React.ReactNode => (
   <div className={styles.Station}>
+    
     <div className={styles.player}>
       {(playerState === PlayerStateEnum.Paused || playerState === undefined) && (
         <FontAwesomeIcon icon={faPlay} size="3x" onClick={onPlay} />
@@ -38,7 +39,7 @@ const Station = ({
       <FontAwesomeIcon icon={faHeart} size="3x" className={styles.heart} />
     </div>
 
-    <h1 className={styles.title}>{station.title}</h1>
+    <h2 className={styles.title}>{station.title}</h2>
 
     {error !== undefined && <div className={styles.error}>Error: {error}</div>}
   </div>

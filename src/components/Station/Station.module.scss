@@ -1,51 +1,70 @@
+@use '../../styles/main';
+@use '../../styles/typography';
+
 .Station {
-
-  display: grid;
-  grid-template-areas:
-    'player actions title'
-    'error error error';
-
-  grid-template-columns: 80px 80px 1fr;
-  grid-template-rows: 70px 30px;
-
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 20px;
   z-index: 100;
-
   border-top: var(--current-color) solid 1px;
   box-shadow: 0px 0px 10px 0px var(--current-color);
-
-  padding-left: var(--padding-left);
-  padding-right: var(--padding-right);
-  padding-top: 40px;
-
+  padding: 40px var(--padding-left) 0 var(--padding-right);
   color: var(--item-color);
   background-color: var(--second-bg-color);
 
+  @media #{main.$mob} {
+    padding: main.vwMax(10px);
+    gap: main.vwMax(10px);
+  }
 }
 
 
 .player {
-  grid-area: player;
+  svg {
+    font-size: 3em;
+
+    @media #{main.$mob} {
+      width: main.vwMax(40px);
+      font-size: main.vwMax(40px);
+    }
+  }
 }
 
 .heart {
   color: var(--border-color);
+
+  // svg {
+    font-size: 3em;
+
+    @media #{main.$mob} {
+      width: main.vwMax(40px);
+      font-size: main.vwMax(40px);
+    }
+  // }
 }
 
 
 .actions {
-  grid-area: actions;
 }
 
 .title {
-  grid-area: title;
   margin: 0;
+
+  @include typography.h2;
+
+  @media #{main.$mob} {
+    width: main.vwMax(200px);
+  }
 }
 
 .error {
-  grid-area: error;
   color: var(--error-color);
   background-color: var(--error-bg-color);
   border: var(--error-border-color) solid 1px;
   border-radius: 3px;
   padding: 1px 5px;
+  width: 100%;
+
+  @include typography.text;
 }

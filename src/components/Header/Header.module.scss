@@ -1,3 +1,5 @@
+@use '../../styles/main';
+@use '../../styles/typography';
 
 .Header {
   z-index: 100;
@@ -12,12 +14,23 @@
   background-color: var(--second-bg-color);
 }
 
+.title {
+  display: inline;
+  @include typography.h1;
+}
+
 .logo {
   margin-right: 30px;
-  font-size: 1.2em;
-  font-weight: bold;
   color: var(--current-color);
+  font-size: 3em;
+
+  svg {
+    @media #{main.$mob} {
+      font-size: main.vwMax(24px);
+    }
+  }
 }
+
 .color {
   margin-right: 20px;
 }

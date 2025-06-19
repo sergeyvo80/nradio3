@@ -1,9 +1,15 @@
+@use '../../styles/main';
 
 .NRadio {
-  color: var(--color);
   background-color: var(--bg-color);
-  font-size: var(--font-size);
   display: grid;
   grid-template-rows: 50px calc(100vh - 200px) 150px;
   grid-gap: 0;
+
+  @media #{main.$mob} {
+    grid-template-rows: main.vwMax(50px) calc(100vh - main.vwMax(200px)) main.vwMax(150px);
+    min-width: main.$minMobWidth;
+    max-width: main.$maxMobWidth;
+    margin: 0 auto;
+  }
 }

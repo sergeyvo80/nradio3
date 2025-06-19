@@ -3,16 +3,16 @@ import { faInfoCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import styles from './Header.module.scss';
 
-interface HeaderProps {
+interface Props {
   title: string;
 }
 
-const Header = ({ title }: HeaderProps) => (
+const Header = ({ title }: Props) => (
   <header className={styles.Header}>
     <div className={styles.logo}>
       <FontAwesomeIcon icon={faPlayCircle} />
       {'\u00a0'}
-      {title}
+      <h1 className={styles.title}>{title}</h1>
     </div>
     <div className={styles.color}><ColorPicker /></div>
     <div className={styles.info}>

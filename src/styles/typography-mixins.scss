@@ -1,0 +1,43 @@
+@use './main';
+
+@mixin commons {
+  font-family: Montserrat, sans-serif;  
+  color: var(--oyster-black);
+  font-weight: 500;
+}
+
+@mixin h1 {
+  @include commons;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--current-color);
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(24px);
+  }
+}
+
+@mixin h2 {
+  @include commons;
+  font-size: 24px;
+  font-weight: bold;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(20px);
+  }
+}
+
+@mixin h3 {
+  @include commons;
+  font-size: 40px;
+  line-height: 48px;
+}
+
+@mixin text {
+  @include commons;
+  font-size: 12px;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(12px);
+  }
+}
