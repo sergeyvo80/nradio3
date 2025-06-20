@@ -3,11 +3,11 @@
 .NRadio {
   background-color: var(--bg-color);
   display: grid;
-  grid-template-rows: 50px calc(100vh - 200px) 150px;
+  grid-template-rows: 50px calc(100vh - 150px) 100px;
   grid-gap: 0;
 
   @media #{main.$mob} {
-    grid-template-rows: main.vwMax(50px) calc(100vh - main.vwMax(200px)) main.vwMax(150px);
+    grid-template-rows: main.vwMax(50px) calc(100vh - main.vwMax(150px)) main.vwMax(100px);
     min-width: main.$minMobWidth;
     max-width: main.$maxMobWidth;
     margin: 0 auto;

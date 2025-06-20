@@ -5,13 +5,16 @@
   z-index: 100;
   display: flex;
   align-items: center;
-
-  padding-left: var(--padding-left);
-  padding-right: var(--padding-right);
-
+  padding: 0 main.$webSidePadding;
   border-bottom: var(--current-color) solid 1px;
   box-shadow: 0 0px 8px 0px var(--current-color);
   background-color: var(--second-bg-color);
+
+  @media #{main.$mob} {
+    padding: main.vwMax(10px);
+    gap: main.vwMax(10px);
+  }
+
 }
 
 .title {
@@ -22,7 +25,9 @@
 .logo {
   margin-right: 30px;
   color: var(--current-color);
-  font-size: 3em;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
 
   svg {
     @media #{main.$mob} {
@@ -36,4 +41,13 @@
 }
 .info {
   color: var(--border-color);
+
+  svg {
+    font-size: 20px;
+
+    @media #{main.$mob} {
+      width: main.vwMax(20px);
+      font-size: main.vwMax(20px);
+    }
+  }
 }

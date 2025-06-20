@@ -29,15 +29,19 @@
 
 @mixin h3 {
   @include commons;
-  font-size: 40px;
-  line-height: 48px;
+  font-size: 24px;
+  font-weight: bold;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(18px);
+  }
 }
 
 @mixin text {
   @include commons;
-  font-size: 12px;
+  font-size: 14px;
 
   @media #{main.$mob} {
-    font-size: main.vwMax(12px);
+    font-size: main.vwMax(14px);
   }
 }

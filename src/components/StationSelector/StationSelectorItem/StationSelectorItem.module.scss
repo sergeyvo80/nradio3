@@ -1,3 +1,6 @@
+@use '../../../styles/main';
+@use '../../../styles/typography';
+
 .StationListItem {
   border: var(--border-color) solid 1px;
   box-shadow: -1px 1px 12px 0 var(--shadow-color);
@@ -6,12 +9,25 @@
   padding: 10px 10px;
   color: var(--item-color);
   background-color: var(--second-bg-color);
-  font-size: 1.3em;
   font-weight: bold;
+}
+
+.title {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+  @include typography.h3;
 }
 
 .link {
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  @media #{main.$mob} {
+    gap: main.vwMax(10px);
+  }
 
   &:link {
     color: var(--link-color);
@@ -24,6 +40,10 @@
 .like {
   color: var(--border-color);
   height: 27px;
+
+  @media #{main.$mob} {
+    height: main.vwMax(27px);
+  }
 }
 
 

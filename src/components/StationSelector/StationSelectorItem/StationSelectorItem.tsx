@@ -13,8 +13,7 @@ const StationListItem = ({ station, isCurrent }: Props): React.ReactNode => (
   <li className={`${styles.StationListItem} ${isCurrent ? styles['--current'] : ''}`}>
     <Link href={`/station/${station.slug}`} className={styles.link}>
       <FontAwesomeIcon icon={faHeart} className={styles.like} />
-      {'\u00a0'}
-      {station.title}
+      <h3 className={styles.title}>{station.title}</h3>
     </Link>
   </li>
 );

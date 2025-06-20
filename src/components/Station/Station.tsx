@@ -17,7 +17,7 @@ const Station = ({
   playerState,
   onPlay = () => {},
   onPause = () => {},
-  error = 'error message',
+  error,
 }: Props): React.ReactNode => (
   <div className={styles.Station}>
     

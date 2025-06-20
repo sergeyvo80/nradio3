@@ -6,23 +6,26 @@
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 20px;
+  row-gap: 5px;
   z-index: 100;
   border-top: var(--current-color) solid 1px;
   box-shadow: 0px 0px 10px 0px var(--current-color);
-  padding: 40px var(--padding-left) 0 var(--padding-right);
+  padding: 25px main.$webSidePadding 0 main.$webSidePadding;
   color: var(--item-color);
   background-color: var(--second-bg-color);
+  align-items: center;
 
   @media #{main.$mob} {
-    padding: main.vwMax(10px);
+    padding: main.vwMax(24px) main.vwMax(10px) 0 main.vwMax(10px);
     gap: main.vwMax(10px);
+    row-gap: 5px;
   }
 }
 
 
 .player {
   svg {
-    font-size: 3em;
+    font-size: 48px;
 
     @media #{main.$mob} {
       width: main.vwMax(40px);
@@ -33,15 +36,12 @@
 
 .heart {
   color: var(--border-color);
+  font-size: 48px;
 
-  // svg {
-    font-size: 3em;
-
-    @media #{main.$mob} {
-      width: main.vwMax(40px);
-      font-size: main.vwMax(40px);
-    }
-  // }
+  @media #{main.$mob} {
+    width: main.vwMax(40px);
+    font-size: main.vwMax(40px);
+  }
 }
 
 
