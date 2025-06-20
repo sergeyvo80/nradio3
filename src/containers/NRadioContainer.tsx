@@ -24,8 +24,7 @@ const NRadioContainer = ({ stations, station }: Props) => {
       if (player) {
         player.src = station.stream;
 
-        // TODO: remove before release
-        // player.play();
+        player.play();
 
         setPlayerState(PlayerStateEnum.Playing);
       }
