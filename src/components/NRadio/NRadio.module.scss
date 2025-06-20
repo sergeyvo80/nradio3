@@ -7,7 +7,7 @@
   grid-gap: 0;
 
   @media #{main.$mob} {
-    grid-template-rows: main.vwMax(50px) calc(100vh - main.vwMax(150px)) main.vwMax(100px);
+    grid-template-rows: main.vwMax(50px) calc(100vh - main.vwMax(170px)) main.vwMax(120px);
     min-width: main.$minMobWidth;
     max-width: main.$maxMobWidth;
     margin: 0 auto;

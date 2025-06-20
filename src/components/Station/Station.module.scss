@@ -16,7 +16,7 @@
   align-items: center;
 
   @media #{main.$mob} {
-    padding: main.vwMax(24px) main.vwMax(10px) 0 main.vwMax(10px);
+    padding: main.vwMax(20px) main.vwMax(10px) 0 main.vwMax(10px);
     gap: main.vwMax(10px);
     row-gap: 5px;
   }
