@@ -9,13 +9,13 @@ interface Props {
   isCurrent?: boolean;
 }
 
-const StationListItem = ({ station, isCurrent }: Props): React.ReactNode => (
-  <li className={`${styles.StationListItem} ${isCurrent ? styles['--current'] : ''}`}>
-    <Link href={`/station/${station.slug}`} className={styles.link}>
+const StationSelectorItem = ({ station, isCurrent }: Props): React.ReactNode => (
+  <li className={`${styles.StationSelectorItem} ${isCurrent ? styles['--current'] : ''}`}>
+    <Link href={`/station/${station.slug}`} className={`${styles.link} stationSelectorLink`}>
       <FontAwesomeIcon icon={faHeart} className={styles.like} />
       <h3 className={styles.title}>{station.title}</h3>
     </Link>
   </li>
 );
 
-export default StationListItem;
+export default StationSelectorItem;

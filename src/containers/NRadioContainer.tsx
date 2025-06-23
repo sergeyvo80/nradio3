@@ -24,7 +24,9 @@ const NRadioContainer = ({ stations, station }: Props) => {
       if (player) {
         player.src = station.stream;
 
-        player.play();
+        if (!process.env.NEXT_PUBLIC_DISABLE_PLAY) {
+          player.play();
+        }
 
         setPlayerState(PlayerStateEnum.Playing);
       }

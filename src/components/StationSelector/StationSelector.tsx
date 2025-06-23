@@ -9,7 +9,7 @@ interface Props {
 }
 
 const StationSelector = ({ stations, slug }: Props) => (
-  <div className={styles.StationSelector}>
+  <div className={`${styles.StationSelector} StationSelector`}>
     <StationList stations={stations} slug={slug} />
   </div>
 );

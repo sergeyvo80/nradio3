@@ -1,7 +1,7 @@
 @use '../../../styles/main';
 @use '../../../styles/typography';
 
-.StationListItem {
+.StationSelectorItem {
   border: var(--border-color) solid 1px;
   box-shadow: -1px 1px 12px 0 var(--shadow-color);
   margin: 5px 0;
