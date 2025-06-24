@@ -19,6 +19,7 @@ const StationSelectorList = ({
         station={station}
         key={station.slug}
         isCurrent={station.slug === slug}
+        isLiked={station.isLiked || false}
         onLike={() => onLike(station.slug)}
       />
     ))}

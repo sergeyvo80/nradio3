@@ -8,4 +8,5 @@ export default interface StationInterface {
   tags: string[];
   stream: string;
   disabled?: boolean;
+  isLiked?: boolean;
 };

@@ -31,6 +31,7 @@ const NRadio = ({
     <StationSelector
       stations={stations}
       slug={station.slug}
+      onLike={onLike}
     />
     <Station
       station={station}

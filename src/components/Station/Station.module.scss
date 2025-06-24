@@ -34,7 +34,7 @@
   }
 }
 
-.heart {
+.like {
   color: var(--border-color);
   font-size: 48px;
 
@@ -67,4 +67,10 @@
   width: 100%;
 
   @include typography.text;
+}
+
+.--liked {
+  .like {
+    color: var(--color);
+  }
 }

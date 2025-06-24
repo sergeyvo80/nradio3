@@ -46,8 +46,13 @@
   }
 }
 
-
 .--current {
   border-color: var(--current-color);
   box-shadow: -1px 1px 12px 0 var(--current-color);
+}
+
+.--liked {
+  .like {
+    color: var(--color);
+  }
 }
