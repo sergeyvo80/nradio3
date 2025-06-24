@@ -9,6 +9,7 @@ interface Props {
   playerState?: PlayerStateEnum;
   onPlay?: () => void;
   onPause?: () => void;
+  onLike?: (slug: string) => void;
   error?: string | undefined;
 }
 
@@ -17,6 +18,7 @@ const Station = ({
   playerState,
   onPlay = () => {},
   onPause = () => {},
+  onLike = () => {},
   error,
 }: Props): React.ReactNode => (
   <div className={styles.Station}>
@@ -36,7 +38,7 @@ const Station = ({
     </div>
 
     <div className={styles.actions}>
-      <FontAwesomeIcon icon={faHeart} size="3x" className={styles.heart} />
+      <FontAwesomeIcon icon={faHeart} size="3x" className={styles.heart} onClick={() => onLike(station.slug)} />
     </div>
 
     <h2 className={styles.title}>{station.title}</h2>

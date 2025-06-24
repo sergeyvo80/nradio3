@@ -7,12 +7,17 @@ import styles from './StationSelectorItem.module.scss';
 interface Props {
   station: StationInterface;
   isCurrent?: boolean;
+  onLike?: (slug: string) => void;
 }
 
-const StationSelectorItem = ({ station, isCurrent }: Props): React.ReactNode => (
+const StationSelectorItem = ({
+  station,
+  isCurrent,
+  onLike = () => {},
+}: Props): React.ReactNode => (
   <li className={`${styles.StationSelectorItem} ${isCurrent ? styles['--current'] : ''}`}>
     <Link href={`/station/${station.slug}`} className={`${styles.link} stationSelectorLink`}>
-      <FontAwesomeIcon icon={faHeart} className={styles.like} />
+      <FontAwesomeIcon icon={faHeart} className={styles.like} onClick={() => onLike(station.slug)} />
       <h3 className={styles.title}>{station.title}</h3>
     </Link>
   </li>

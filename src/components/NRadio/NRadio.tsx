@@ -12,6 +12,7 @@ interface NRadioProps {
   playerState: PlayerStateEnum | undefined;
   onPlay: () => void;
   onPause: () => void;
+  onLike: (slug: string) => void;
   error: string | undefined;
 }
 
@@ -22,16 +23,21 @@ const NRadio = ({
   playerState,
   onPlay,
   onPause,
+  onLike = () => {},
   error,
 }: NRadioProps): React.ReactNode => (
   <div className={styles.NRadio}>
     <Header title={title} />
-    <StationSelector stations={stations} slug={station.slug} />
+    <StationSelector
+      stations={stations}
+      slug={station.slug}
+    />
     <Station
       station={station}
       playerState={playerState}
       onPlay={onPlay}
       onPause={onPause}
+      onLike={onLike}
       error={error}
     />
   </div>

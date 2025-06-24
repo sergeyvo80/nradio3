@@ -4,6 +4,7 @@ import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/interfaces/StationInterface';
 import { useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
+import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
@@ -15,6 +16,21 @@ interface Props {
 const NRadioContainer = ({ stations, station }: Props) => {
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
+  // const likeStations = getLocalStorage('likeStations', []) as string[];
+
+
+  const like = (slug: string) => {
+
+    const likeStations = getLocalStorage('likeStations', []) as string[];
+    const likeIndex = likeStations.indexOf(slug);
+
+    if (likeIndex === -1) {
+      setLocalStorage('likeStations', [...likeStations, slug]);
+    } else {
+      likeStations.splice(likeIndex , 1);
+      setLocalStorage('likeStations', likeStations);
+    }
+  };
 
   const play = useCallback(() => {
     try {
@@ -61,6 +77,7 @@ const NRadioContainer = ({ stations, station }: Props) => {
       playerState={playerState}
       onPlay={play}
       onPause={pause}
+      onLike={like}
     />
   );
 };
