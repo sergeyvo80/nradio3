@@ -3,6 +3,7 @@ export default interface StationInterface {
   dateAdded: string;
   dateUpdated: string;
   title: string;
+  
   website?: string;
   bitrate?: number;
   tags: string[];
