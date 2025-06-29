@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev -p 3002 --turbopack",
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
@@ -12,12 +12,18 @@
     "e2e:headless": "cypress run --e2e"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.8",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@tanstack/react-query": "^5.81.5",
+    "@tanstack/react-query-devtools": "^5.81.5",
+    "axios": "^1.10.0",
+    "graphql-ws": "^6.0.5",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-color": "^2.19.3",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
