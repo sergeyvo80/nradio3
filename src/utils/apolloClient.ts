@@ -1,6 +1,6 @@
 // import getToken from '@/app/getToken';
 // import { GRAPHQL_URL } from '@/constants/env';
-const GRAPHQL_URL = 'http://nradio.local/graphql'
+const GRAPHQL_URL = 'http://nradio.pro/graphql'; // TODO: move to .env
 // import { AuthNotAuthorizedError } from '@/errors/auth';
 import { GraphqlNetworkError, GraphqlUnknownError } from '@/errors/graphql';
 import { registerError } from '@/utils/registeError';
