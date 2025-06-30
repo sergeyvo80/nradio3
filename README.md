@@ -1,6 +1,6 @@
 # NRadio.pro source codes
 
-http://nradio.pro - source code (React, Nextjs, ReqctQuery, GraphQl version)
+http://nradio.pro - source code (React, Nextjs, ReqctQuery, GraphQl, SSR version)
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
