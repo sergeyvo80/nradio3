@@ -1,6 +1,27 @@
-# NRadio.pro source codes
+# NRadio source codes
 
-http://nradio.pro - source code (React, Nextjs, ReqctQuery, GraphQl, SSR version)
+http://nradio.pro - React, Next.js, ReactQuery, Apollo GraphQL, SSR
+
+## .env
+```bash
+MONGO_URL="mongodb://127.0.0.1:27017/nradio"
+NEXT_PUBLIC_GTM_ID="G-0R759M4XXF"
+NEXT_GRAPHQL_URL="http://nradio.pro/graphql"
+NEXT_PUBLIC_DISABLE_PLAY="true"
+NEXT_PUBLIC_GTM_ID=""
+NEXT_TELEMETRY_DISABLED=1
+BASE_URL="http://localhost:3000"
+```
+
+## deploy
+Nginx configs and service code placed on .docker folder
+
+## e2e
+```bash
+npm run e2e
+npm run e2e:headless
+```
+
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
