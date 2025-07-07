@@ -1,4 +1,4 @@
-// @tslint:disable-next-line
+/* eslint-disable */
 import React from 'react'
 import reactCSS from 'reactcss';
 import { SketchPicker } from 'react-color';

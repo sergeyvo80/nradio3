@@ -5,10 +5,8 @@ import type { Metadata } from 'next';
 import React from 'react';
 // import useStations from '@/hooks/useStations';
 import StationInterface from '@/types/interfaces/StationInterface';
-import type { GetServerSideProps, GetStaticProps } from 'next';
 import api from '@/api/apiGraphql';
 
- 
 // import {
 //   dehydrate,
 //   HydrationBoundary,
@@ -16,7 +14,8 @@ import api from '@/api/apiGraphql';
 //   useQuery,
 // } from '@tanstack/react-query';
 
-const getStation = (stations: StationInterface[], slug: string) => stations.find((station) => station.slug === slug) || stationData;
+const getStation = (stations: StationInterface[], slug: string) =>
+  stations.find((station) => station.slug === slug) || stationData;
 
 interface Props {
   slug: string;
@@ -34,7 +33,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${station.title} NRadio`,
-    description:  "Radio stations player",
+    description: 'Radio stations player',
   };
 };
 
@@ -46,40 +45,32 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 //   return { props: { stations } }
 // }
 
-const StationPage = async ({ params  }: PageProps): Promise<React.ReactNode> => {
+const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
   const { slug } = await params;
 
   const stations = await api.getStations(0, 100);
 
-  console.log('>>>', stations);
+  console.log('>>>', stations[0]);
 
+  // const queryClient = new QueryClient();
+  // const fetchStations = (): StationInterface[]  => {
+  // console.log('!!!!!!!!>>> stations 2');
+  //   return stations;
+  // };
 
+  // useEffect(() => {
+  //     //
+  //   }, [queryClient]);
 
-// const queryClient = new QueryClient();
-// const fetchStations = (): StationInterface[]  => {
-// console.log('!!!!!!!!>>> stations 2');
-//   return stations;
-// };
-
-// useEffect(() => {
-//     // 
-//   }, [queryClient]);
-
-// console.log('>>> stations 0');
-// await queryClient.prefetchQuery(['stations'], fetchStations);
-
+  // console.log('>>> stations 0');
+  // await queryClient.prefetchQuery(['stations'], fetchStations);
 
   // const { stations: stationsNew, refetch } = useStations();// , chatError, onlineChat, closeChat, setChatId
 
-// console.log('>>> stations', stations);
+  // console.log('>>> stations', stations);
 
-  return (
-    <NRadioContainer
-      stations={stations}
-      station={getStation(stations, slug)}
-    />
-  );
-}
+  return <NRadioContainer stations={stations} station={getStation(stations, slug)} />;
+};
 
 export default StationPage;
 

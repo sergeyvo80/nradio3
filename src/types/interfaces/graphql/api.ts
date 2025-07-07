@@ -1,7 +1,7 @@
 import type StationInterface from '@/types/interfaces/StationInterface';
 
 export interface StationsInterface {
-  pageParams: any[];
+  // pageParams?: any;
   pages: StationInterface[][];
 }
 

@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 import api from '@/api/apiGraphql';
 // import getUser from '@/app/getUser';
 // import type ErrorInterface from '@/interfaces/ErrorInterface';
@@ -36,7 +36,7 @@ const useStations = (): any => {
     // isFetching,
     // isFetchingNextPage,
     // isFetchingPreviousPage,
-    fetchNextPage,
+    // fetchNextPage,
     // fetchPreviousPage,
     // hasNextPage,
     // hasPreviousPage,
@@ -64,11 +64,11 @@ const useStations = (): any => {
 
 
   return {
-    // setStationSlug,
-    messages: data?.pages ? [].concat(...data.pages) : [], // messages,
-    messagesError: error,
-    messagesStatus: status,
-    fetchNextPage,
+    // // setStationSlug,
+    // messages: data?.pages ? [].concat(...data.pages) : [], // messages,
+    // messagesError: error,
+    // messagesStatus: status,
+    // fetchNextPage,
   };
 };
 

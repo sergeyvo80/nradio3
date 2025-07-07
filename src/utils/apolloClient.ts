@@ -1,6 +1,6 @@
 // import getToken from '@/app/getToken';
 // import { GRAPHQL_URL } from '@/constants/env';
-const GRAPHQL_URL = 'http://nradio.pro/graphql'; // TODO: move to .env
+// const GRAPHQL_URL = 'http://nradio.pro/graphql'; // TODO: move to .env
 // import { AuthNotAuthorizedError } from '@/errors/auth';
 import { GraphqlNetworkError, GraphqlUnknownError } from '@/errors/graphql';
 import { registerError } from '@/utils/registeError';
@@ -20,24 +20,24 @@ const removeTypenameLink = removeTypenameFromVariables();
 // });
 
 const httpLink = new HttpLink({
-  uri: GRAPHQL_URL,
+  uri: process.env.NEXT_GRAPHQL_URL,
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: GRAPHQL_URL,
+    url: process.env.NEXT_GRAPHQL_URL || 'graphql',
     retryAttempts: Infinity,
     connectionParams: () => ({
-        headers: {
-          // Authorization: `Bearer ${getToken()}`,
-        },
-      }),
+      headers: {
+        // Authorization: `Bearer ${getToken()}`,
+      },
+    }),
   }),
 );
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+    graphQLErrors.forEach(({ message, locations, path }) => {
       //console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
       console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
 
@@ -76,17 +76,14 @@ const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
 
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
+    return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
   },
   wsLink,
-  // @ts-ignore
+  // eslint-disable-next-line no-use-before-define
   authLink.concat(httpLink), //.concat(uploadLink),
 );
 
-// @ts-ignore
+// eslint-disable-next-line no-use-before-define
 const link = from([removeTypenameLink, splitLink]);
 
 const client = new ApolloClient({

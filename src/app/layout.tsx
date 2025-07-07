@@ -3,17 +3,16 @@ import '@/styles/globals.scss';
 
 export const metadata: Metadata = {
   title: 'NRadio',
-  description: "Radio stations player",
+  description: 'Radio stations player',
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      {process.env.NEXT_PUBLIC_GTM_ID && (
+}>) => (
+  <html lang="en">
+    {process.env.NEXT_PUBLIC_GTM_ID && (
       <head>
         {/*<!-- Global Site Tag (gtag.js) - Google Analytics -->*/}
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GTM_ID}`}></script>
@@ -27,10 +26,11 @@ export default function RootLayout({
           });
         `}} />                              
       </head>
-      )}          
-      <body>
-        {children}
-      </body>
-    </html>
-  );
-}
+    )}          
+    <body>
+      {children}
+    </body>
+  </html>
+);
+
+export default RootLayout;
