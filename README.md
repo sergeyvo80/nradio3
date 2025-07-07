@@ -4,11 +4,9 @@ http://nradio.pro - React, Next.js, ReactQuery, Apollo GraphQL, SSR
 
 ## .env
 ```bash
-MONGO_URL="mongodb://127.0.0.1:27017/nradio"
 NEXT_PUBLIC_GTM_ID="G-0R759M4XXF"
 NEXT_GRAPHQL_URL="http://nradio.pro/graphql"
 NEXT_PUBLIC_DISABLE_PLAY="false"
-NEXT_PUBLIC_GTM_ID=""
 NEXT_TELEMETRY_DISABLED=1
 BASE_URL="http://nradio.pro"
 ```
