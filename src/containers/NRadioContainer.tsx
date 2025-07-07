@@ -24,7 +24,7 @@ interface Props {
 }
 
 const NRadioContainer = ({ stations, station }: Props) => {
-  const [stationsState, setStationsState] = useState<StationInterface[]>([]);
+  const [stationsState, setStationsState] = useState<StationInterface[]>(stations);
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
 
@@ -86,7 +86,7 @@ const NRadioContainer = ({ stations, station }: Props) => {
   return (
     <NRadio
       title="NRadio"
-      stations={stations}
+      stations={stationsState}
       station={stationsState.find((stationItem) => stationItem.slug === station.slug) || station}
       error={error}
       playerState={playerState}
