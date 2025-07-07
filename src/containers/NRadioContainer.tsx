@@ -28,8 +28,6 @@ const NRadioContainer = ({ stations, station }: Props) => {
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
 
-  // const getLikeStations = (): string[] =>  getLocalStorage('likeStations', []) as string[];
-
   const like = (slug: string) => {
     const likeStations = getLikeStations();
     const likeIndex = likeStations.indexOf(slug);
