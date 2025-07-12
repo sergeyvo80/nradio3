@@ -2,6 +2,7 @@
 // import { GRAPHQL_URL } from '@/constants/env';
 // const GRAPHQL_URL = 'http://nradio.pro/graphql'; // TODO: move to .env
 // import { AuthNotAuthorizedError } from '@/errors/auth';
+import fetch from 'cross-fetch'; 
 import { GraphqlNetworkError, GraphqlUnknownError } from '@/errors/graphql';
 import { registerError } from '@/utils/registeError';
 import { ApolloClient, HttpLink, InMemoryCache, from, split } from '@apollo/client';
@@ -20,7 +21,7 @@ const removeTypenameLink = removeTypenameFromVariables();
 // });
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_GRAPHQL_URL,
+  uri: process.env.NEXT_GRAPHQL_URL, fetch
 });
 
 const wsLink = new GraphQLWsLink(

@@ -21,15 +21,7 @@ const Station = ({
   onLike = () => {},
   error,
 }: Props): React.ReactNode => (
-  <div
-    className={
-      [
-        styles.Station,
-        station.isLiked ? styles['--liked'] : '',
-        // styles['--liked']
-      ].join(' ')
-    }
-  >  
+  <div className={[styles.Station, station.isLiked ? styles['--liked'] : ''].join(' ')}>
     <div className={styles.player}>
       {(playerState === PlayerStateEnum.Paused || playerState === undefined) && (
         <FontAwesomeIcon icon={faPlay} size="3x" onClick={onPlay} />
@@ -45,7 +37,12 @@ const Station = ({
     </div>
 
     <div className={styles.actions}>
-      <FontAwesomeIcon icon={faHeart} size="3x" className={styles.like} onClick={() => onLike(station.slug)} />
+      <FontAwesomeIcon
+        icon={faHeart}
+        size="3x"
+        className={styles.like}
+        onClick={() => onLike(station.slug)}
+      />
     </div>
 
     <h2 className={styles.title}>{station.title}</h2>

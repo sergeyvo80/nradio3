@@ -1,12 +1,12 @@
-# NRadio source codes
+# NRadio source code
 
-http://nradio.pro - React, Next.js, ReactQuery, Apollo GraphQL, SSR
+http://nradio.pro - React, Next.js, ReactQuery, Apollo GraphQL, SSR, Cypress, Jest
 
-## .env
+## .env.local
 ```bash
 NEXT_PUBLIC_GTM_ID="G-0R759M4XXF"
 NEXT_GRAPHQL_URL="http://nradio.pro/graphql"
-#NEXT_PUBLIC_DISABLE_PLAY="true"
+# NEXT_PUBLIC_DISABLE_PLAY="true" // for Dev
 NEXT_TELEMETRY_DISABLED=1
 BASE_URL="http://nradio.pro"
 ```
@@ -14,10 +14,15 @@ BASE_URL="http://nradio.pro"
 ## deploy
 Nginx configs and service code placed on .docker folder
 
-## e2e
+## e2e tests
 ```bash
 npm run e2e
 npm run e2e:headless
+```
+
+## Unit tests
+```bash
+npm run test
 ```
 
 
