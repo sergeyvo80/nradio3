@@ -21,7 +21,7 @@ const Station = ({
   onLike = () => {},
   error,
 }: Props): React.ReactNode => (
-  <div className={[styles.Station, station.isLiked ? styles['--liked'] : ''].join(' ')}>
+  <main className={[styles.Station, station.isLiked ? styles['--liked'] : ''].join(' ')}>
     <div className={styles.player}>
       {(playerState === PlayerStateEnum.Paused || playerState === undefined) && (
         <FontAwesomeIcon icon={faPlay} size="3x" onClick={onPlay} />
@@ -48,7 +48,7 @@ const Station = ({
     <h2 className={styles.title}>{station.title}</h2>
 
     {error !== undefined && <div className={styles.error}>Error: {error}</div>}
-  </div>
+  </main>
 );
 
 export default Station;

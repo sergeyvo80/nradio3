@@ -6,6 +6,7 @@ import React from 'react';
 // import useStations from '@/hooks/useStations';
 import StationInterface from '@/types/interfaces/StationInterface';
 import api from '@/api/apiGraphql';
+import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
 
 // import {
 //   dehydrate,
@@ -32,8 +33,26 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   const station = getStation(stations, slug);
 
   return {
-    title: `${station.title} NRadio`,
-    description: 'Radio stations player',
+    title: `${station.title} -- ${META_TITLE}`,
+    description: META_DESCRIPTION,
+    openGraph: {
+      title: META_TITLE,
+      description: META_DESCRIPTION,
+      url: process.env.BASE_URL,
+      // images: {
+      //   url: '',
+      //   width: 1200,
+      //   height: 630,
+      // },
+      siteName: process.env.BASE_URL,
+    },
+    alternates: {
+      canonical: process.env.BASE_URL,
+    },
+    icons: {
+      icon: '/favicon.ico',
+    },
+
   };
 };
 

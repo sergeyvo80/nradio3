@@ -14,9 +14,9 @@ const StationSelector = ({
   slug,
   onLike = () => {},
 }: Props) => (
-  <div className={`${styles.StationSelector} StationSelector`}>
+  <nav className={`${styles.StationSelector} StationSelector`}>
     <StationList stations={stations} slug={slug} onLike={onLike} />
-  </div>
+  </nav>
 );
 
 export default StationSelector;
