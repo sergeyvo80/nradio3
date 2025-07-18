@@ -7,13 +7,7 @@ import React from 'react';
 import StationInterface from '@/types/interfaces/StationInterface';
 import api from '@/api/apiGraphql';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-
-// import {
-//   dehydrate,
-//   HydrationBoundary,
-//   QueryClient,
-//   useQuery,
-// } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const getStation = (stations: StationInterface[], slug: string) =>
   stations.find((station) => station.slug === slug) || stationData;
@@ -56,47 +50,24 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   };
 };
 
-// TODO: ajust Reqctquery SSR
-// export const getServerSideProps = async () => {
-// }
-// export const getStaticProps = async () => {
-//   // const posts = await getPosts()
-//   return { props: { stations } }
-// }
+const queryClient = new QueryClient();
 
 const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
   const { slug } = await params;
 
-  const stations = await api.getStations(0, 100);
+  let stations: StationInterface[] = [];
 
-  console.log('>>>', stations[0]);
+  await queryClient.prefetchQuery({
+    queryKey: ['stations'], 
+    queryFn: async () => {
+      stations = await api.getStations(0, 100);
+      console.log('Stations', stations.length);
+      return stations;
+    }
+  });
 
-  // const queryClient = new QueryClient();
-  // const fetchStations = (): StationInterface[]  => {
-  // console.log('!!!!!!!!>>> stations 2');
-  //   return stations;
-  // };
-
-  // useEffect(() => {
-  //     //
-  //   }, [queryClient]);
-
-  // console.log('>>> stations 0');
-  // await queryClient.prefetchQuery(['stations'], fetchStations);
-
-  // const { stations: stationsNew, refetch } = useStations();// , chatError, onlineChat, closeChat, setChatId
-
-  // console.log('>>> stations', stations);
 
   return <NRadioContainer stations={stations} station={getStation(stations, slug)} />;
 };
 
 export default StationPage;
-
-// export default function PostsRoute({ dehydratedState }) {
-//   return (
-//     <HydrationBoundary state={dehydratedState}>
-//       <StationPage params={{ slug: 'example' }} />
-//     </HydrationBoundary>
-//   )
-// }
