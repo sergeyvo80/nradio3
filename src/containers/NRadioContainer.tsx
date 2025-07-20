@@ -5,6 +5,13 @@ import StationInterface from '@/types/interfaces/StationInterface';
 import { useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
+import queryClient from '@/utils/reactQueryClient';
+
+import {
+  hydrate,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
@@ -19,14 +26,23 @@ const sortStations = (stations: StationInterface[]) =>
     .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
 
 interface Props {
+  /* eslint-disable */
+  state: any,
   stations: StationInterface[];
   station: StationInterface;
+  // slug: string
 }
 
-const NRadioContainer = ({ stations, station }: Props) => {
+const NRadioContainer = ({
+  stations, station, state
+}: Props) => {
+
+  hydrate(queryClient, state);
+
   const [stationsState, setStationsState] = useState<StationInterface[]>(stations);
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
+
 
   const like = (slug: string) => {
     const likeStations = getLikeStations();
@@ -44,7 +60,14 @@ const NRadioContainer = ({ stations, station }: Props) => {
 
   useEffect(() => {
     setStationsState(sortStations(stations));
+    // hydrate(queryClient, stations);
   }, [stations]);
+
+  // useEffect(() => {
+  //   dehydrate(queryClient);
+  //   // hydrate(queryClient, stations);
+  // }, []);
+
 
   const play = useCallback(() => {
     try {
@@ -64,6 +87,7 @@ const NRadioContainer = ({ stations, station }: Props) => {
       setError(err instanceof Error ? `Error playing: ${err.message}` : 'Unknown error');
     }
   }, [station]);
+  
 
   const pause = () => {
     try {
@@ -82,16 +106,21 @@ const NRadioContainer = ({ stations, station }: Props) => {
   }, [stations, station, play]);
 
   return (
-    <NRadio
-      title="NRadio"
-      stations={stationsState}
-      station={stationsState.find((stationItem) => stationItem.slug === station.slug) || station}
-      error={error}
-      playerState={playerState}
-      onPlay={play}
-      onPause={pause}
-      onLike={like}
-    />
+    <QueryClientProvider client={queryClient}>
+
+      <NRadio
+        title="NRadio"
+        stations={stationsState}
+        station={stationsState.find((stationItem) => stationItem.slug === station.slug) || station}
+        error={error}
+        playerState={playerState}
+        onPlay={play}
+        onPause={pause}
+        onLike={like}
+      />
+      <ReactQueryDevtools initialIsOpen={false} />
+
+    </QueryClientProvider>
   );
 };
 

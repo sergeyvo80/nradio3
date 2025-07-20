@@ -7,7 +7,8 @@ import React from 'react';
 import StationInterface from '@/types/interfaces/StationInterface';
 import api from '@/api/apiGraphql';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-import { QueryClient } from '@tanstack/react-query';
+import { dehydrate } from '@tanstack/react-query';
+import queryClient from '@/utils/reactQueryClient';
 
 const getStation = (stations: StationInterface[], slug: string) =>
   stations.find((station) => station.slug === slug) || stationData;
@@ -50,8 +51,6 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   };
 };
 
-const queryClient = new QueryClient();
-
 const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
   const { slug } = await params;
 
@@ -66,8 +65,15 @@ const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
     }
   });
 
+  const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
 
-  return <NRadioContainer stations={stations} station={getStation(stations, slug)} />;
+  return (
+    <NRadioContainer
+      stations={stations}
+      station={getStation(stations, slug)}
+      state={state}
+    />
+  );
 };
 
 export default StationPage;
