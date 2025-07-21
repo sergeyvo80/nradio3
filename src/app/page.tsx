@@ -31,17 +31,13 @@ export const generateMetadata = (): Metadata => {
 };
 
 
-// export const metadata = {
-//   title: "NRadio - internet radio station player",  
-// };
-
 const Home = (): React.ReactNode => {
   // const stations = process.env.NEXT_GRAPHQL_URL 
   //   ? await api.getStations(0, 100) 
   //   : stationsData;
   const stations = stationsData;
 
-  return <NRadioContainer stations={stations} station={stationData} />;
+  return <NRadioContainer stations={stations} station={stationData} state={{}} />;
 };
 
 export default Home;
