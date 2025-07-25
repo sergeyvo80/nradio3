@@ -2,7 +2,7 @@
 
 import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/interfaces/StationInterface';
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 import queryClient from '@/utils/reactQueryClient';
@@ -33,18 +33,18 @@ interface Props {
   // slug: string
 }
 
-const NRadioContainer = ({
+const NRadioContainer = memo(({
   stations, station, state
 }: Props) => {
 
   hydrate(queryClient, state);
 
-  const [stationsState, setStationsState] = useState<StationInterface[]>(stations);
+  const [stationsState, setStationsState] = useState<StationInterface[]>(sortStations(stations));
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
 
 
-  const like = (slug: string) => {
+  const like = useCallback((slug: string) => {
     const likeStations = getLikeStations();
     const likeIndex = likeStations.indexOf(slug);
 
@@ -56,17 +56,7 @@ const NRadioContainer = ({
     }
 
     setStationsState(sortStations(stationsState));
-  };
-
-  useEffect(() => {
-    setStationsState(sortStations(stations));
-    // hydrate(queryClient, stations);
-  }, [stations]);
-
-  // useEffect(() => {
-  //   dehydrate(queryClient);
-  //   // hydrate(queryClient, stations);
-  // }, []);
+  }, [stationsState]);
 
 
   const play = useCallback(() => {
@@ -107,11 +97,10 @@ const NRadioContainer = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-
       <NRadio
         title="NRadio"
         stations={stationsState}
-        station={stationsState.find((stationItem) => stationItem.slug === station.slug) || station}
+        station={station}
         error={error}
         playerState={playerState}
         onPlay={play}
@@ -119,9 +108,8 @@ const NRadioContainer = ({
         onLike={like}
       />
       <ReactQueryDevtools initialIsOpen={false} />
-
     </QueryClientProvider>
   );
-};
+});
 
 export default NRadioContainer;

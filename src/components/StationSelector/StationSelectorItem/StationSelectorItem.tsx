@@ -8,14 +8,14 @@ interface Props {
   station: StationInterface;
   isCurrent?: boolean;
   isLiked?: boolean;
-  onLike?: (slug: string) => void;
+  // onLike?: (slug: string) => void;
 }
 
 const StationSelectorItem = ({
   station,
   isCurrent,
   isLiked,
-  onLike = () => {},
+  // onLike = () => {},
 }: Props): React.ReactNode => (
   <li 
     className={[
@@ -28,7 +28,7 @@ const StationSelectorItem = ({
       <FontAwesomeIcon
         icon={faHeart}
         className={styles.like}
-        onClick={(e) => {e.stopPropagation(); e.preventDefault(); onLike(station.slug);}}
+        // onClick={(e) => {e.stopPropagation(); e.preventDefault(); onLike(station.slug);}}
       />
       <h3 className={styles.title}>{station.title}</h3>
     </Link>

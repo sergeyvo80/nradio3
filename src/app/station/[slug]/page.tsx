@@ -1,5 +1,5 @@
 import stationData from '@/data/station.json';
-// import stations from '@/data/stations.json';
+import stationsData from '@/data/stations.json';
 import NRadioContainer from '@/containers/NRadioContainer';
 import type { Metadata } from 'next';
 import React from 'react';
@@ -70,7 +70,7 @@ const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
   return (
     <NRadioContainer
       stations={stations}
-      station={getStation(stations, slug)}
+      station={getStation(stationsData, slug)}
       state={state}
     />
   );

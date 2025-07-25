@@ -2,12 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import styles from './Header.module.scss';
+import { memo } from 'react';
 
 interface Props {
   title: string;
 }
 
-const Header = ({ title }: Props) => (
+const Header = memo(({ title }: Props) => (
   <header className={styles.Header}>
     <div className={styles.logo}>
       <FontAwesomeIcon icon={faPlayCircle} />
@@ -19,6 +20,8 @@ const Header = ({ title }: Props) => (
       <FontAwesomeIcon icon={faInfoCircle} />
     </div>
   </header>
-);
+));
+
+Header.displayName = 'Header';
 
 export default Header;

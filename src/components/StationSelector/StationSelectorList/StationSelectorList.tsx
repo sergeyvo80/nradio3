@@ -11,7 +11,7 @@ interface Props {
 const StationSelectorList = ({
   stations = [],
   slug,
-  onLike = () => {},
+  // onLike, // = () => {},
 }: Props) => (
   <ul className={styles.StationSelectorList}>
     {stations.map((station) => (
@@ -20,7 +20,7 @@ const StationSelectorList = ({
         key={station.slug}
         isCurrent={station.slug === slug}
         isLiked={station.isLiked || false}
-        onLike={() => onLike(station.slug)}
+        // onLike={() => onLike(station.slug)}
       />
     ))}
   </ul>
