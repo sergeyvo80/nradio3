@@ -3,22 +3,23 @@ import { faPlay, faPause, faSpinner, faHeart } from '@fortawesome/free-solid-svg
 import StationInterface from '@/types/interfaces/StationInterface';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import styles from './Station.module.scss';
+import { memo } from 'react';
 
 interface Props {
   station: StationInterface;
   playerState?: PlayerStateEnum;
-  onPlay?: () => void;
-  onPause?: () => void;
-  onLike?: (slug: string) => void;
+  onPlay: () => void;
+  onPause: () => void;
+  onLike: (slug: string) => void;
   error?: string | undefined;
 }
 
-const Station = ({
+const Station = memo(({
   station,
   playerState,
-  onPlay = () => {},
-  onPause = () => {},
-  onLike = () => {},
+  onPlay,
+  onPause,
+  onLike,
   error,
 }: Props): React.ReactNode => (
   <main className={[styles.Station, station.isLiked ? styles['--liked'] : ''].join(' ')}>
@@ -49,6 +50,8 @@ const Station = ({
 
     {error !== undefined && <div className={styles.error}>Error: {error}</div>}
   </main>
-);
+));
+
+Station.displayName = 'Station';
 
 export default Station;

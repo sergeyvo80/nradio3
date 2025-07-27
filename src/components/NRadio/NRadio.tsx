@@ -13,7 +13,7 @@ interface NRadioProps {
   playerState: PlayerStateEnum | undefined;
   onPlay: () => void;
   onPause: () => void;
-  onLike?: (slug: string) => void;
+  onLike: (slug: string) => void;
   error: string | undefined;
 }
 
@@ -24,7 +24,7 @@ const NRadio = memo(({
   playerState,
   onPlay,
   onPause,
-  onLike = () => {},
+  onLike,
   error,
 }: NRadioProps): React.ReactNode => (
   <div className={styles.NRadio}>

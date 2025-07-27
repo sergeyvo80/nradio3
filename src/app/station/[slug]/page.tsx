@@ -1,9 +1,7 @@
 import stationData from '@/data/station.json';
-import stationsData from '@/data/stations.json';
-import NRadioContainer from '@/containers/NRadioContainer';
+import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 import type { Metadata } from 'next';
 import React from 'react';
-// import useStations from '@/hooks/useStations';
 import StationInterface from '@/types/interfaces/StationInterface';
 import api from '@/api/apiGraphql';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
@@ -67,10 +65,10 @@ const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
 
   const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
 
+  // TODO: state only
   return (
-    <NRadioContainer
-      stations={stations}
-      station={getStation(stationsData, slug)}
+    <NRadioQueryContainer
+      slug={slug}
       state={state}
     />
   );

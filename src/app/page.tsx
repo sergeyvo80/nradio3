@@ -1,8 +1,10 @@
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-import NRadioContainer from '@/containers/NRadioContainer';
-import stationData from '@/data/station.json';
-import stationsData from '@/data/stations.json';
+import StationInterface from '@/types/interfaces/StationInterface';
+import queryClient from '@/utils/reactQueryClient';
+import { dehydrate } from '@tanstack/react-query';
 import { type Metadata } from 'next';
+import api from '@/api/apiGraphql';
+import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 // import api from '@/api/apiGraphql';
 
 
@@ -31,13 +33,28 @@ export const generateMetadata = (): Metadata => {
 };
 
 
-const Home = (): React.ReactNode => {
-  // const stations = process.env.NEXT_GRAPHQL_URL 
-  //   ? await api.getStations(0, 100) 
-  //   : stationsData;
-  const stations = stationsData;
+const Home = async (): Promise<React.ReactNode> => {
+  let stations: StationInterface[] = [];
 
-  return <NRadioContainer stations={stations} station={stationData} state={{}} />;
+  await queryClient.prefetchQuery({
+    queryKey: ['stations'], 
+    queryFn: async () => {
+      stations = await api.getStations(0, 100);
+      console.log('Stations', stations.length);
+      return stations;
+    }
+  });
+
+  const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
+
+  // TODO: state only
+  return (
+    <NRadioQueryContainer
+      slug={''}
+      state={state}
+    />
+  );
+
 };
 
 export default Home;

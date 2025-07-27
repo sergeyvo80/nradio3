@@ -8,14 +8,14 @@ interface Props {
   station: StationInterface;
   isCurrent?: boolean;
   isLiked?: boolean;
-  // onLike?: (slug: string) => void;
+  // onLike: (slug: string) => void;
 }
 
 const StationSelectorItem = ({
   station,
   isCurrent,
   isLiked,
-  // onLike = () => {},
+  // onLike,
 }: Props): React.ReactNode => (
   <li 
     className={[

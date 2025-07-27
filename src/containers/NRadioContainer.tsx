@@ -2,22 +2,18 @@
 
 import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/interfaces/StationInterface';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
-import queryClient from '@/utils/reactQueryClient';
-
-import {
-  hydrate,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import useStations from '@/hooks/useStations';
+import stationData from '@/data/station.json';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
 const getLikeStations = (): string[] => getLocalStorage('likeStations', []) as string[];
 
-const sortStations = (stations: StationInterface[]) =>
+// TODO: move to mutation of useStation
+const getPreparedStations = (stations: StationInterface[]) =>
   stations
     .map((station) => ({
       ...station,
@@ -26,20 +22,16 @@ const sortStations = (stations: StationInterface[]) =>
     .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
 
 interface Props {
-  /* eslint-disable */
-  state: any,
-  stations: StationInterface[];
-  station: StationInterface;
-  // slug: string
+  slug: string
 }
 
-const NRadioContainer = memo(({
-  stations, station, state
-}: Props) => {
+const NRadioContainer = ({ slug }: Props) => {
+  const { stationsData } = useStations();
+  const preparedStations = getPreparedStations(stationsData);
+  const selectedStation = preparedStations.find((station) => station.slug === slug) || stationData;
 
-  hydrate(queryClient, state);
-
-  const [stationsState, setStationsState] = useState<StationInterface[]>(sortStations(stations));
+  const [stations, setStations] = useState<StationInterface[]>(preparedStations);
+  const [station, setStation] = useState<StationInterface>(selectedStation);
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
 
@@ -55,8 +47,8 @@ const NRadioContainer = memo(({
       setLocalStorage('likeStations', likeStations);
     }
 
-    setStationsState(sortStations(stationsState));
-  }, [stationsState]);
+    setStations(getPreparedStations(stations));
+  }, [stations]);
 
 
   const play = useCallback(() => {
@@ -95,21 +87,23 @@ const NRadioContainer = memo(({
     play();
   }, [stations, station, play]);
 
+  useEffect(() => {
+    setStation(stations.find((station) => station.slug === slug) || stationData);
+  }, [slug, stations]);
+
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <NRadio
-        title="NRadio"
-        stations={stationsState}
-        station={station}
-        error={error}
-        playerState={playerState}
-        onPlay={play}
-        onPause={pause}
-        onLike={like}
-      />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <NRadio
+      title="NRadio"
+      stations={stations}
+      station={station}
+      error={error}
+      playerState={playerState}
+      onPlay={play}
+      onPause={pause}
+      onLike={like}
+    />
   );
-});
+};
 
 export default NRadioContainer;

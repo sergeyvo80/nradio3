@@ -65,7 +65,8 @@ const useStations = (): any => {
 
   return {
     // // setStationSlug,
-    // messages: data?.pages ? [].concat(...data.pages) : [], // messages,
+    stationsData: data,
+    // stations: data?.pages ? [].concat(...data.pages) : [], // messages,
     // messagesError: error,
     // messagesStatus: status,
     // fetchNextPage,
