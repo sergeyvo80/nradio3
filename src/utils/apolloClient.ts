@@ -80,11 +80,10 @@ const splitLink = split(
     return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
   },
   wsLink,
-  // eslint-disable-next-line no-use-before-define
   authLink.concat(httpLink), //.concat(uploadLink),
 );
 
-// eslint-disable-next-line no-use-before-define
+
 const link = from([removeTypenameLink, splitLink]);
 
 const client = new ApolloClient({

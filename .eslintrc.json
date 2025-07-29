@@ -8,6 +8,7 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
+    
     "next/core-web-vitals",
     "next/typescript"
   ],
@@ -24,11 +25,6 @@
     "@typescript-eslint"
   ],
   "rules": {
-    // Здесь можно добавить свои настройки правил ESLint
-    // "react/react-in-jsx-scope": "off",
-    // "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
-    // "@typescript-eslint/explicit-module-boundary-types": "off"
-    
     "indent": ["warn", 2],
     "quotes": ["warn", "single"],
     "semi": ["warn", "always"]
