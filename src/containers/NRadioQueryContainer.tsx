@@ -1,14 +1,17 @@
 'use client';
 
 import queryClient from '@/api/reactQueryClient';
-
-import {
-  hydrate,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { hydrate } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import NRadioContainer from './NRadioContainer';
+import isServer from '@/utils/isServer';
 
+
+const persister = createAsyncStoragePersister({
+  storage: !isServer() ? window.localStorage : null,
+});
 
 interface Props {
   /* eslint-disable */
@@ -23,11 +26,20 @@ const NRadioQueryContainer = ({
   // load server state to client
   hydrate(queryClient, state);
 
+  debugger;
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <NRadioContainer slug={slug} />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister }}
+      >
+        {/* <QueryClientProvider client={queryClient}> */}
+        <NRadioContainer slug={slug} />
+        <ReactQueryDevtools initialIsOpen={false} />
+        {/* </QueryClientProvider> */}
+      </PersistQueryClientProvider>
+    </>
   );
 };
 

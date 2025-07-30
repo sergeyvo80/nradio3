@@ -17,24 +17,26 @@ const getPreparedStations = (stations: StationInterface[]) =>
   stations
     .map((station) => ({
       ...station,
-      isLiked: getLikeStations().includes(station.slug),
+      // isLiked: getLikeStations().includes(station.slug),
     }))
-    .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
+    // .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
 
 interface Props {
   slug: string
 }
 
 const NRadioContainer = ({ slug }: Props) => {
+
   const { stationsData } = useStations();
+
   const preparedStations = getPreparedStations(stationsData);
   const selectedStation = preparedStations.find((station) => station.slug === slug) || stationData;
 
   const [stations, setStations] = useState<StationInterface[]>(preparedStations);
+  
   const [station, setStation] = useState<StationInterface>(selectedStation);
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
-
 
   const like = useCallback((slug: string) => {
     const likeStations = getLikeStations();
@@ -90,7 +92,6 @@ const NRadioContainer = ({ slug }: Props) => {
   useEffect(() => {
     setStation(stations.find((station) => station.slug === slug) || stationData);
   }, [slug, stations]);
-
 
   return (
     <NRadio

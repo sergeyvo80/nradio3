@@ -43,7 +43,10 @@ const useStations = (): any => {
     refetch,
   } = useQuery({
       queryKey: ['stations'],
-      queryFn: async ({ pageParam = 0 }) => api.getStations(0, PAGE_SIZE),
+      // queryFn: async ({ pageParam = 0 }) => api.getStations(0, PAGE_SIZE),
+      queryFn: () => api.getStations(0, PAGE_SIZE),
+      enabled: false,
+      // networkMode: 'offlineFirst',
       // getNextPageParam: (lastPage, allPage) => allPage.length,
       // initialPageParam: 0,
       // getPreviousPageParam: (firstPage) => firstPage?.previousId ?? undefined,
