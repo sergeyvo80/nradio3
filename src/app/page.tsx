@@ -1,6 +1,6 @@
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
 import StationInterface from '@/types/interfaces/StationInterface';
-import queryClient from '@/utils/reactQueryClient';
+import queryClient from '@/api/reactQueryClient';
 import { dehydrate } from '@tanstack/react-query';
 import { type Metadata } from 'next';
 import api from '@/api/apiGraphql';

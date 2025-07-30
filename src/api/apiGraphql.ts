@@ -6,7 +6,7 @@ import type {
   // Stations,
 } from '@/types/interfaces/graphql/api';
 import type StationInterface from '@/types/interfaces/StationInterface';
-import apolloClient from '@/utils/apolloClient';
+import apolloClient from '@/api/apolloClient';
 
 class ApiGraphql {
   async getStations(pageParam: number, pageSize: number): Promise<StationInterface[]> {

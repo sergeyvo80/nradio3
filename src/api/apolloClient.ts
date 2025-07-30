@@ -1,6 +1,4 @@
 // import getToken from '@/app/getToken';
-// import { GRAPHQL_URL } from '@/constants/env';
-// const GRAPHQL_URL = 'http://nradio.pro/graphql'; // TODO: move to .env
 // import { AuthNotAuthorizedError } from '@/errors/auth';
 import fetch from 'cross-fetch'; 
 import { GraphqlNetworkError, GraphqlUnknownError } from '@/errors/graphql';
@@ -11,14 +9,9 @@ import { onError } from '@apollo/client/link/error';
 import { removeTypenameFromVariables } from '@apollo/client/link/remove-typename';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-// import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 import { createClient } from 'graphql-ws';
 
 const removeTypenameLink = removeTypenameFromVariables();
-
-// const uploadLink = createUploadLink({
-//   uri: GRAPHQL_URL,
-// });
 
 const httpLink = new HttpLink({
   uri: process.env.NEXT_GRAPHQL_URL, fetch

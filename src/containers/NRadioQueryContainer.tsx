@@ -1,6 +1,6 @@
 'use client';
 
-import queryClient from '@/utils/reactQueryClient';
+import queryClient from '@/api/reactQueryClient';
 
 import {
   hydrate,

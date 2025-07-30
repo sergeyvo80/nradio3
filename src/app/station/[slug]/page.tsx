@@ -6,7 +6,7 @@ import StationInterface from '@/types/interfaces/StationInterface';
 import api from '@/api/apiGraphql';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
 import { dehydrate } from '@tanstack/react-query';
-import queryClient from '@/utils/reactQueryClient';
+import queryClient from '@/api/reactQueryClient';
 
 const getStation = (stations: StationInterface[], slug: string) =>
   stations.find((station) => station.slug === slug) || stationData;

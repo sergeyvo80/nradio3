@@ -4,7 +4,7 @@ import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/interfaces/StationInterface';
 import { useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
-import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
+import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import useStations from '@/hooks/useStations';
 import stationData from '@/data/station.json';
 

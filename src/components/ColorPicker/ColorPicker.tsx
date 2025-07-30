@@ -7,7 +7,7 @@ import Color from 'color';
 import styles from './ColorPicker.module.scss';
 import { faRefresh, faRemove } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
+import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 
 const colors = {
   '--bg-color': '#292A2D',
