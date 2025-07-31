@@ -17,9 +17,9 @@ const getPreparedStations = (stations: StationInterface[]) =>
   stations
     .map((station) => ({
       ...station,
-      // isLiked: getLikeStations().includes(station.slug),
+      isLiked: getLikeStations().includes(station.slug),
     }))
-    // .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
+    .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
 
 interface Props {
   slug: string
@@ -87,7 +87,12 @@ const NRadioContainer = ({ slug }: Props) => {
 
   useEffect(() => {
     play();
-  }, [stations, station, play]);
+  }, [play]);
+
+  useEffect(() => {
+console.log('>>>>');
+  }, []);
+
 
   useEffect(() => {
     setStation(stations.find((station) => station.slug === slug) || stationData);
