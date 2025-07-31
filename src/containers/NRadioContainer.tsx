@@ -2,7 +2,7 @@
 
 import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/interfaces/StationInterface';
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import useStations from '@/hooks/useStations';
@@ -10,15 +10,15 @@ import stationData from '@/data/station.json';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
-const getLikeStations = (): string[] => getLocalStorage('likeStations', []) as string[];
+const getLikeStations = (): string[] => getLocalStorage('LikeStations', []) as string[];
 
 // TODO: move to mutation of useStation
-const getPreparedStations = (stations: StationInterface[]) =>
-  stations
-    .map((station) => ({
-      ...station,
-      // isLiked: getLikeStations().includes(station.slug),
-    }))
+// const getPreparedStations = (stations: StationInterface[]) =>
+//   stations
+//     .map((station) => ({
+//       ...station,
+//       // isLiked: getLikeStations().includes(station.slug),
+//     }))
     // .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
 
 interface Props {
@@ -27,30 +27,35 @@ interface Props {
 
 const NRadioContainer = ({ slug }: Props) => {
 
-  const { stationsData } = useStations();
+  const { stations, likeMutate, clientStateMergeMutate } = useStations();
+  
+  // const preparedStations = getPreparedStations(stationsData);
+  // const selectedStation = preparedStations.find((station) => station.slug === slug) || stationData;
 
-  const preparedStations = getPreparedStations(stationsData);
-  const selectedStation = preparedStations.find((station) => station.slug === slug) || stationData;
+  const selectedStation = stations.find((station: StationInterface) => station.slug === slug) || stationData;
 
-  const [stations, setStations] = useState<StationInterface[]>(preparedStations);
+
+  // const [stations, setStations] = useState<StationInterface[]>(preparedStations);
   
   const [station, setStation] = useState<StationInterface>(selectedStation);
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
 
   const like = useCallback((slug: string) => {
+    likeMutate(slug);
+
     const likeStations = getLikeStations();
     const likeIndex = likeStations.indexOf(slug);
 
     if (likeIndex === -1) {
-      setLocalStorage('likeStations', [...likeStations, slug]);
+      setLocalStorage('LikeStations', [...likeStations, slug]);
     } else {
       likeStations.splice(likeIndex, 1);
-      setLocalStorage('likeStations', likeStations);
+      setLocalStorage('LikeStations', likeStations);
     }
 
-    setStations(getPreparedStations(stations));
-  }, [stations]);
+    // setStations(getPreparedStations(stations));
+  }, [likeMutate]);
 
 
   const play = useCallback(() => {
@@ -87,10 +92,18 @@ const NRadioContainer = ({ slug }: Props) => {
 
   useEffect(() => {
     play();
-  }, [stations, station, play]);
+  }, [play]);
 
   useEffect(() => {
-    setStation(stations.find((station) => station.slug === slug) || stationData);
+console.log('>>> co mo');
+// (async () => {
+// clientStateMergeMutate();
+// })();
+    // clientStateMergeMutate();
+  }, []);
+
+  useEffect(() => {
+    setStation(stations.find((station: StationInterface) => station.slug === slug) || stationData);
   }, [slug, stations]);
 
   return (
@@ -106,5 +119,7 @@ const NRadioContainer = ({ slug }: Props) => {
     />
   );
 };
+
+NRadioContainer.displayName = 'NRadioContainer';
 
 export default NRadioContainer;

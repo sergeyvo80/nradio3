@@ -4,7 +4,6 @@ import Station from '../Station/Station';
 import StationInterface from '@/types/interfaces/StationInterface';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import styles from './NRadio.module.scss';
-import { memo } from 'react';
 
 interface NRadioProps {
   title: string;
@@ -17,7 +16,7 @@ interface NRadioProps {
   error: string | undefined;
 }
 
-const NRadio = memo(({
+const NRadio = ({
   title,
   station,
   stations,
@@ -44,7 +43,7 @@ const NRadio = memo(({
       error={error}
     />
   </div>
-));
+);
 
 NRadio.displayName = 'NRadio';
 

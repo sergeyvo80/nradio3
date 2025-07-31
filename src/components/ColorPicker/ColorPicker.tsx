@@ -37,8 +37,6 @@ const defaultState = {
 
 const ColorPicker = (): React.ReactNode => {
 
-console.log(getLocalStorage('colorState'));
-
   // const [state, setState] = useState(getLocalStorage('colorState', defaultState));
 
   const [state, setState] = useState(defaultState);
@@ -52,8 +50,6 @@ console.log(getLocalStorage('colorState'));
   };
 
   const handleChange = (color: any) => {
-
-console.log(color);
 
     const calculateColorScheme = (pickedColor: any) => {
       const pickedColorObject = Color(pickedColor);

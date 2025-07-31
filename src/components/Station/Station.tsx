@@ -3,7 +3,7 @@ import { faPlay, faPause, faSpinner, faHeart } from '@fortawesome/free-solid-svg
 import StationInterface from '@/types/interfaces/StationInterface';
 import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
 import styles from './Station.module.scss';
-import { memo } from 'react';
+// import { memo } from 'react';
 
 interface Props {
   station: StationInterface;
@@ -14,7 +14,7 @@ interface Props {
   error?: string | undefined;
 }
 
-const Station = memo(({
+const Station = ({
   station,
   playerState,
   onPlay,
@@ -50,7 +50,7 @@ const Station = memo(({
 
     {error !== undefined && <div className={styles.error}>Error: {error}</div>}
   </main>
-));
+);
 
 Station.displayName = 'Station';
 

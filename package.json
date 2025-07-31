@@ -19,10 +19,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@reduxjs/toolkit": "^2.8.2",
-    "@tanstack/query-async-storage-persister": "^5.83.0",
     "@tanstack/react-query": "^5.81.5",
     "@tanstack/react-query-devtools": "^5.81.5",
-    "@tanstack/react-query-persist-client": "^5.83.0",
+    "@types/underscore": "^1.13.0",
     "axios": "^1.10.0",
     "cross-fetch": "^4.1.0",
     "graphql-ws": "^6.0.5",
@@ -31,6 +30,7 @@
     "react-color": "^2.19.3",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
+    "underscore": "^1.13.7",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
