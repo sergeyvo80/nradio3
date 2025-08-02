@@ -1,8 +1,10 @@
 'use client';
 
 import queryClient from '@/api/reactQueryClient';
-import { hydrate, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import NRadioMergeStateContainer from './NRadioMergeStateContainer';
+import { HydrationBoundary } from '@tanstack/react-query';
 
 interface Props {
   /* eslint-disable */
@@ -10,19 +12,16 @@ interface Props {
   children: React.ReactNode;
 }
 
-const NRadioQueryContainer = ({
-  state, children
-}: Props) => {
+const NRadioQueryContainer = ({ state, children }: Props) => (
+  <QueryClientProvider client={queryClient}>
+    <HydrationBoundary state={state}>
+      <NRadioMergeStateContainer>
+        {children}
+      </NRadioMergeStateContainer>
+    </HydrationBoundary>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
+);
 
-  // load server state to client
-  hydrate(queryClient, state);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  );
-};
 
 export default NRadioQueryContainer;

@@ -9,7 +9,7 @@ interface Props {
 }
 
 const StationSelectorList = ({
-  stations = [],
+  stations,
   slug,
   // onLike, // = () => {},
 }: Props) => (

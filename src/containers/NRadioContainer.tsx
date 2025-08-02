@@ -12,33 +12,22 @@ const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
 const getLikeStations = (): string[] => getLocalStorage('likeStations', []) as string[];
 
-// TODO: move to mutation of useStation
-const getPreparedStations = (stations: StationInterface[]) =>
-  stations
-    .map((station) => ({
-      ...station,
-      isLiked: getLikeStations().includes(station.slug),
-    }))
-    .sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
 
 interface Props {
   slug: string
 }
 
 const NRadioContainer = ({ slug }: Props) => {
+  const { stations, likeMutate } = useStations();
+  const selectedStation = stations.find((station: StationInterface) => station.slug === slug) || stationData;
 
-  const { stationsData } = useStations();
-
-  const preparedStations = getPreparedStations(stationsData);
-  const selectedStation = preparedStations.find((station) => station.slug === slug) || stationData;
-
-  const [stations, setStations] = useState<StationInterface[]>(preparedStations);
-  
   const [station, setStation] = useState<StationInterface>(selectedStation);
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
   const [error, setError] = useState<string>();
 
   const like = useCallback((slug: string) => {
+    likeMutate(slug);
+
     const likeStations = getLikeStations();
     const likeIndex = likeStations.indexOf(slug);
 
@@ -49,8 +38,8 @@ const NRadioContainer = ({ slug }: Props) => {
       setLocalStorage('likeStations', likeStations);
     }
 
-    setStations(getPreparedStations(stations));
-  }, [stations]);
+    // setStations(getPreparedStations(stations));
+  }, [likeMutate]);
 
 
   const play = useCallback(() => {
@@ -90,12 +79,7 @@ const NRadioContainer = ({ slug }: Props) => {
   }, [play]);
 
   useEffect(() => {
-console.log('>>>>');
-  }, []);
-
-
-  useEffect(() => {
-    setStation(stations.find((station) => station.slug === slug) || stationData);
+    setStation(stations.find((station: StationInterface) => station.slug === slug) || stationData);
   }, [slug, stations]);
 
   return (

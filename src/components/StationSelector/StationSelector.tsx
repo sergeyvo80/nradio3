@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import StationInterface from '@/types/interfaces/StationInterface';
 import StationList from './StationSelectorList/StationSelectorList';
 import styles from './StationSelector.module.scss';
@@ -9,7 +9,7 @@ interface Props {
   onLike?: (slug: string) => void;
 }
 
-const StationSelector = memo(({
+const StationSelector = ({
   stations,
   slug,
   // onLike, // = () => {},
@@ -17,7 +17,7 @@ const StationSelector = memo(({
   <nav className={`${styles.StationSelector} StationSelector`}>
     <StationList stations={stations} slug={slug} />
   </nav>
-));
+);
 
 StationSelector.displayName = 'StationSelector';
 
