@@ -1,11 +1,6 @@
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-import StationInterface from '@/types/interfaces/StationInterface';
-import queryClient from '@/api/reactQueryClient';
-import { dehydrate } from '@tanstack/react-query';
 import { type Metadata } from 'next';
-import api from '@/api/apiGraphql';
-import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
-// import api from '@/api/apiGraphql';
+import NRadioContainer from '@/containers/NRadioContainer';
 
 
 export const generateMetadata = (): Metadata => {
@@ -32,29 +27,6 @@ export const generateMetadata = (): Metadata => {
   };
 };
 
-
-const Home = async (): Promise<React.ReactNode> => {
-  let stations: StationInterface[] = [];
-
-  await queryClient.prefetchQuery({
-    queryKey: ['stations'], 
-    queryFn: async () => {
-      stations = await api.getStations(0, 100);
-      console.log('Stations', stations.length);
-      return stations;
-    }
-  });
-
-  const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
-
-  // TODO: state only
-  return (
-    <NRadioQueryContainer
-      slug={''}
-      state={state}
-    />
-  );
-
-};
+const Home = async (): Promise<React.ReactNode> => <NRadioContainer slug="groove-salad-soma-fm" />;
 
 export default Home;

@@ -1,9 +1,11 @@
 import type StationInterface from '@/types/interfaces/StationInterface';
 
-export interface StationsInterface {
-  // pageParams?: any;
-  pages: StationInterface[][];
-}
+export type StationsInterface = StationInterface[];
+
+// export interface StationsInterface {
+//   // pageParams?: any;
+//   pages: StationInterface[][];
+// }
 
 export interface StationsQueryResponse {
   items: StationInterface[];

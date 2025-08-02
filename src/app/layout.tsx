@@ -1,30 +1,19 @@
-// import type { Metadata } from 'next';
-// import { useParams, usePathname } from 'next/navigation';
 import '@/styles/globals.scss';
-// import { DataContext } from './context';
-import StationInterface from '@/types/interfaces/StationInterface';
-import { dehydrate, QueryClientProvider } from '@tanstack/react-query';
+import { dehydrate } from '@tanstack/react-query';
 import queryClient from '@/api/reactQueryClient';
 import api from '@/api/apiGraphql';
 import React from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import NRadioQueryContainer from '@/containers/NRadioQueryContainer2';
+import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
+import { StationsInterface } from '@/types/interfaces/graphql/api';
 
-// export const metadata: Metadata = {
-//   title: 'NRadio',
-//   description: 'Radio stations player',
-// };
 
 const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-//
-  // const pathname = usePathname();
 
-
-  let stations: StationInterface[] = [];
+  let stations: StationsInterface;
 
   await queryClient.prefetchQuery({
     queryKey: ['stations'], 
@@ -36,10 +25,6 @@ const RootLayout = async ({
   });
 
   const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
-console.log('>>p', state);
-
-
-
 
   return (
     <html lang="en">
@@ -59,16 +44,9 @@ console.log('>>p', state);
         </head>
       )}          
       <body>
-        {/* <DataContext.Provider value={{ stations: []}}> */}
-            {/* <QueryClientProvider client={queryClient}> */}
-            <NRadioQueryContainer state={state}>
-        {children}
+        <NRadioQueryContainer state={state}>
+          {children}
         </NRadioQueryContainer>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-
-    {/* </QueryClientProvider> */}
-
-        {/* </DataContext.Provider> */}
       </body>
     </html>
   );

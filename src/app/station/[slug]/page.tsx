@@ -1,16 +1,11 @@
 import stationData from '@/data/station.json';
-import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 import type { Metadata } from 'next';
 import React from 'react';
-import StationInterface from '@/types/interfaces/StationInterface';
-import api from '@/api/apiGraphql';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-import { dehydrate } from '@tanstack/react-query';
 import queryClient from '@/api/reactQueryClient';
-import station from '@/data/station.json'
+import { StationsInterface } from '@/types/interfaces/graphql/api';
+import NRadioContainer from '@/containers/NRadioContainer';
 
-const getStation = (stations: StationInterface[], slug: string) =>
-  stations.find((station) => station.slug === slug) || stationData;
 
 interface Props {
   slug: string;
@@ -22,9 +17,10 @@ interface PageProps {
 }
 
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
-  // const { slug } = await params;
-  // const stations = await api.getStations(0, 100);
-  // const station = getStation(stations, slug);
+  const { slug } = await params;
+
+  const stations = queryClient.getQueryData<StationsInterface>(['stations']);
+  const station = stations?.find((station) => station.slug === slug) || stationData;
 
   return {
     title: `${station.title} -- ${META_TITLE}`,
@@ -53,30 +49,8 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
 const StationPage = async ({ params }: PageProps): Promise<React.ReactNode> => {
   const { slug } = await params;
 
-    const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
-console.log('>> p !!!!!!', state);
-
-// console.log('st2>>', state2);
-
-  let stations: StationInterface[] = [];
-
-  // await queryClient.prefetchQuery({
-  //   queryKey: ['stations'], 
-  //   queryFn: async () => {
-  //     stations = await api.getStations(0, 100);
-  //     console.log('Stations', stations.length);
-  //     return stations;
-  //   }
-  // });
-
-  // const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
-
-  // TODO: state only
   return (
-    <NRadioQueryContainer
-      slug={slug}
-      state={state}
-    />
+    <NRadioContainer slug={slug} />
   );
 };
 
