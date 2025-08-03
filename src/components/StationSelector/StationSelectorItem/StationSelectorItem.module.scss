@@ -5,11 +5,17 @@
   border: var(--border-color) solid 1px;
   box-shadow: -1px 1px 12px 0 var(--shadow-color);
   margin: 5px 0;
-  border-radius: 3px;
+  border-radius: 10px;
   padding: 10px 10px;
   color: var(--item-color);
   background-color: var(--second-bg-color);
   font-weight: bold;
+
+  @media #{main.$mob} {
+    padding: main.vwMax(5px) main.vwMax(5px);
+    border-radius: main.vwMax(10px);
+  }
+
 }
 
 .title {
