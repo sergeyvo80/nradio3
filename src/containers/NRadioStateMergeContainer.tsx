@@ -11,7 +11,6 @@ const NRadioStateMergeContainer = ({ children }: Props) => {
   const { clientStateMergeMutate } = useStations();
   
   useEffect(() => {
-console.log('>> clientStateMergeMutate()', clientStateMergeMutate);
     clientStateMergeMutate();
   }, [clientStateMergeMutate]);
 
