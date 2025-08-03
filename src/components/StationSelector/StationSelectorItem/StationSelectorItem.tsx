@@ -3,6 +3,7 @@ import StationInterface from '@/types/interfaces/StationInterface';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './StationSelectorItem.module.scss';
+import { memo } from 'react';
 
 interface Props {
   station: StationInterface;
@@ -11,7 +12,7 @@ interface Props {
   // onLike: (slug: string) => void;
 }
 
-const StationSelectorItem = ({
+const StationSelectorItem = memo(({
   station,
   isCurrent,
   isLiked,
@@ -33,6 +34,8 @@ const StationSelectorItem = ({
       <h3 className={styles.title}>{station.title}</h3>
     </Link>
   </li>
-);
+));
+
+StationSelectorItem.displayName = 'StationSelectorItem';
 
 export default StationSelectorItem;
