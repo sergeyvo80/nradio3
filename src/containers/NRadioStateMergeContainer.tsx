@@ -7,14 +7,15 @@ interface Props {
   children: React.ReactNode;
 }
 
-const NRadioMergeStateContainer = ({ children }: Props) => {
+const NRadioStateMergeContainer = ({ children }: Props) => {
   const { clientStateMergeMutate } = useStations();
   
   useEffect(() => {
+console.log('>> clientStateMergeMutate()', clientStateMergeMutate);
     clientStateMergeMutate();
   }, [clientStateMergeMutate]);
 
   return children;
 };
 
-export default NRadioMergeStateContainer;
+export default NRadioStateMergeContainer;

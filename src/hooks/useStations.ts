@@ -83,6 +83,8 @@ const useStations = (): any => {
 
       // merged likes flag from localStorage to server state
       const likeStations: string[] = getLocalStorage('LikeStations', []) as string[];
+
+console.log('>>> likeStations', likeStations);
     
       if (likeStations) {
         const mergedStations = previousStations.map((station: StationInterface) => ({
@@ -91,6 +93,8 @@ const useStations = (): any => {
         }))
         .sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
     
+console.log('>>> mergedStations', mergedStations);
+
         queryClient.setQueryData<StationsInterface>(['stations'], mergedStations);
         return mergedStations;
       }

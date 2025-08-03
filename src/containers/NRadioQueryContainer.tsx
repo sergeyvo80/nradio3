@@ -3,7 +3,7 @@
 import queryClient from '@/api/reactQueryClient';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import NRadioMergeStateContainer from './NRadioMergeStateContainer';
+import NRadioStateMergeContainer from './NRadioStateMergeContainer';
 import { HydrationBoundary } from '@tanstack/react-query';
 
 interface Props {
@@ -15,9 +15,9 @@ interface Props {
 const NRadioQueryContainer = ({ state, children }: Props) => (
   <QueryClientProvider client={queryClient}>
     <HydrationBoundary state={state}>
-      <NRadioMergeStateContainer>
+      <NRadioStateMergeContainer>
         {children}
-      </NRadioMergeStateContainer>
+      </NRadioStateMergeContainer>
     </HydrationBoundary>
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
