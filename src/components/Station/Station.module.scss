@@ -28,6 +28,7 @@
 
 
 .player {
+  cursor: pointer;
   svg {
     font-size: 48px;
 
@@ -39,6 +40,7 @@
 }
 
 .like {
+  cursor: pointer;
   color: var(--border-color);
   font-size: 48px;
 
