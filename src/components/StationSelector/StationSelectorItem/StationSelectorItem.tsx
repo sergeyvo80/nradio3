@@ -25,7 +25,7 @@ const StationSelectorItem = memo(({
       isLiked ? styles['--liked'] : '',
     ].join(' ')}
   >
-    <Link href={`/station?slug=${station.slug}`} className={`${styles.link} stationSelectorLink`} shallow={true}>
+    <Link href={`?slug=${station.slug}`} className={`${styles.link} stationSelectorLink`} shallow={true}>
       <FontAwesomeIcon
         icon={faHeart}
         className={styles.like}

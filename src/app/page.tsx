@@ -1,11 +1,29 @@
+import stationData from '@/data/station.json';
+import type { Metadata } from 'next';
+import React from 'react';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-import { type Metadata } from 'next';
+import queryClient from '@/api/reactQueryClient';
+import { StationsInterface } from '@/types/interfaces/graphql/api';
 import NRadioContainer from '@/containers/NRadioContainer';
 
+const DEFAULT_SLUG = 'groove-salad-soma-fm';
 
-export const generateMetadata = (): Metadata => {
+interface Props {
+  slug: string;
+}
+
+interface PageProps {
+  searchParams: Promise<Props>;
+}
+
+export const generateMetadata = async ({ searchParams }: PageProps): Promise<Metadata> => {
+  const { slug } = await searchParams;
+
+  const stations = queryClient.getQueryData<StationsInterface>(['stations']);
+  const station = stations?.find((station) => station.slug === (slug ?? DEFAULT_SLUG)) || stationData;
+
   return {
-    title: META_TITLE,
+    title: `${station.title} -- ${META_TITLE}`,
     description: META_DESCRIPTION,
     openGraph: {
       title: META_TITLE,
@@ -24,9 +42,16 @@ export const generateMetadata = (): Metadata => {
     icons: {
       icon: '/favicon.ico',
     },
+
   };
 };
 
-const Home = async (): Promise<React.ReactNode> => <NRadioContainer slug="groove-salad-soma-fm" />;
+const HomePage = async ({ searchParams }: PageProps): Promise<React.ReactNode> => {
+  const { slug } = await searchParams;
 
-export default Home;
+  return <NRadioContainer slug={slug || DEFAULT_SLUG} />;
+};
+
+export default HomePage;
+
+

@@ -19,7 +19,7 @@ const RootLayout = async ({
     queryKey: ['stations'], 
     queryFn: async () => {
       stations = await api.getStations(0, 100);
-      console.log('Stations', stations.length);
+      console.log('Stations', stations);
       return stations;
     }
   });

@@ -77,15 +77,15 @@ const useStations = (): any => {
     mutationFn: async () => {
       await queryClient.cancelQueries({ queryKey: ['stations'] });
 
-      const previousStations = queryClient.getQueryData<StationsInterface>(['stations']);
+      const stations = queryClient.getQueryData<StationsInterface>(['stations']);
 
-      if (!previousStations) return;
+      if (!stations) return;
 
       // merged likes flag from localStorage to server state
       const likeStations: string[] = getLocalStorage('likeStations', []) as string[];
     
       if (likeStations) {
-        const mergedStations = previousStations.map((station: StationInterface) => ({
+        const mergedStations = stations.map((station: StationInterface) => ({
           ...station,
           isLiked: likeStations.includes(station.slug),
         }))
@@ -105,17 +105,17 @@ const useStations = (): any => {
     mutationFn: async (slug: string) => {
       await queryClient.cancelQueries({ queryKey: ['stations'] });
 
-      const previousStations = queryClient.getQueryData<StationsInterface>(['stations']);
+      const stations = queryClient.getQueryData<StationsInterface>(['stations']);
 
-      if (!previousStations) return;
+      if (!stations) return;
 
-      const station = previousStations.find((station) => (station.slug === slug))
+      const station = stations.find((station) => (station.slug === slug))
         
       if (station) {
         station.isLiked = !station.isLiked
         queryClient.setQueryData<StationsInterface>(
           ['stations'],
-          previousStations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
+          stations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
         );
         return station;
       }
