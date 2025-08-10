@@ -1,14 +1,13 @@
 'use client';
 
 import queryClient from '@/api/reactQueryClient';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, DehydratedState } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import NRadioStateMergeContainer from './NRadioStateMergeContainer';
 import { HydrationBoundary } from '@tanstack/react-query';
 
 interface Props {
-  /* eslint-disable */
-  state: any, // TODO: interface
+  state: DehydratedState,
   children: React.ReactNode;
 }
 

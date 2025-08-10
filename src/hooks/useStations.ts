@@ -1,14 +1,10 @@
 /* eslint-disable */
 import api from '@/api/apiGraphql';
-import { getLocalStorage } from '@/api/localStorage';
+import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import { StationsInterface } from '@/types/interfaces/graphql/api';
 import StationInterface from '@/types/interfaces/StationInterface';
-// import getUser from '@/app/getUser';
 // import type ErrorInterface from '@/interfaces/ErrorInterface';
-// import type FileInterface from '@/interfaces/FileInterface';
 // import type { StationsInterface } from '@/interfaces/graphql/api';
-// import type MarkAsReadInterface from '@/interfaces/MarkAsReadInterface';
-// import type MessageInterface from '@/interfaces/StationInterface';
 // import { Suspense, useEffect, useRef, useState } from 'react';
 import {
   useQuery,
@@ -20,6 +16,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useEffect } from 'react';
 // import { v4 as uuidv4 } from 'uuid';
 // import type TypingInterface from '@/interfaces/TypingInterface';
 
@@ -48,17 +45,21 @@ const useStations = (): any => {
     // hasPreviousPage,
     refetch,
   } = useQuery({
-      queryKey: ['stations'],
-      // queryFn: async ({ pageParam = 0 }) => api.getStations(0, PAGE_SIZE),
-      queryFn: () => api.getStations(0, PAGE_SIZE),
-      enabled: false,
-      // networkMode: 'offlineFirst',
-      // getNextPageParam: (lastPage, allPage) => allPage.length,
-      // initialPageParam: 0,
-      // getPreviousPageParam: (firstPage) => firstPage?.previousId ?? undefined,
-      // getNextPageParam: (lastPage, allPage) => lastPage?.nextId ?? undefined,
-    },
-  );
+    queryKey: ['stations'],
+    // queryFn: async ({ pageParam = 0 }) => api.getStations(0, PAGE_SIZE),
+    queryFn: () => api.getStations(0, PAGE_SIZE),
+    enabled: false,
+    // networkMode: 'offlineFirst',
+    // getNextPageParam: (lastPage, allPage) => allPage.length,
+    // initialPageParam: 0,
+    // getPreviousPageParam: (firstPage) => firstPage?.previousId ?? undefined,
+    // getNextPageParam: (lastPage, allPage) => lastPage?.nextId ?? undefined,
+  });
+
+  // useEffect(() => {
+  // console.log('>>>');
+  //   setLocalStorage<StationInterface[]>('stations', data);
+  // }, [data]);
 
   // useEffect(() => {
   //   const reload = async (): Promise<void> => {
@@ -77,21 +78,22 @@ const useStations = (): any => {
     mutationFn: async () => {
       await queryClient.cancelQueries({ queryKey: ['stations'] });
 
-      const stations = queryClient.getQueryData<StationsInterface>(['stations']);
+      const stations = queryClient.getQueryData<StationInterface[]>(['stations']);
 
       if (!stations) return;
 
       // merged likes flag from localStorage to server state
-      const likeStations: string[] = getLocalStorage('likeStations', []) as string[];
-    
-      if (likeStations) {
-        const mergedStations = stations.map((station: StationInterface) => ({
+      const localStations = getLocalStorage<StationInterface[]>('stations', []);
+
+      if (localStations) {
+        const mergedStations: StationInterface[] = stations.map((station: StationInterface) => ({
           ...station,
-          isLiked: likeStations.includes(station.slug),
-        }))
-        .sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
+          isLiked: !!localStations.find((localStation) => localStation.slug === station.slug && localStation.isLiked)
+        })).sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
     
-        queryClient.setQueryData<StationsInterface>(['stations'], mergedStations);
+        queryClient.setQueryData<StationInterface[]>(['stations'], mergedStations);
+        setLocalStorage<StationInterface[]>('stations', mergedStations);
+
         return mergedStations;
       }
       
@@ -117,13 +119,15 @@ const useStations = (): any => {
           ['stations'],
           stations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
         );
+    
+        setLocalStorage<StationInterface[]>('stations', stations);
+
         return station;
       }
       
       return false;
     },
   });
-
 
 
   return {

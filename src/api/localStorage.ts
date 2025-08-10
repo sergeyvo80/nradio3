@@ -1,25 +1,20 @@
-type ValueType = string | object | string[] ;
-
-export const getLocalStorage = (key: string, initialValue?: ValueType): ValueType => {
+export const getLocalStorage =  <T>(key: string, initialValue?: T): T | undefined => {
   try {
     const item = (typeof window !== 'undefined') ? window.localStorage.getItem(key) : undefined;
     const preparedValue = item ? JSON.parse(item) : initialValue;
 
-    return preparedValue as ValueType;
+    return preparedValue;
   } catch (error) {
     console.log(error);
 
-    return initialValue as ValueType;
+    return initialValue;
   }
 };
 
-
-export const setLocalStorage = (key: string, value: ValueType): void => {
+export const setLocalStorage = <T>(key: string, value?: T): void => {
   try {
-    const valueToStore = value;
-    window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    window.localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.log(error);
   }
 };
-
