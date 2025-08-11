@@ -4,7 +4,7 @@ import queryClient from '@/api/reactQueryClient';
 import api from '@/api/apiGraphql';
 import React from 'react';
 import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
-import { StationsInterface } from '@/types/interfaces/graphql/api';
+import { StationsInterface } from '@/types/graphql/api';
 
 
 const RootLayout = async ({

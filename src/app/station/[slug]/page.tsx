@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
 import queryClient from '@/api/reactQueryClient';
-import { StationsInterface } from '@/types/interfaces/graphql/api';
+import { StationsInterface } from '@/types/graphql/api';
 import NRadioContainer from '@/containers/NRadioContainer';
 
 

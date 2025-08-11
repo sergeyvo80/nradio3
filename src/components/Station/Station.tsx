@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faSpinner, faHeart } from '@fortawesome/free-solid-svg-icons';
-import StationInterface from '@/types/interfaces/StationInterface';
-import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
+import StationInterface from '@/types/StationInterface';
+import PlayerStateEnum from '@/types/PlayerStateEnum';
 import styles from './Station.module.scss';
 import { memo } from 'react';
 

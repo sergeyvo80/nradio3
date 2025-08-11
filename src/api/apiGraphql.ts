@@ -4,8 +4,8 @@ import type {
   GetStationsQueryResponse,
   // GetStationsResponse,
   // Stations,
-} from '@/types/interfaces/graphql/api';
-import type StationInterface from '@/types/interfaces/StationInterface';
+} from '@/types/graphql/api';
+import type StationInterface from '@/types/StationInterface';
 import apolloClient from '@/api/apolloClient';
 
 class ApiGraphql {

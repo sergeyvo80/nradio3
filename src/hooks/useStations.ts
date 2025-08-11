@@ -1,8 +1,8 @@
 /* eslint-disable */
 import api from '@/api/apiGraphql';
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
-import { StationsInterface } from '@/types/interfaces/graphql/api';
-import StationInterface from '@/types/interfaces/StationInterface';
+import { StationsInterface } from '@/types/graphql/api';
+import StationInterface from '@/types/StationInterface';
 // import type ErrorInterface from '@/interfaces/ErrorInterface';
 // import type { StationsInterface } from '@/interfaces/graphql/api';
 // import { Suspense, useEffect, useRef, useState } from 'react';

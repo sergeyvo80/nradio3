@@ -1,8 +1,8 @@
 import Header from '../Header/Header';
 import StationSelector from '../StationSelector/StationSelector';
 import Station from '../Station/Station';
-import StationInterface from '@/types/interfaces/StationInterface';
-import PlayerStateEnum from '@/types/enums/PlayerStateEnum';
+import StationInterface from '@/types/StationInterface';
+import PlayerStateEnum from '@/types/PlayerStateEnum';
 import styles from './NRadio.module.scss';
 import { memo } from 'react';
 

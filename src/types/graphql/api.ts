@@ -1,4 +1,4 @@
-import type StationInterface from '@/types/interfaces/StationInterface';
+import type StationInterface from '@/types/StationInterface';
 
 export type StationsInterface = StationInterface[];
 

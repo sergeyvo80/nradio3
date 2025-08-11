@@ -1,4 +1,4 @@
-import StationInterface from '@/types/interfaces/StationInterface';
+import StationInterface from '@/types/StationInterface';
 import StationSelectorItem from '../StationSelectorItem/StationSelectorItem';
 import styles from './StationSelectorList.module.scss';
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import StationInterface from '@/types/interfaces/StationInterface';
+import StationInterface from '@/types/StationInterface';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './StationSelectorItem.module.scss';
