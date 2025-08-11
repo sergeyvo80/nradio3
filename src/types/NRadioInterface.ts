@@ -1,4 +1,4 @@
-import StationInterface from './interfaces/StationInterface';
+import StationInterface from './StationInterface';
 import PlayerEnum from './PlayerStateEnum';
 
 interface NRadioInterface {

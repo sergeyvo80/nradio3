@@ -11,6 +11,7 @@
   background-color: var(--second-bg-color);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  gap: 20px;
 
   @media #{main.$mob} {
     padding: main.vwMax(10px);
@@ -43,7 +44,7 @@
 .color {
   margin-right: 20px;
 }
-.info {
+.info, .newStation {
   color: var(--color);
   cursor: pointer;
 

@@ -7,6 +7,7 @@ import PlayerStateEnum from '@/types/PlayerStateEnum';
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import useStations from '@/hooks/useStations';
 import stationData from '@/data/station.json';
+import NewStationInterface from '@/types/NewStationInterface';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
@@ -62,6 +63,10 @@ const NRadioContainer = ({ slug }: Props) => {
   }, [station]);
   
 
+  const newStationAdd = (data: NewStationInterface) => {
+    console.log('>>> newStationAdd', data);
+  };
+
   const pause = () => {
     try {
       setPlayerState(PlayerStateEnum.Pause);
@@ -92,6 +97,7 @@ const NRadioContainer = ({ slug }: Props) => {
       onPlay={play}
       onPause={pause}
       onLike={like}
+      onNewStationAdd={newStationAdd}
     />
   );
 };

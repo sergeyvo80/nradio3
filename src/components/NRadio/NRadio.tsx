@@ -4,7 +4,11 @@ import Station from '../Station/Station';
 import StationInterface from '@/types/StationInterface';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import styles from './NRadio.module.scss';
-import { memo } from 'react';
+import { useState } from 'react';
+import Modal from '../Modal/Modal';
+import About from '../About/About';
+import NewStation from '../NewStation/NewStation';
+import NewStationInterface from '@/types/NewStationInterface';
 
 interface NRadioProps {
   title: string;
@@ -14,10 +18,11 @@ interface NRadioProps {
   onPlay: () => void;
   onPause: () => void;
   onLike: (slug: string) => void;
+  onNewStationAdd: (data: NewStationInterface) => void;
   error: string | undefined;
 }
 
-const NRadio = memo(({
+const NRadio = ({
   title,
   station,
   stations,
@@ -25,26 +30,50 @@ const NRadio = memo(({
   onPlay,
   onPause,
   onLike,
+  onNewStationAdd,
   error,
-}: NRadioProps): React.ReactNode => (
-  <div className={styles.NRadio}>
-    <Header title={title} />
+}: NRadioProps): React.ReactNode => {
+  const [isOpenAbout, setIsOpenAbout] = useState<boolean>(false);
+  const [isOpenNewStation, setIsOpenNewStation] = useState<boolean>(false);
 
-    <StationSelector
-      stations={stations}
-      slug={station.slug}
-      onLike={onLike}
-    />
-    <Station
-      station={station}
-      playerState={playerState}
-      onPlay={onPlay}
-      onPause={onPause}
-      onLike={onLike}
-      error={error}
-    />
-  </div>
-));
+  const toggleAboutHandler = () => setIsOpenAbout(!isOpenAbout);
+  const toggleOpenNewStation = () => {
+    setIsOpenNewStation(!isOpenNewStation);
+  };
+
+  return (
+    <div className={styles.NRadio}>
+      <Header
+        title={title}
+        onOpenAbout={toggleAboutHandler}
+        onOpenNewStation={toggleOpenNewStation}
+      />
+
+      <StationSelector
+        stations={stations}
+        slug={station.slug}
+        onLike={onLike}
+      />
+      <Station
+        station={station}
+        playerState={playerState}
+        onPlay={onPlay}
+        onPause={onPause}
+        onLike={onLike}
+        error={error}
+      />
+
+      <Modal title="О проекте" isOpen={isOpenAbout} onClose={toggleAboutHandler}>
+        <About />
+      </Modal>
+      <Modal title="Новая станция" isOpen={isOpenNewStation} onClose={toggleOpenNewStation}>
+        <NewStation onNewStationAdd={onNewStationAdd} />
+      </Modal>
+
+
+    </div>
+  );
+};
 
 NRadio.displayName = 'NRadio';
 
