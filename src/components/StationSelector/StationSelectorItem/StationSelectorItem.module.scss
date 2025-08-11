@@ -10,6 +10,7 @@
   color: var(--item-color);
   background-color: var(--second-bg-color);
   font-weight: bold;
+  position: relative;
 
   @media #{main.$mob} {
     padding: main.vwMax(5px) main.vwMax(5px);
@@ -49,6 +50,13 @@
   @media #{main.$mob} {
     height: main.vwMax(27px);
   }
+}
+
+.local {
+  position: absolute;
+  right: 10px;
+  font-size: 13px;
+  bottom: 0px;
 }
 
 .--current {

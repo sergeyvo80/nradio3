@@ -19,7 +19,7 @@ interface Props {
 }
 
 const NRadioContainer = ({ slug }: Props) => {
-  const { stations, likeMutate } = useStations();
+  const { stations, likeMutate, newStationMutate } = useStations();
   const selectedStation = stations.find((station: StationInterface) => station.slug === slug) || stationData;
 
   const [station, setStation] = useState<StationInterface>(selectedStation);
@@ -65,6 +65,7 @@ const NRadioContainer = ({ slug }: Props) => {
 
   const newStationAdd = (data: NewStationInterface) => {
     console.log('>>> newStationAdd', data);
+    newStationMutate(data);
   };
 
   const pause = () => {

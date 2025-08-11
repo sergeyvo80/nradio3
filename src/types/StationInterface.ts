@@ -1,5 +1,7 @@
 interface StationInterface {
+  _id?: string; 
   slug: string;
+  uid?: string;
   dateAdded: string;
   dateUpdated: string;
   title: string;

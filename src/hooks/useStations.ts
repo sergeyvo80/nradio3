@@ -2,7 +2,9 @@
 import api from '@/api/apiGraphql';
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import { StationsInterface } from '@/types/graphql/api';
+import NewStationInterface from '@/types/NewStationInterface';
 import StationInterface from '@/types/StationInterface';
+import { v4 as uuidv4 } from 'uuid';
 // import type ErrorInterface from '@/interfaces/ErrorInterface';
 // import type { StationsInterface } from '@/interfaces/graphql/api';
 // import { Suspense, useEffect, useRef, useState } from 'react';
@@ -56,23 +58,6 @@ const useStations = (): any => {
     // getNextPageParam: (lastPage, allPage) => lastPage?.nextId ?? undefined,
   });
 
-  // useEffect(() => {
-  // console.log('>>>');
-  //   setLocalStorage<StationInterface[]>('stations', data);
-  // }, [data]);
-
-  // useEffect(() => {
-  //   const reload = async (): Promise<void> => {
-  //     await queryClient.cancelQueries({
-  //       queryKey: ['channels'],
-  //     });
-  //     await refetch();
-  //   };
-
-  //   void reload();
-  // }, [station, refetch, queryClient])
-
-
   const clientStateMergeMutate = useMutation({
 
     mutationFn: async () => {
@@ -86,10 +71,13 @@ const useStations = (): any => {
       const localStations = getLocalStorage<StationInterface[]>('stations', []);
 
       if (localStations) {
-        const mergedStations: StationInterface[] = stations.map((station: StationInterface) => ({
-          ...station,
-          isLiked: !!localStations.find((localStation) => localStation.slug === station.slug && localStation.isLiked)
-        })).sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
+        const mergedStations: StationInterface[] = [
+          ...localStations.filter((localStation) => !localStation._id),
+          ...stations.map((station: StationInterface) => ({
+            ...station,
+            isLiked: !!localStations.find((localStation) => localStation.slug === station.slug && localStation.isLiked)
+          }))
+        ].sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
     
         queryClient.setQueryData<StationInterface[]>(['stations'], mergedStations);
         setLocalStorage<StationInterface[]>('stations', mergedStations);
@@ -130,6 +118,41 @@ const useStations = (): any => {
   });
 
 
+  const newStationMutate = useMutation({
+
+    mutationFn: async (newStation: NewStationInterface) => {
+
+      await queryClient.cancelQueries({ queryKey: ['stations'] });
+
+      const stations = queryClient.getQueryData<StationInterface[]>(['stations']);
+
+      if (!stations) return;
+
+      const newStations = [
+        {
+          ...newStation,
+          isLiked: true,
+          tags: [],
+          slug: uuidv4(),
+          uid: uuidv4(),
+          dateAdded: new Date().toDateString(),
+          dateUpdated: new Date().toDateString(),
+        },        
+        ...stations,
+      ];
+
+      queryClient.setQueryData<StationsInterface>(
+        ['stations'],
+        newStations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
+      );
+  
+      setLocalStorage<StationInterface[]>('stations', newStations);
+
+      return newStations;
+    },
+  });
+
+
   return {
     // // setStationSlug,
     stations: data,
@@ -138,7 +161,8 @@ const useStations = (): any => {
     // stationsStatus: status,
     // fetchNextPage,
     likeMutate: likeMutate.mutate,
-    clientStateMergeMutate: clientStateMergeMutate.mutate
+    clientStateMergeMutate: clientStateMergeMutate.mutate,
+    newStationMutate: newStationMutate.mutate,
   };
 };
 

@@ -33,6 +33,7 @@ const StationSelectorItem = memo(({
       />
       <h3 className={styles.title}>{station.title}</h3>
     </Link>
+    {!station._id && <div className={styles.local}>local</div>}
   </li>
 ));
 

@@ -10,8 +10,8 @@ interface Props {
 const NewStation = ({ onNewStationAdd }: Props) => {
   const { register, handleSubmit, formState: { errors } } = useForm<NewStationInterface>({
     defaultValues: {
-      title: '',
-      stream: '',
+      title: 'test1',
+      stream: 'test2',
     },
   });
 
