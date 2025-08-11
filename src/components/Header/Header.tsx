@@ -13,7 +13,7 @@ const Header = memo(({ title }: Props) => {
   const [isOpenAbout, setIsOpenAbout] = useState<boolean>(false);
 
   const toggleAboutHandler = () => setIsOpenAbout(!isOpenAbout);
-  
+
   return (
     <header className={styles.Header}>
       <div className={styles.logo}>
@@ -36,7 +36,15 @@ const Header = memo(({ title }: Props) => {
         <p className="text-base leading-relaxed text-gray-500 dark:text-gray-300">
           Backend: Nest.js, GraphQL, MongoDB<br />
           <a href="https://github.com/sergeyvo80/nradio3-backend" target="_blank"><u>https://github.com/sergeyvo80/nradio3-backend</u></a>
-        </p>      
+        </p>  
+
+        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-300">
+          Видео презентация моего приложения <a href="https://vkvideo.ru/video-2235845_456239062?list=ln-95uhHEhdj1zFTzKVdo" target="_blank"><br /><u>https://vkvideo.ru/video-2235845_456239062?list=ln-95uhHEhdj1zFTzKVdo</u></a>
+        </p>  
+
+        
+
+
       </Modal>
     </header>
   );
