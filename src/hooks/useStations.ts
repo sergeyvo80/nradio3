@@ -120,36 +120,64 @@ const useStations = (): any => {
 
   const newStationMutate = useMutation({
 
-    mutationFn: async (newStation: NewStationInterface) => {
+      mutationFn: async (newStation: NewStationInterface) => api.publishStation({
+        ...newStation,
+        uuid: uuidv4(),
+        // slug: uuidv4(),
+        description: '',
+        website: '',
+        tags: [],
+      }),
+      onMutate: async (newStation: NewStationInterface) => {
 
-      await queryClient.cancelQueries({ queryKey: ['stations'] });
+        console.log('>>> newStationMutate  onMutate', newStation);
 
-      const stations = queryClient.getQueryData<StationInterface[]>(['stations']);
+        await queryClient.cancelQueries({ queryKey: ['stations'] });
 
-      if (!stations) return;
+        const stations = queryClient.getQueryData<StationInterface[]>(['stations']);
 
-      const newStations = [
-        {
-          ...newStation,
-          isLiked: true,
-          tags: [],
-          slug: uuidv4(),
-          uid: uuidv4(),
-          dateAdded: new Date().toDateString(),
-          dateUpdated: new Date().toDateString(),
-        },        
-        ...stations,
-      ];
+        if (!stations) return;
 
-      queryClient.setQueryData<StationsInterface>(
-        ['stations'],
-        newStations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
-      );
-  
-      setLocalStorage<StationInterface[]>('stations', newStations);
+        const newStations = [
+          {
+            ...newStation,
+            isLiked: true,
+            tags: [],
+            slug: uuidv4(),
+            uid: uuidv4(),
+            dateAdded: new Date().toDateString(),
+            dateUpdated: new Date().toDateString(),
+          },        
+          ...stations,
+        ];
 
-      return newStations;
-    },
+        queryClient.setQueryData<StationsInterface>(
+          ['stations'],
+          newStations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
+        );
+    
+        setLocalStorage<StationInterface[]>('stations', newStations);
+
+        return { newStations };
+      },
+      onError: (err, variables, context) => {
+
+        console.log('>>> newStationMutate  err', err);
+
+        if (context?.newStations) {
+          queryClient.setQueryData<StationInterface[]>(['stations'], context.newStations);
+        }
+      },
+      onSuccess: async (newStation, variables, { newStations }) => {
+
+        console.log('>>> newStationMutate onSuccess', newStation, variables, newStations);
+
+        queryClient.setQueryData<StationInterface[]>(['stations'], newStations);
+      },
+      onSettled: (data, error, variables, context) => {
+        console.log('>> newStationMutate onSettled', data, error, variables, context);
+      },
+
   });
 
 

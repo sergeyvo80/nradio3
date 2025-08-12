@@ -9,3 +9,7 @@ export interface StationsQueryResponse {
 export interface GetStationsQueryResponse {
   getStations: StationsQueryResponse;
 }
+
+export interface PublishStationsMutateResponse {
+  publishStation: StationInterface;
+}

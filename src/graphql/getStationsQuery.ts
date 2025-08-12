@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const GET_STATIONS_QUERY = gql`
+const getStationQuery = gql`
 query getStations {
   getStations {
     items{
@@ -20,3 +20,5 @@ query getStations {
   }
 }
 `;
+
+export default getStationQuery;
