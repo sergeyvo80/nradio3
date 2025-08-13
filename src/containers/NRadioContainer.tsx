@@ -64,7 +64,8 @@ const NRadioContainer = ({ slug }: Props) => {
 
   const newStationAdd = (data: NewStationInterface) => {
     const uuid = uuidv4();
-    newStationMutate({
+
+    const mut = newStationMutate({
       ...data,
       uuid,
       slug: uuid,
@@ -72,6 +73,8 @@ const NRadioContainer = ({ slug }: Props) => {
       website: '',
       tags: [],
     });
+
+    console.log('mut >>', mut);
   };
 
   const pause = () => {
@@ -86,9 +89,7 @@ const NRadioContainer = ({ slug }: Props) => {
     }
   };
 
-  useEffect(() => {
-    play();
-  }, [play]);
+  useEffect(play, [play]);
 
   useEffect(() => {
     setStation(stations.find((station: StationInterface) => station.slug === slug) || stationData);

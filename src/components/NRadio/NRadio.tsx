@@ -40,7 +40,7 @@ const NRadio = ({
 
   const handleNewStationAdd = (newStation: NewStationInterface) => {
     onNewStationAdd(newStation);
-    setIsOpenNewStation(false);
+    // setIsOpenNewStation(false);
   };
 
   return (
