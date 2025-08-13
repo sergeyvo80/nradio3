@@ -5,7 +5,7 @@ http://nradio.pro - React, Next.js, ReactQuery, Apollo GraphQL, SSR, Cypress, Je
 ## .env.local
 ```bash
 NEXT_PUBLIC_GTM_ID="G-0R759M4XXF"
-NEXT_GRAPHQL_URL="http://nradio.pro/graphql" 
+NEXT_PUBLIC_GRAPHQL_URL="http://nradio.pro/graphql" 
 # NEXT_PUBLIC_DISABLE_PLAY="true" // for Dev
 NEXT_TELEMETRY_DISABLED=1
 BASE_URL="http://nradio.pro"
