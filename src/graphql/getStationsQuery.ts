@@ -7,12 +7,12 @@ query getStations {
       _id
       name
       slug
+      uuid,
       title
       website
       bitrate
       stream
       tags
-      # disabled
       dateAdded
       dateUpdated
     }

@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 const publishStationMutate = gql`
 mutation publishStationMutate(
   $uuid: String!
+  $slug: String!
   $title: String!
   $stream: String!
   $description: String!
@@ -10,15 +11,16 @@ mutation publishStationMutate(
   $tags: [String!]!
 ) {
   publishStation(
-    uuid: $uuid,
-    title: $title,
+    uuid: $uuid
+    slug: $slug
+    title: $title
     stream: $stream
     description: $description
     website: $website
     tags: $tags
   ) {
     _id
-    uuid,
+    uuid
     name
     slug
     title

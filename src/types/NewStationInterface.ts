@@ -1,5 +1,6 @@
 interface NewStationInterface {
   uuid: string;
+  slug: string;
   title: string;
   stream: string;
   description: string;

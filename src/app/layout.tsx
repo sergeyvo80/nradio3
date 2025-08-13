@@ -1,24 +1,20 @@
 import '@/styles/globals.scss';
 import { dehydrate } from '@tanstack/react-query';
 import queryClient from '@/api/reactQueryClient';
-import api from '@/api/apiGraphql';
+import getStations from '@/api/graphql/getStations';
 import React from 'react';
 import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 import { StationsInterface } from '@/types/graphql/api';
 
 
-const RootLayout = async ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) => {
 
   let stations: StationsInterface;
 
   await queryClient.prefetchQuery({
     queryKey: ['stations'], 
     queryFn: async () => {
-      stations = await api.getStations(0, 100);
+      stations = await getStations(0, 100);
       console.log('Stations', stations);
       return stations;
     }

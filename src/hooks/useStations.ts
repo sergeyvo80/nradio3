@@ -1,10 +1,10 @@
 /* eslint-disable */
-import api from '@/api/apiGraphql';
+import publishStation from '@/api/graphql/publishStation';
+import getStations from '@/api/graphql/getStations';
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import { StationsInterface } from '@/types/graphql/api';
 import NewStationInterface from '@/types/NewStationInterface';
 import StationInterface from '@/types/StationInterface';
-import { v4 as uuidv4 } from 'uuid';
 // import type ErrorInterface from '@/interfaces/ErrorInterface';
 // import type { StationsInterface } from '@/interfaces/graphql/api';
 // import { Suspense, useEffect, useRef, useState } from 'react';
@@ -19,7 +19,6 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useEffect } from 'react';
-// import { v4 as uuidv4 } from 'uuid';
 // import type TypingInterface from '@/interfaces/TypingInterface';
 
 const PAGE_SIZE = 100;
@@ -30,11 +29,7 @@ const useStations = (): any => {
   // const queryClient = useQueryClient();
   // const user = getUser();
 
-  /**
-   * Создание сообщения
-   *
-   */
-   const {
+  const {
     status,
     data,
     error,
@@ -49,7 +44,7 @@ const useStations = (): any => {
   } = useQuery({
     queryKey: ['stations'],
     // queryFn: async ({ pageParam = 0 }) => api.getStations(0, PAGE_SIZE),
-    queryFn: () => api.getStations(0, PAGE_SIZE),
+    queryFn: () => getStations(0, PAGE_SIZE),
     enabled: false,
     // networkMode: 'offlineFirst',
     // getNextPageParam: (lastPage, allPage) => allPage.length,
@@ -68,11 +63,23 @@ const useStations = (): any => {
       if (!stations) return;
 
       // merged likes flag from localStorage to server state
-      const localStations = getLocalStorage<StationInterface[]>('stations', []);
-
+      let localStations = getLocalStorage<StationInterface[]>('stations', []);
+      localStations = localStations?.map((localStation) => {
+        const station = stations.find((station) => station.uuid === localStation.uuid);
+        return {
+          ...localStation,
+          ...(station ? { 
+            _id: station._id,
+            slug: station.slug,
+          } : {}),
+        };
+      });
+      
       if (localStations) {
         const mergedStations: StationInterface[] = [
-          ...localStations.filter((localStation) => !localStation._id),
+          ...localStations
+            .filter((localStation) => 
+              !stations.find((station) => station.uuid === localStation.uuid)),
           ...stations.map((station: StationInterface) => ({
             ...station,
             isLiked: !!localStations.find((localStation) => localStation.slug === station.slug && localStation.isLiked)
@@ -120,14 +127,10 @@ const useStations = (): any => {
 
   const newStationMutate = useMutation({
 
-      mutationFn: async (newStation: NewStationInterface) => api.publishStation({
+      mutationFn: async (newStation: NewStationInterface) => publishStation({
         ...newStation,
-        uuid: uuidv4(),
-        // slug: uuidv4(),
-        description: '',
-        website: '',
-        tags: [],
       }),
+
       onMutate: async (newStation: NewStationInterface) => {
 
         console.log('>>> newStationMutate  onMutate', newStation);
@@ -142,9 +145,6 @@ const useStations = (): any => {
           {
             ...newStation,
             isLiked: true,
-            tags: [],
-            slug: uuidv4(),
-            uid: uuidv4(),
             dateAdded: new Date().toDateString(),
             dateUpdated: new Date().toDateString(),
           },        

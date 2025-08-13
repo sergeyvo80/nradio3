@@ -13,13 +13,14 @@ import { createClient } from 'graphql-ws';
 
 const removeTypenameLink = removeTypenameFromVariables();
 
-const httpLink = new HttpLink({
-  uri: process.env.NEXT_GRAPHQL_URL, fetch
-});
+
+console.log('>>> process.env.NEXT_PUBLIC_GRAPHQL_URL', process.env.NEXT_PUBLIC_GRAPHQL_URL);
+
+const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_GRAPHQL_URL, fetch });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: process.env.NEXT_GRAPHQL_URL || 'graphql',
+    url: process.env.NEXT_PUBLIC_GRAPHQL_URL || 'graphql',
     retryAttempts: Infinity,
     connectionParams: () => ({
       headers: {

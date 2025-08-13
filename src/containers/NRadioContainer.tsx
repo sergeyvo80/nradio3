@@ -8,6 +8,7 @@ import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import useStations from '@/hooks/useStations';
 import stationData from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
+import { v4 as uuidv4 } from 'uuid';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
@@ -38,8 +39,6 @@ const NRadioContainer = ({ slug }: Props) => {
       likeStations.splice(likeIndex, 1);
       setLocalStorage('likeStations', likeStations);
     }
-
-    // setStations(getPreparedStations(stations));
   }, [likeMutate]);
 
 
@@ -64,8 +63,15 @@ const NRadioContainer = ({ slug }: Props) => {
   
 
   const newStationAdd = (data: NewStationInterface) => {
-    console.log('>>> newStationAdd', data);
-    newStationMutate(data);
+    const uuid = uuidv4();
+    newStationMutate({
+      ...data,
+      uuid,
+      slug: uuid,
+      description: '',
+      website: '',
+      tags: [],
+    });
   };
 
   const pause = () => {
