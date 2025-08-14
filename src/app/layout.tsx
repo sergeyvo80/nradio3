@@ -11,6 +11,7 @@ const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) =
 
   let stations: StationsInterface;
 
+  // выполняется на сервере - загрузка станций
   await queryClient.prefetchQuery({
     queryKey: ['stations'], 
     queryFn: async () => {

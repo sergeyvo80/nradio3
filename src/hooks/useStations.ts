@@ -127,10 +127,12 @@ const useStations = (): any => {
 
   const newStationMutate = useMutation({
 
+      // отправка новой станции на сервер для последующей модерации
       mutationFn: async (newStation: NewStationInterface) => publishStation({
         ...newStation,
       }),
 
+      // оптимистичная мутация - добавление станции локально
       onMutate: async (newStation: NewStationInterface) => {
 
         console.log('>>> newStationMutate  onMutate', newStation);

@@ -4,16 +4,12 @@ import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/StationInterface';
 import { useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
-import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import useStations from '@/hooks/useStations';
 import stationData from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
 import { v4 as uuidv4 } from 'uuid';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
-
-const getLikeStations = (): string[] => getLocalStorage('likeStations', []) as string[];
-
 
 interface Props {
   slug: string
@@ -29,16 +25,6 @@ const NRadioContainer = ({ slug }: Props) => {
 
   const like = useCallback((slug: string) => {
     likeMutate(slug);
-
-    const likeStations = getLikeStations();
-    const likeIndex = likeStations.indexOf(slug);
-
-    if (likeIndex === -1) {
-      setLocalStorage('likeStations', [...likeStations, slug]);
-    } else {
-      likeStations.splice(likeIndex, 1);
-      setLocalStorage('likeStations', likeStations);
-    }
   }, [likeMutate]);
 
 
@@ -65,7 +51,7 @@ const NRadioContainer = ({ slug }: Props) => {
   const newStationAdd = (data: NewStationInterface) => {
     const uuid = uuidv4();
 
-    const mut = newStationMutate({
+    newStationMutate({
       ...data,
       uuid,
       slug: uuid,
@@ -73,8 +59,6 @@ const NRadioContainer = ({ slug }: Props) => {
       website: '',
       tags: [],
     });
-
-    console.log('mut >>', mut);
   };
 
   const pause = () => {
