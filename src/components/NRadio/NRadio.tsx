@@ -35,11 +35,16 @@ const NRadio = ({
 }: NRadioProps): React.ReactNode => {
   const [isOpenAbout, setIsOpenAbout] = useState<boolean>(false);
   const [isOpenNewStation, setIsOpenNewStation] = useState<boolean>(false);
+  const [isSent, setIsSent] = useState<boolean>(false);
   const toggleAboutHandler = () => setIsOpenAbout(!isOpenAbout);
-  const toggleOpenNewStation = () => setIsOpenNewStation(!isOpenNewStation);
+  const toggleOpenNewStation = () => {
+    setIsOpenNewStation(!isOpenNewStation);
+    setIsSent(false);
+  };
 
   const handleNewStationAdd = (newStation: NewStationInterface) => {
     onNewStationAdd(newStation);
+    setIsSent(true);
     // setIsOpenNewStation(false);
   };
 
@@ -67,7 +72,7 @@ const NRadio = ({
         <About />
       </Modal>
       <Modal title="Новая станция" isOpen={isOpenNewStation} onClose={toggleOpenNewStation}>
-        <NewStation onNewStationAdd={handleNewStationAdd} />
+        <NewStation onNewStationAdd={handleNewStationAdd} isSent={isSent} />
       </Modal>
     </div>
   );

@@ -13,9 +13,6 @@ import { createClient } from 'graphql-ws';
 
 const removeTypenameLink = removeTypenameFromVariables();
 
-
-console.log('>>> process.env.NEXT_PUBLIC_GRAPHQL_URL', process.env.NEXT_PUBLIC_GRAPHQL_URL);
-
 const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_GRAPHQL_URL, fetch });
 
 const wsLink = new GraphQLWsLink(

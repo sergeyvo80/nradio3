@@ -1,15 +1,14 @@
 import { useForm } from 'react-hook-form';
 import styles from './NewStation.module.scss';
 import NewStationInterface from '@/types/NewStationInterface';
-import { useState } from 'react';
 
 interface Props {
   onNewStationAdd: (data: NewStationInterface) => void;
+  isSent?: boolean;
 }
 
-
-const NewStation = ({ onNewStationAdd }: Props) => {
-  const [ isSent, setIsSent ] = useState<boolean>(false)
+const NewStation = ({ onNewStationAdd, isSent }: Props) => {
+  
   const { register, handleSubmit, formState: { errors } } = useForm<NewStationInterface>({
     defaultValues: {
       title: 'test1',
@@ -19,7 +18,6 @@ const NewStation = ({ onNewStationAdd }: Props) => {
 
   const onSubmit = handleSubmit((data: NewStationInterface) => {
     console.log('>>> handleSubmit', data);
-    setIsSent(true);
     onNewStationAdd(data);
   });
 

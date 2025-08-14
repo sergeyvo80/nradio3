@@ -62,7 +62,6 @@ const useStations = (): any => {
 
       if (!stations) return;
 
-      // merged likes flag from localStorage to server state
       let localStations = getLocalStorage<StationInterface[]>('stations', []);
       localStations = localStations?.map((localStation) => {
         const station = stations.find((station) => station.uuid === localStation.uuid);
@@ -73,7 +72,8 @@ const useStations = (): any => {
             slug: station.slug,
           } : {}),
         };
-      });
+      }).filter((localStation) => !localStation._id || (stations.find((station) => station._id === localStation._id)));
+
       
       if (localStations) {
         const mergedStations: StationInterface[] = [
