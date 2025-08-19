@@ -1,5 +1,3 @@
-const typeDelay = 30;
-
 describe('Main page', () => {
 
   beforeEach(() => {
@@ -29,14 +27,22 @@ describe('Main page', () => {
     cy.get('h2').contains('Groove Salad [SomaFM]');
   });
 
-
-  it('clicks the first link and verifies h2 content', () => {
+  it('clicks to first station link and verifies h2 content', () => {
     const stationLink = cy.get('.stationSelectorLink').first();
 
     stationLink.then(($link) => {
       const linkText = $link.text();
       stationLink.click();
       cy.get('h2').should('have.text', linkText);
+    });
+  });
+
+  it('clicks to station links and verifies h2 content', () => {
+    cy.get('.stationSelectorLink').each(($stationLink, index) => {
+      cy.wrap($stationLink).click();
+      cy.wrap($stationLink).invoke('text').then((linkText) => {
+        cy.get('h2').should('have.text', linkText);
+      });
     });
   });
 
