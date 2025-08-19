@@ -5,14 +5,14 @@ describe('Main page', () => {
 
     cy.visit(Cypress.env('BASE_URL'));
 
-    // cy.intercept('https://mc.yandex.ru/**', {
-    //   statusCode: 204,
-    //   body: '',
-    // });
-    // cy.intercept('https://webvisor.yandex.net/event', {
-    //   statusCode: 204,
-    //   body: '',
-    // });
+    cy.intercept('https://www.googletagmanager.com/**', {
+      statusCode: 204,
+      body: '',
+    });
+    cy.intercept('https://www.google-analytics.com/**', {
+      statusCode: 204,
+      body: '',
+    });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
       // returning false here prevents Cypress
