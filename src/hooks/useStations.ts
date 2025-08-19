@@ -5,52 +5,22 @@ import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import { StationsInterface } from '@/types/graphql/api';
 import NewStationInterface from '@/types/NewStationInterface';
 import StationInterface from '@/types/StationInterface';
-// import type ErrorInterface from '@/interfaces/ErrorInterface';
-// import type { StationsInterface } from '@/interfaces/graphql/api';
-// import { Suspense, useEffect, useRef, useState } from 'react';
+
 import {
   useQuery,
-  useInfiniteQuery,
-  // useMutation,
-  // useQueryClient,
-  // QueryClient,
-  // QueryClientProvider,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useEffect } from 'react';
-// import type TypingInterface from '@/interfaces/TypingInterface';
 
 const PAGE_SIZE = 100;
 
 const useStations = (): any => {
   const queryClient = useQueryClient();
-  // const [stationId, setStationId] = useState(chatIdInit);
-  // const queryClient = useQueryClient();
-  // const user = getUser();
 
-  const {
-    status,
-    data,
-    error,
-    // isFetching,
-    // isFetchingNextPage,
-    // isFetchingPreviousPage,
-    // fetchNextPage,
-    // fetchPreviousPage,
-    // hasNextPage,
-    // hasPreviousPage,
-    refetch,
-  } = useQuery({
+  const { data } = useQuery({
     queryKey: ['stations'],
-    // queryFn: async ({ pageParam = 0 }) => api.getStations(0, PAGE_SIZE),
     queryFn: () => getStations(0, PAGE_SIZE),
     enabled: false,
-    // networkMode: 'offlineFirst',
-    // getNextPageParam: (lastPage, allPage) => allPage.length,
-    // initialPageParam: 0,
-    // getPreviousPageParam: (firstPage) => firstPage?.previousId ?? undefined,
-    // getNextPageParam: (lastPage, allPage) => lastPage?.nextId ?? undefined,
   });
 
   const clientStateMergeMutate = useMutation({
@@ -124,6 +94,34 @@ const useStations = (): any => {
     },
   });
 
+  const deleteStationMutate = useMutation({
+
+    mutationFn: async (slug: string) => {
+      await queryClient.cancelQueries({ queryKey: ['stations'] });
+
+      const stations = queryClient.getQueryData<StationsInterface>(['stations']);
+
+      if (!stations) return;
+
+      let stationI;
+      const station = stations.find((station, i) => {
+        stationI = station.slug === slug ? i : undefined;
+        return station.slug === slug;
+      });
+        
+      if (stationI !== undefined) {
+        stations.splice(stationI, 1);
+
+        queryClient.setQueryData<StationsInterface>(['stations'], stations);
+    
+        setLocalStorage<StationInterface[]>('stations', stations);
+
+        return station;
+      }
+      
+      return false;
+    },
+  });
 
   const newStationMutate = useMutation({
 
@@ -182,17 +180,12 @@ const useStations = (): any => {
 
   });
 
-
   return {
-    // // setStationSlug,
     stations: data,
-    // stations: data?.pages ? [].concat(...data.pages) : [], // messages,
-    // stationsError: error,
-    // stationsStatus: status,
-    // fetchNextPage,
     likeMutate: likeMutate.mutate,
     clientStateMergeMutate: clientStateMergeMutate.mutate,
     newStationMutate: newStationMutate.mutate,
+    deleteStationMutate: deleteStationMutate.mutate,
   };
 };
 

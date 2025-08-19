@@ -16,7 +16,13 @@ interface Props {
 }
 
 const NRadioContainer = ({ slug }: Props) => {
-  const { stations, likeMutate, newStationMutate } = useStations();
+  const {
+    stations,
+    likeMutate,
+    newStationMutate,
+    deleteStationMutate,
+  } = useStations();
+
   const selectedStation = stations.find((station: StationInterface) => station.slug === slug) || stationData;
 
   const [station, setStation] = useState<StationInterface>(selectedStation);
@@ -61,6 +67,11 @@ const NRadioContainer = ({ slug }: Props) => {
     });
   };
 
+  const onDeleteStationHandler = (slug: string) => {
+    deleteStationMutate(slug);
+    console.log('>>> onDeleteStationHandler', slug);
+  };
+
   const pause = () => {
     try {
       setPlayerState(PlayerStateEnum.Pause);
@@ -90,6 +101,7 @@ const NRadioContainer = ({ slug }: Props) => {
       onPause={pause}
       onLike={like}
       onNewStationAdd={newStationAdd}
+      onDeleteStation={onDeleteStationHandler}
     />
   );
 };

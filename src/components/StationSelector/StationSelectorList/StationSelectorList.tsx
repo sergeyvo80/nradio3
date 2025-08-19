@@ -6,11 +6,13 @@ interface Props {
   stations: StationInterface[];
   slug: string;
   onLike?: (slug: string) => void;
+  onDeleteStation: (slug: string) => void;
 }
 
 const StationSelectorList = ({
   stations,
   slug,
+  onDeleteStation,
   // onLike, // = () => {},
 }: Props) => (
   <ul className={styles.StationSelectorList}>
@@ -20,6 +22,7 @@ const StationSelectorList = ({
         key={station.slug}
         isCurrent={station.slug === slug}
         isLiked={station.isLiked || false}
+        onDeleteStation = {onDeleteStation}
         // onLike={() => onLike(station.slug)}
       />
     ))}

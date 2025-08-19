@@ -7,15 +7,21 @@ interface Props {
   stations: StationInterface[];
   slug: string;
   onLike?: (slug: string) => void;
+  onDeleteStation: (slug: string) => void;
 }
 
 const StationSelector = ({
   stations,
   slug,
+  onDeleteStation,
   // onLike, // = () => {},
 }: Props) => (
   <nav className={`${styles.StationSelector} StationSelector`}>
-    <StationList stations={stations} slug={slug} />
+    <StationList
+      stations={stations}
+      slug={slug}
+      onDeleteStation={onDeleteStation}
+    />
   </nav>
 );
 
