@@ -4,7 +4,7 @@ import Station from '../Station/Station';
 import StationInterface from '@/types/StationInterface';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import styles from './NRadio.module.scss';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Modal from '../Modal/Modal';
 import About from '../About/About';
 import NewStation from '../NewStation/NewStation';
@@ -39,10 +39,10 @@ const NRadio = ({
   const [isOpenNewStation, setIsOpenNewStation] = useState<boolean>(false);
   const [isSent, setIsSent] = useState<boolean>(false);
   const toggleAboutHandler = () => setIsOpenAbout(!isOpenAbout);
-  const toggleOpenNewStation = () => {
+  const toggleOpenNewStation = useCallback(() => {
     setIsOpenNewStation(!isOpenNewStation);
     setIsSent(false);
-  };
+  }, [setIsOpenNewStation, isOpenNewStation, setIsSent]);
 
   const handleNewStationAdd = (newStation: NewStationInterface) => {
     onNewStationAdd(newStation);
@@ -75,7 +75,11 @@ const NRadio = ({
         <About />
       </Modal>
       <Modal title="Новая станция" isOpen={isOpenNewStation} onClose={toggleOpenNewStation}>
-        <NewStation onNewStationAdd={handleNewStationAdd} isSent={isSent} />
+        <NewStation
+          onNewStationAdd={handleNewStationAdd}
+          isSent={isSent}
+          onOkButton={toggleOpenNewStation}
+        />
       </Modal>
     </div>
   );

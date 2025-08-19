@@ -5,14 +5,15 @@ import NewStationInterface from '@/types/NewStationInterface';
 interface Props {
   onNewStationAdd: (data: NewStationInterface) => void;
   isSent?: boolean;
+  onOkButton: () => void;
 }
 
-const NewStation = ({ onNewStationAdd, isSent }: Props) => {
+const NewStation = ({ onNewStationAdd, isSent, onOkButton }: Props) => {
   
   const { register, handleSubmit, formState: { errors } } = useForm<NewStationInterface>({
     defaultValues: {
-      title: 'test1',
-      stream: 'test2',
+      title: '',
+      stream: '',
     },
   });
 
@@ -22,9 +23,9 @@ const NewStation = ({ onNewStationAdd, isSent }: Props) => {
   });
 
   return (
-    <div className={styles.NewStation}>
+    <div className={`${styles.NewStation} NewStation`}>
       {!isSent && (
-        <form  className={styles.form}>      
+        <form className={styles.form}>      
           <div>
             <div>Название</div>
             <input {...register('title', { required: true })} className={styles.input} />
@@ -35,13 +36,14 @@ const NewStation = ({ onNewStationAdd, isSent }: Props) => {
             <input {...register('stream', { required: true })} className={styles.input} />
             {errors.stream && <span>Обязательное поле</span>}
           </div>
-          <button onClick={onSubmit} className={styles.button}>Добавить</button>
+          <button onClick={onSubmit} className={`${styles.button} addButton`}>Добавить</button>
         </form>
       )}
       {isSent && (
         <>
           <p className={styles.p}>Станция добавлена локально и отправлена на сервер для модерации.</p>
           <p className={styles.p}>После подтверждения станция будет доступна у всех пользователей.</p>
+          <button className={`${styles.button} okButton`} onClick={onOkButton}>Ok</button>
         </>
       )}
     </div>

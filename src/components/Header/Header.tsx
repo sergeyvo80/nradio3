@@ -10,29 +10,26 @@ interface Props {
   onOpenNewStation: () => void;
 }
 
-const Header = memo(({ title, onOpenAbout, onOpenNewStation }: Props) => {
-
-  return (
-    <header className={styles.Header}>
-      <div className={styles.logo}>
-        <FontAwesomeIcon icon={faPlayCircle} />
-        {'\u00a0'}
-        <h1 className={styles.title}>{title}</h1>
-      </div>
-      <div className={styles.color}><ColorPicker /></div>
-      <div className={styles.info} onClick={onOpenAbout}>
-        <FontAwesomeIcon icon={faInfoCircle} />
-      </div>
-      <div className={styles.newStation} onClick={onOpenNewStation}>
-        <FontAwesomeIcon icon={faAdd} />
-      </div>
-
-      {/* <Modal title="About" isOpen={isOpenAbout} onClose={onOpenAbout}>
-        <About />
-      </Modal> */}
-    </header>
-  );
-});
+const Header = memo(({ title, onOpenAbout, onOpenNewStation }: Props) => (
+  <header className={styles.Header}>
+    <div className={styles.logo}>
+      <FontAwesomeIcon icon={faPlayCircle} />
+      {'\u00a0'}
+      <h1 className={styles.title}>{title}</h1>
+    </div>
+    <div className={styles.color}><ColorPicker /></div>
+    <FontAwesomeIcon
+      icon={faInfoCircle}
+      className={styles.info}
+      onClick={onOpenAbout}
+    />      
+    <FontAwesomeIcon
+      icon={faAdd}
+      className={`${styles.newStation} newStationButton`}
+      onClick={onOpenNewStation}
+    />
+  </header>
+));
 
 Header.displayName = 'Header';
 

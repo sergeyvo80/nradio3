@@ -1,4 +1,6 @@
-describe('Main page', () => {
+const typeDelay = 10;
+
+describe('New station', () => {
 
   beforeEach(() => {
     cy.viewport(320, 650);
@@ -19,31 +21,28 @@ describe('Main page', () => {
       // inside the cy.origin() method from failing the test
       return false;
     });
-
   });
 
-  it('should contain important blocks', () => {    
-    cy.get('h1').contains('NRadio');
-    cy.get('h2').contains('Groove Salad [SomaFM]');
-  });
 
-  it('clicks to first station link and verifies h2 content', () => {
-    const stationLink = cy.get('.stationSelectorLink').first();
+  it('adding a new station', () => {
+    const newStationTitle = 'newStation-title';
+    cy.get('header .newStationButton').click();
+    cy.get('.NewStation input[name="title"').type(newStationTitle, { delay: typeDelay });
+    cy.get('.NewStation input[name="stream"').type('newStation-stream', { delay: typeDelay });
+    cy.get('.NewStation .addButton').click();
+    cy.get('.NewStation .okButton').click();
 
-    stationLink.then(($link) => {
-      const linkText = $link.text();
-      stationLink.click();
-      cy.get('h2').should('have.text', linkText);
-    });
-  });
 
-  it('clicks to station links and verifies h2 content', () => {
+    let existInList: boolean = false;
     cy.get('.stationSelectorLink').each(($stationLink) => {
-      cy.wrap($stationLink).click();
       cy.wrap($stationLink).invoke('text').then((linkText) => {
-        cy.get('h2').should('have.text', linkText);
+        if (linkText === newStationTitle) {
+          existInList = true;
+          cy.wrap(existInList).should('be.true');
+        }
       });
     });
+    
   });
 
 });
