@@ -14,12 +14,12 @@ interface NRadioProps {
   title: string;
   station: StationInterface;
   stations: StationInterface[];
-  playerState: PlayerStateEnum | undefined;
+  playerState?: PlayerStateEnum;
   onPlay: () => void;
   onPause: () => void;
   onLike: (slug: string) => void;
   onNewStationAdd: (data: NewStationInterface) => void;
-  error: string | undefined;
+  error?: string;
   onDeleteStation: (slug: string) => void;
 }
 

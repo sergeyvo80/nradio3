@@ -53,5 +53,3 @@ const HomePage = async ({ searchParams }: PageProps): Promise<React.ReactNode> =
 };
 
 export default HomePage;
-
-

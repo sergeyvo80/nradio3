@@ -24,7 +24,7 @@ const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) =
   const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
 
   return (
-    <html lang="en">
+    <html lang="ru">
       {process.env.NEXT_PUBLIC_GTM_ID && (
         <head>
           {/*<!-- Global Site Tag (gtag.js) - Google Analytics -->*/}
