@@ -1,15 +1,33 @@
 /* eslint-disable */
-'use client'
+'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SketchPicker } from 'react-color';
 import Color from 'color';
-import styles from './ColorPicker.module.scss';
 import { faRemove } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 
-const colors = {
+import styles from './ColorPicker.module.scss';
+
+interface ColorsInterface {
+  '--bg-color': string;
+  '--second-bg-color': string;
+  '--border-color':  string;
+  '--current-color':  string;
+  '--shadow-color':  string;
+  '--error-bg-color':  string;
+  '--error-border-color':  string;
+  '--color':  string;
+  '--item-color':  string;
+  '--error-color':  string;
+  '--link-color':  string;
+  '--visited-color':  string;
+
+};
+
+const colors: ColorsInterface = {
   '--bg-color': '#292A2D',
   '--second-bg-color': '#202124',
   '--border-color': '#4A4C50',
@@ -24,20 +42,42 @@ const colors = {
   '--visited-color': '#6AD1C7',
 };
 
-const defaultState = {
+
+interface ColorInterface  {
+  hex:string;
+  hsl: {h: number, s: number, l: number, a: number};
+  hsv: {h: number, s: number, v: number, a: 1};
+  oldHue: number;
+  rgb: {r: number, g: number, b: number, a: number};
+  source: string;
+}
+
+interface StateInterface {
+  displayColorPicker: boolean,
+  color: {
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+  },
+  colorHex: string;
+  colorFull?: ColorInterface,
+}
+
+const defaultState: StateInterface = {
   displayColorPicker: false,
   color: {
-    r: '32',
-    g: '33',
-    b: '36',
-    a: '1',
+    r: 32,
+    g: 33,
+    b: 36,
+    a: 1,
   },
   colorHex: '#202124'
 };
 
 const ColorPicker = (): React.ReactNode => {
   // const [state, setState] = useState(getLocalStorage('colorState', defaultState));
-  const [state, setState] = useState(defaultState);
+  const [state, setState] = useState<StateInterface>(defaultState);
 
   const handleClick = () => {
     setState({ ...state, displayColorPicker: !state.displayColorPicker });
@@ -47,9 +87,10 @@ const ColorPicker = (): React.ReactNode => {
     setState({ ...state, displayColorPicker: false });
   };
 
-  const handleChange = (color: any) => {
+  const handleChange = useCallback((color: ColorInterface) => {
+    const calculateColorScheme = (pickedColor: string) => {
 
-    const calculateColorScheme = (pickedColor: any) => {
+      // console.log('>>> pickedColor', pickedColor);
       const pickedColorObject = Color(pickedColor);
       const pickedColorObjectHSL = pickedColorObject.hsl().object();
 
@@ -62,7 +103,8 @@ const ColorPicker = (): React.ReactNode => {
       const baseColorObject = Color(colors['--bg-color']);
       const baseColorObjectHSL = baseColorObject.hsl().object();
 
-      for (let color in colors) {
+      for (const color in colors) { 
+        
         const currentColorHSL = Color(colors[color]).hsl().object();
 
         const newColor = Color({
@@ -83,25 +125,25 @@ const ColorPicker = (): React.ReactNode => {
     calculateColorScheme(color.hex);
 
     setState({ ...state, color: color.rgb });
-    setLocalStorage('colorState', { ...state, color: color.rgb, colorHex: color.hex, colorFull: color })
-  };
+    setLocalStorage('colorState', { ...state, color: color.rgb, colorHex: color.hex, colorFull: color });
+  }, []);
 
   const resetToDefault = () => {
     setState(defaultState);
-    for (let color in colors) {
+    for (const color in colors) {
       document.documentElement.style.setProperty(color, null);
     }
     setLocalStorage('colorState', defaultState);
   };
 
   useEffect(() => {
-    const colorState = getLocalStorage('colorState', defaultState);
-// console.log('>> colorState.hex', colorState)
+    const colorState = getLocalStorage<StateInterface>('colorState', defaultState);
+    // console.log('>> colorState.hex', colorState)
 
-    if (colorState.colorFull) {
+    if (colorState?.colorFull) {
       handleChange(colorState.colorFull);
     }
-  }, []);
+  }, [handleChange]);
 
   return (
     <div className={styles.ColorPicker}>
@@ -122,6 +164,6 @@ const ColorPicker = (): React.ReactNode => {
     </div>
   );
 
-}
+};
 
 export default ColorPicker;

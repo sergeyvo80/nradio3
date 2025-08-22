@@ -1,8 +1,10 @@
+import React, { memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faPlayCircle, faAdd } from '@fortawesome/free-solid-svg-icons';
+
 import ColorPicker from '../ColorPicker/ColorPicker';
+
 import styles from './Header.module.scss';
-import { memo,  } from 'react';
 
 interface Props {
   title: string;

@@ -1,5 +1,6 @@
-import { StationsInterface } from '@/types/graphql/api';
 import { createContext } from 'react';
+
+import { StationsInterface } from '@/types/graphql/api';
 
 export interface DataType {
   slug: string;

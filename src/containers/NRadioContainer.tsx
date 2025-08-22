@@ -1,13 +1,15 @@
 'use client';
 
+import React from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/StationInterface';
-import { useCallback, useEffect, useState } from 'react';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import useStations from '@/hooks/useStations';
 import stationData from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
-import { v4 as uuidv4 } from 'uuid';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 

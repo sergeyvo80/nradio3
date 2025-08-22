@@ -1,14 +1,19 @@
+import React from 'react';
+import { useCallback, useState } from 'react';
+
+import StationInterface from '@/types/StationInterface';
+import PlayerStateEnum from '@/types/PlayerStateEnum';
+import NewStationInterface from '@/types/NewStationInterface';
+
 import Header from '../Header/Header';
 import StationSelector from '../StationSelector/StationSelector';
 import Station from '../Station/Station';
-import StationInterface from '@/types/StationInterface';
-import PlayerStateEnum from '@/types/PlayerStateEnum';
-import styles from './NRadio.module.scss';
-import { useCallback, useState } from 'react';
 import Modal from '../Modal/Modal';
 import About from '../About/About';
 import NewStation from '../NewStation/NewStation';
-import NewStationInterface from '@/types/NewStationInterface';
+
+import styles from './NRadio.module.scss';
+
 
 interface NRadioProps {
   title: string;

@@ -1,4 +1,7 @@
+import React from 'react';
+
 import ChildrenType from '@/types/ChildrenType';
+
 import styles from './Modal.module.scss';
 // import { memo } from 'react';
 

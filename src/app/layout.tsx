@@ -1,8 +1,9 @@
 import '@/styles/globals.scss';
 import { dehydrate } from '@tanstack/react-query';
+import React from 'react';
+
 import queryClient from '@/api/reactQueryClient';
 import getStations from '@/api/graphql/getStations';
-import React from 'react';
 import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 import { StationsInterface } from '@/types/graphql/api';
 

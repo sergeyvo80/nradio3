@@ -1,10 +1,12 @@
-import stationData from '@/data/station.json';
-import type { Metadata } from 'next';
 import React from 'react';
+
+import stationData from '@/data/station.json';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
 import queryClient from '@/api/reactQueryClient';
 import { StationsInterface } from '@/types/graphql/api';
 import NRadioContainer from '@/containers/NRadioContainer';
+
+import type { Metadata } from 'next';
 
 const DEFAULT_SLUG = 'groove-salad-soma-fm';
 

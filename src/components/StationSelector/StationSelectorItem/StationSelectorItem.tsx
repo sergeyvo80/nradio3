@@ -1,9 +1,12 @@
+import React from 'react';
 import Link from 'next/link';
-import StationInterface from '@/types/StationInterface';
 import { faHeart, faRemove } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './StationSelectorItem.module.scss';
 import { memo, useCallback } from 'react';
+
+import StationInterface from '@/types/StationInterface';
+
+import styles from './StationSelectorItem.module.scss';
 
 interface Props {
   station: StationInterface;

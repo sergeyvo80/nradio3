@@ -1,8 +1,6 @@
 // import getToken from '@/app/getToken';
 // import { AuthNotAuthorizedError } from '@/errors/auth';
-import fetch from 'cross-fetch'; 
-import { GraphqlNetworkError, GraphqlUnknownError } from '@/errors/graphql';
-import { registerError } from '@/utils/registeError';
+import fetch from 'cross-fetch';
 import { ApolloClient, HttpLink, InMemoryCache, from, split } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
@@ -10,6 +8,9 @@ import { removeTypenameFromVariables } from '@apollo/client/link/remove-typename
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
+
+import { registerError } from '@/utils/registeError';
+import { GraphqlNetworkError, GraphqlUnknownError } from '@/errors/graphql';
 
 const removeTypenameLink = removeTypenameFromVariables();
 

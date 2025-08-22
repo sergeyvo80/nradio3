@@ -1,6 +1,9 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import styles from './NewStation.module.scss';
+
 import NewStationInterface from '@/types/NewStationInterface';
+
+import styles from './NewStation.module.scss';
 
 interface Props {
   onNewStationAdd: (data: NewStationInterface) => void;
