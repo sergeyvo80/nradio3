@@ -36,7 +36,7 @@ const eslintConfig = [
       indent: ['warn', 2],
       quotes: ['warn', 'single'],
       semi: ['warn', 'always'],
-      'comma-spacing': ['warn', { "before": false, "after": true }],
+      'comma-spacing': ['warn', { before: false, after: true }],
       'import/order': [
         'warn',
         {

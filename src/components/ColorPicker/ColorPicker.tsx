@@ -1,8 +1,7 @@
-/* eslint-disable */
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { SketchPicker } from 'react-color';
+import { SketchPicker,  RGBColor, HSLColor, ColorResult } from 'react-color';
 import Color from 'color';
 import { faRemove } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,7 +23,6 @@ interface ColorsInterface {
   '--error-color':  string;
   '--link-color':  string;
   '--visited-color':  string;
-
 };
 
 const colors: ColorsInterface = {
@@ -42,24 +40,20 @@ const colors: ColorsInterface = {
   '--visited-color': '#6AD1C7',
 };
 
+type ColorKeys = keyof typeof colors;
 
 interface ColorInterface  {
   hex:string;
-  hsl: {h: number, s: number, l: number, a: number};
-  hsv: {h: number, s: number, v: number, a: 1};
+  hsl: HSLColor;
+  hsv: HSLColor;
   oldHue: number;
-  rgb: {r: number, g: number, b: number, a: number};
+  rgb: RGBColor;
   source: string;
 }
 
 interface StateInterface {
   displayColorPicker: boolean,
-  color: {
-    r: number,
-    g: number,
-    b: number,
-    a: number,
-  },
+  color: RGBColor,
   colorHex: string;
   colorFull?: ColorInterface,
 }
@@ -75,6 +69,36 @@ const defaultState: StateInterface = {
   colorHex: '#202124'
 };
 
+
+const calculateColorScheme = (pickedColor: string) => {
+
+  // console.log('>>> pickedColor', pickedColor);
+  const pickedColorObject = Color(pickedColor);
+  const pickedColorObjectHSL = pickedColorObject.hsl().object();
+
+  const isDark = pickedColorObject.isDark() ? -1 : 1;
+
+  // for (let color in colors) {   
+  //   colors[color] = document.documentElement.style.getPropertyValue(color);
+  // }
+
+  const baseColorObject = Color(colors['--bg-color']);
+  const baseColorObjectHSL = baseColorObject.hsl().object();
+
+  for (const color in colors) { 
+    const currentColorHSL = Color(colors[color as ColorKeys]).hsl().object();
+
+    const newColor = Color({
+      h: pickedColorObjectHSL.h - (currentColorHSL.h - baseColorObjectHSL.h),
+      s: pickedColorObjectHSL.s - (currentColorHSL.s - baseColorObjectHSL.s),
+      l: pickedColorObjectHSL.l - (currentColorHSL.l - baseColorObjectHSL.l) * isDark,
+    });
+
+    document.documentElement.style.setProperty(color, newColor.hex());
+  }
+};
+
+
 const ColorPicker = (): React.ReactNode => {
   // const [state, setState] = useState(getLocalStorage('colorState', defaultState));
   const [state, setState] = useState<StateInterface>(defaultState);
@@ -87,45 +111,18 @@ const ColorPicker = (): React.ReactNode => {
     setState({ ...state, displayColorPicker: false });
   };
 
-  const handleChange = useCallback((color: ColorInterface) => {
-    const calculateColorScheme = (pickedColor: string) => {
-
-      // console.log('>>> pickedColor', pickedColor);
-      const pickedColorObject = Color(pickedColor);
-      const pickedColorObjectHSL = pickedColorObject.hsl().object();
-
-      const isDark = pickedColorObject.isDark() ? -1 : 1;
-
-      // for (let color in colors) {   
-      //   colors[color] = document.documentElement.style.getPropertyValue(color);
-      // }
-
-      const baseColorObject = Color(colors['--bg-color']);
-      const baseColorObjectHSL = baseColorObject.hsl().object();
-
-      for (const color in colors) { 
-        
-        const currentColorHSL = Color(colors[color]).hsl().object();
-
-        const newColor = Color({
-          h: pickedColorObjectHSL.h - (currentColorHSL.h - baseColorObjectHSL.h),
-          s: pickedColorObjectHSL.s - (currentColorHSL.s - baseColorObjectHSL.s),
-          l: pickedColorObjectHSL.l - (currentColorHSL.l - baseColorObjectHSL.l) * isDark,
-        });
-
-        // console.log(`${colors[color].name} : ${colors[color].value}`);
-        // console.log('New HSL');
-        // console.log('h >>', newColor.hsl().object().h);
-        // console.log('s >>', newColor.hsl().object().s);
-        // console.log('l >>', newColor.hsl().object().l);
-        document.documentElement.style.setProperty(color, newColor.hex());
-      }
-    };
-
+  const handleChange = useCallback((color: ColorResult) => {
     calculateColorScheme(color.hex);
 
     setState({ ...state, color: color.rgb });
-    setLocalStorage('colorState', { ...state, color: color.rgb, colorHex: color.hex, colorFull: color });
+    
+    setLocalStorage('colorState', {
+      ...state,
+      color: color.rgb,
+      colorHex: color.hex,
+      colorFull: color 
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const resetToDefault = () => {
