@@ -7,24 +7,11 @@ import { faRemove } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
+import ColorsInterface from '@/types/ColorsInterface';
 
 import styles from './ColorPicker.module.scss';
 
-interface ColorsInterface {
-  '--bg-color': string;
-  '--second-bg-color': string;
-  '--border-color':  string;
-  '--current-color':  string;
-  '--shadow-color':  string;
-  '--error-bg-color':  string;
-  '--error-border-color':  string;
-  '--color':  string;
-  '--item-color':  string;
-  '--error-color':  string;
-  '--link-color':  string;
-  '--visited-color':  string;
-};
-
+// TODO:  get from css variables
 const colors: ColorsInterface = {
   '--bg-color': '#292A2D',
   '--second-bg-color': '#202124',
@@ -60,24 +47,18 @@ interface StateInterface {
 
 const defaultState: StateInterface = {
   displayColorPicker: false,
-  color: {
-    r: 32,
-    g: 33,
-    b: 36,
-    a: 1,
-  },
+  color: { r: 32, g: 33, b: 36, a: 1 },
   colorHex: '#202124'
 };
 
 
 const calculateColorScheme = (pickedColor: string) => {
-
-  // console.log('>>> pickedColor', pickedColor);
   const pickedColorObject = Color(pickedColor);
   const pickedColorObjectHSL = pickedColorObject.hsl().object();
 
   const isDark = pickedColorObject.isDark() ? -1 : 1;
 
+  // TODO: get color form css variables
   // for (let color in colors) {   
   //   colors[color] = document.documentElement.style.getPropertyValue(color);
   // }
@@ -100,30 +81,36 @@ const calculateColorScheme = (pickedColor: string) => {
 
 
 const ColorPicker = (): React.ReactNode => {
-  // const [state, setState] = useState(getLocalStorage('colorState', defaultState));
   const [state, setState] = useState<StateInterface>(defaultState);
 
-  const handleClick = () => {
-    setState({ ...state, displayColorPicker: !state.displayColorPicker });
-  };
+  const handleClick = useCallback(() => {
+    setState(prevState => ({
+      ...prevState,
+      displayColorPicker: !prevState.displayColorPicker,
+    }));
+  }, [setState]);
 
-  const handleClose = () => {
-    setState({ ...state, displayColorPicker: false });
-  };
+  const handleClose = useCallback(() => {
+    setState(prevState => ({
+      ...prevState,
+      displayColorPicker: false,
+    }));
+  }, [setState]);
 
   const handleChange = useCallback((color: ColorResult) => {
     calculateColorScheme(color.hex);
 
-    setState({ ...state, color: color.rgb });
-    
-    setLocalStorage('colorState', {
-      ...state,
-      color: color.rgb,
-      colorHex: color.hex,
-      colorFull: color 
+    setState(prevState => {
+      const newState = { ...prevState, color: color.rgb };
+      setLocalStorage('colorState', {
+        ...prevState,
+        color: color.rgb,
+        colorHex: color.hex,
+        colorFull: color
+      });
+      return newState;
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setState]);
 
   const resetToDefault = () => {
     setState(defaultState);
@@ -135,7 +122,6 @@ const ColorPicker = (): React.ReactNode => {
 
   useEffect(() => {
     const colorState = getLocalStorage<StateInterface>('colorState', defaultState);
-    // console.log('>> colorState.hex', colorState)
 
     if (colorState?.colorFull) {
       handleChange(colorState.colorFull);
