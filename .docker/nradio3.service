@@ -3,7 +3,7 @@ Description=nradio3
 
 [Service]
 Type=simple
-ExecStart=npm start
+ExecStart=/usr/bin/env pnpm start
 Restart=always
 User=www-data
 Group=www-data
