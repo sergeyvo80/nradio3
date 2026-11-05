@@ -7,3 +7,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Preferences (user)
+
+- Do NOT commit automatically to git. Only make commits when the user explicitly asks for it.
+- Use gitmoji notation in commit messages, e.g. `feat(station): :sparkles: description`,
+  `fix(player): :bug: description`, `refactor(app): :recycle: description`,
+  `docs: :memo: description`, `test: :white_check_mark: description`.
+
