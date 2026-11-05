@@ -3,21 +3,18 @@ import { dehydrate } from '@tanstack/react-query';
 import React from 'react';
 
 import queryClient from '@/api/reactQueryClient';
-import getStations from '@/api/graphql/getStations';
+import getStations from '@/api/stations';
 import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
-import { StationsInterface } from '@/types/graphql/api';
+import StationsInterface from '@/types/StationsInterface';
 
 
 const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) => {
 
-  let stations: StationsInterface;
-
-  // выполняется на сервере - загрузка станций
+  // станции предзагружаются в queryClient (на сервере для SSR, затем на клиенте)
   await queryClient.prefetchQuery({
-    queryKey: ['stations'], 
+    queryKey: ['stations'],
     queryFn: async () => {
-      stations = await getStations(0, 100);
-      console.log('Stations', stations);
+      const stations: StationsInterface = await getStations();
       return stations;
     }
   });

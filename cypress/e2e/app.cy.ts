@@ -3,8 +3,6 @@ describe('Main page', () => {
   beforeEach(() => {
     cy.viewport(320, 650);
 
-    cy.visit(Cypress.env('BASE_URL'));
-
     cy.intercept('https://www.googletagmanager.com/**', {
       statusCode: 204,
       body: '',
@@ -14,7 +12,11 @@ describe('Main page', () => {
       body: '',
     });
 
-    Cypress.on('uncaught:exception', (err, runnable) => {
+    cy.env(['BASE_URL']).then(({ BASE_URL = 'http://localhost:3002' }) => {
+      cy.visit(BASE_URL);
+    });
+
+    Cypress.on('uncaught:exception', () => {
       // returning false here prevents Cypress
       // inside the cy.origin() method from failing the test
       return false;

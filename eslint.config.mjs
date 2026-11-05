@@ -1,60 +1,34 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
-
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: {},
-});
+import coreWebVitals from 'eslint-config-next/core-web-vitals';
+import typescript from 'eslint-config-next/typescript';
+import prettier from 'eslint-config-prettier';
+import stylistic from '@stylistic/eslint-plugin';
+import globals from 'globals';
 
 const eslintConfig = [
-  ...compat.extends(
-    'next/core-web-vitals',
-    'next/typescript',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'eslint:recommended',
-  ),
-  ...compat.config({
-
-    env: {
-      'browser': true,
-      'es2021': true,
-      'node': true
+  ...coreWebVitals,
+  ...typescript,
+  prettier,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.es2021,
+        ...globals.node,
+      },
     },
-
-    plugins: [
-      'react',
-      '@typescript-eslint',
-    ],
-
+    plugins: {
+      '@stylistic': stylistic,
+    },
     rules: {
-      indent: ['warn', 2],
-      quotes: ['warn', 'single'],
-      semi: ['warn', 'always'],
-      'comma-spacing': ['warn', { before: false, after: true }],
-      'import/order': [
-        'warn',
-        {
-          'newlines-between': 'always',
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-            'object',
-            'type',
-          ],
-        },
-      ],
-    }
-  }),
+      '@stylistic/indent': ['warn', 2],
+      '@stylistic/quotes': ['warn', 'single'],
+      '@stylistic/semi': ['warn', 'always'],
+      '@stylistic/comma-spacing': ['warn', { before: false, after: true }],
+      // TODO: переделать код плеера/ColorPicker без setState в effect
+      'react-hooks/set-state-in-effect': 'warn',
+      // NOTE: import/order выключен - eslint-plugin-import ломается на ESLint 10
+    },
+  },
 ];
 
 export default eslintConfig;

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/StationInterface';
@@ -57,7 +56,7 @@ const NRadioContainer = ({ slug }: Props) => {
   
 
   const newStationAdd = (data: NewStationInterface) => {
-    const uuid = uuidv4();
+    const uuid = crypto.randomUUID();
 
     newStationMutate({
       ...data,

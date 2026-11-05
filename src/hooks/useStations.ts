@@ -1,8 +1,7 @@
 /* eslint-disable */
-import publishStation from '@/api/graphql/publishStation';
-import getStations from '@/api/graphql/getStations';
+import getStations from '@/api/stations';
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
-import { StationsInterface } from '@/types/graphql/api';
+import StationsInterface from '@/types/StationsInterface';
 import NewStationInterface from '@/types/NewStationInterface';
 import StationInterface from '@/types/StationInterface';
 
@@ -12,14 +11,13 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-const PAGE_SIZE = 100;
-
 const useStations = (): any => {
   const queryClient = useQueryClient();
 
+  // используется только для кэша/гидрации - данные приходят из layout.tsx (json-файл)
   const { data } = useQuery({
     queryKey: ['stations'],
-    queryFn: () => getStations(0, PAGE_SIZE),
+    queryFn: () => getStations(),
     enabled: false,
   });
 
@@ -37,31 +35,31 @@ const useStations = (): any => {
         const station = stations.find((station) => station.uuid === localStation.uuid);
         return {
           ...localStation,
-          ...(station ? { 
+          ...(station ? {
             _id: station._id,
             slug: station.slug,
           } : {}),
         };
       }).filter((localStation) => !localStation._id || (stations.find((station) => station._id === localStation._id)));
 
-      
+
       if (localStations) {
         const mergedStations: StationInterface[] = [
           ...localStations
-            .filter((localStation) => 
+            .filter((localStation) =>
               !stations.find((station) => station.uuid === localStation.uuid)),
           ...stations.map((station: StationInterface) => ({
             ...station,
             isLiked: !!localStations.find((localStation) => localStation.slug === station.slug && localStation.isLiked)
           }))
         ].sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
-    
+
         queryClient.setQueryData<StationInterface[]>(['stations'], mergedStations);
         setLocalStorage<StationInterface[]>('stations', mergedStations);
 
         return mergedStations;
       }
-      
+
       return false;
     },
   });
@@ -77,19 +75,19 @@ const useStations = (): any => {
       if (!stations) return;
 
       const station = stations.find((station) => (station.slug === slug))
-        
+
       if (station) {
         station.isLiked = !station.isLiked
         queryClient.setQueryData<StationsInterface>(
           ['stations'],
           stations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
         );
-    
+
         setLocalStorage<StationInterface[]>('stations', stations);
 
         return station;
       }
-      
+
       return false;
     },
   });
@@ -108,32 +106,28 @@ const useStations = (): any => {
         stationI = station.slug === slug ? i : undefined;
         return station.slug === slug;
       });
-        
+
       if (stationI !== undefined) {
         stations.splice(stationI, 1);
 
         queryClient.setQueryData<StationsInterface>(['stations'], stations);
-    
+
         setLocalStorage<StationInterface[]>('stations', stations);
 
         return station;
       }
-      
+
       return false;
     },
   });
 
   const newStationMutate = useMutation({
 
-      // отправка новой станции на сервер для последующей модерации
-      mutationFn: async (newStation: NewStationInterface) => publishStation({
-        ...newStation,
-      }),
+      // без сервера: новая станция добавляется только локально (localStorage)
+      mutationFn: async (newStation: NewStationInterface) => newStation,
 
       // оптимистичная мутация - добавление станции локально
       onMutate: async (newStation: NewStationInterface) => {
-
-        console.log('>>> newStationMutate  onMutate', newStation);
 
         await queryClient.cancelQueries({ queryKey: ['stations'] });
 
@@ -147,7 +141,7 @@ const useStations = (): any => {
             isLiked: true,
             dateAdded: new Date().toDateString(),
             dateUpdated: new Date().toDateString(),
-          },        
+          },
           ...stations,
         ];
 
@@ -155,7 +149,7 @@ const useStations = (): any => {
           ['stations'],
           newStations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
         );
-    
+
         setLocalStorage<StationInterface[]>('stations', newStations);
 
         return { newStations };
@@ -168,11 +162,9 @@ const useStations = (): any => {
           queryClient.setQueryData<StationInterface[]>(['stations'], context.newStations);
         }
       },
-      onSuccess: async (newStation, variables, { newStations }) => {
+      onSuccess: async (newStation, variables, context) => {
 
-        console.log('>>> newStationMutate onSuccess', newStation, variables, newStations);
-
-        queryClient.setQueryData<StationInterface[]>(['stations'], newStations);
+        queryClient.setQueryData<StationInterface[]>(['stations'], context?.newStations);
       },
       onSettled: (data, error, variables, context) => {
         console.log('>> newStationMutate onSettled', data, error, variables, context);
