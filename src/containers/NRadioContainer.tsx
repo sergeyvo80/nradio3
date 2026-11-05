@@ -27,7 +27,7 @@ const NRadioContainer = ({ slug }: Props) => {
   const selectedStation = stations.find((station: StationInterface) => station.slug === slug) || stationData;
 
   const [station, setStation] = useState<StationInterface>(selectedStation);
-  const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Pause);
+  const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Paused);
   const [error, setError] = useState<string>();
 
   const like = useCallback((slug: string) => {
@@ -35,23 +35,32 @@ const NRadioContainer = ({ slug }: Props) => {
   }, [likeMutate]);
 
 
+  // play() возвращает промис: браузер может отклонить его
+  // (autoplay policy, сеть и т.д.), поэтому PlayerStateEnum.Playing
+  // ставится только после успешного старта
   const play = useCallback(() => {
-    try {
-      setError(undefined);
-      setPlayerState(PlayerStateEnum.Play);
+    setError(undefined);
 
-      if (player) {
-        player.src = station.stream;
-
-        if (!process.env.NEXT_PUBLIC_DISABLE_PLAY) {
-          player.play();
-        }
-
-        setPlayerState(PlayerStateEnum.Playing);
-      }
-    } catch (err: unknown) {
-      setError(err instanceof Error ? `Error playing: ${err.message}` : 'Unknown error');
+    if (!player) {
+      setPlayerState(PlayerStateEnum.Paused);
+      return;
     }
+
+    setPlayerState(PlayerStateEnum.Play);
+    player.src = station.stream;
+
+    if (process.env.NEXT_PUBLIC_DISABLE_PLAY) {
+      setPlayerState(PlayerStateEnum.Playing);
+      return;
+    }
+
+    player
+      .play()
+      .then(() => setPlayerState(PlayerStateEnum.Playing))
+      .catch((err: unknown) => {
+        setPlayerState(PlayerStateEnum.Paused);
+        setError(err instanceof Error ? `Error playing: ${err.message}` : 'Error playing: unknown');
+      });
   }, [station]);
   
 
@@ -85,11 +94,23 @@ const NRadioContainer = ({ slug }: Props) => {
     }
   };
 
-  useEffect(play, [play]);
-
+  // автозапуск play() при монтировании убран: браузер блокирует воспроизведение
+  // до первого взаимодействия пользователя (autoplay policy)
   useEffect(() => {
     setStation(stations.find((station: StationInterface) => station.slug === slug) || stationData);
   }, [slug, stations]);
+
+  // при смене станции продолжаем играть, если пользователь уже запустил плеер
+  useEffect(() => {
+    if (player && playerState === PlayerStateEnum.Playing) {
+      player.src = station.stream;
+      player.play().catch((err: unknown) => {
+        setPlayerState(PlayerStateEnum.Paused);
+        setError(err instanceof Error ? `Error playing: ${err.message}` : 'Error playing: unknown');
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- реагируем только на смену станции
+  }, [station]);
 
   return (
     <NRadio
