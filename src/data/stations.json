@@ -94,7 +94,7 @@
   {
     "slug": "groove-salad-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Groove Salad [SomaFM]",
     "description": "Groove Salad: a nicely chilled plate of ambient beats and grooves. [SomaFM]",
     "website": "https://somafm.com",
@@ -103,24 +103,24 @@
       "chillout",
       "ambient"
     ],
-    "stream": "https://ice1.somafm.com/groovesalad-128-mp3"
+    "stream": "https://ice6.somafm.com/groovesalad-128-mp3"
   },
   {
     "slug": "the-trip-tip-top-tunes-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "The Trip:  Tip top tunes. [SomaFM]",
     "website": "https://somafm.com",
     "bitrate": 128,
     "tags": [
       "dance"
     ],
-    "stream": "https://ice1.somafm.com/thetrip-128-mp3"
+    "stream": "https://ice6.somafm.com/thetrip-128-mp3"
   },
   {
     "slug": "drone-zone-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Drone Zone [SomaFM]",
     "description": "Served best chilled, safe with most medications. Atmospheric textures with minimal beats.",
     "website": "https://somafm.com",
@@ -128,12 +128,12 @@
     "tags": [
       "chillout"
     ],
-    "stream": "https://ice1.somafm.com/dronezone-128-mp3"
+    "stream": "https://ice6.somafm.com/dronezone-128-mp3"
   },
   {
     "slug": "pop-tron-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "PopTron [SomaFM]",
     "description": "Electropop and indie dance rock with sparkle and pop.",
     "website": "https://somafm.com",
@@ -143,12 +143,12 @@
       "indie",
       "rock"
     ],
-    "stream": "https://ice1.somafm.com/poptron-128-mp3"
+    "stream": "https://ice6.somafm.com/poptron-128-mp3"
   },
   {
     "slug": "sf-10-33-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "SF 10-33 [SomaFM]",
     "description": "Ambient music mixed with the sounds of San Francisco public safety radio traffic.",
     "website": "https://somafm.com",
@@ -156,12 +156,12 @@
     "tags": [
       "ambient"
     ],
-    "stream": "https://ice1.somafm.com/sf1033-128-mp3"
+    "stream": "https://ice6.somafm.com/sf1033-128-mp3"
   },
   {
     "slug": "deep-space-one-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Deep Space One [SomaFM]",
     "description": "Deep ambient electronic, experimental and space music. For inner and outer space exploration.",
     "tags": [
@@ -169,12 +169,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/deepspaceone-128-mp3"
+    "stream": "https://ice6.somafm.com/deepspaceone-128-mp3"
   },
   {
     "slug": "space-station-soma-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Space Station Soma [SomaFM]",
     "description": "Tune in, turn on, space out. Spaced-out ambient and mid-tempo electronica.",
     "tags": [
@@ -182,12 +182,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/spacestation-128-mp3"
+    "stream": "https://ice6.somafm.com/spacestation-128-mp3"
   },
   {
     "slug": "sonic-universe-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Sonic Universe [SomaFM]",
     "description": "Transcending the world of jazz with eclectic, avant-garde takes on tradition.",
     "tags": [
@@ -195,12 +195,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/sonicuniverse-128-mp3"
+    "stream": "https://ice6.somafm.com/sonicuniverse-128-mp3"
   },
   {
     "slug": "metal-detector-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Metal Detector [SomaFM]",
     "description": "From black to doom, prog to sludge, thrash to post, stoner to crossover, punk to industrial.",
     "tags": [
@@ -208,12 +208,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/metal-128-mp3"
+    "stream": "https://ice6.somafm.com/metal-128-mp3"
   },
   {
     "slug": "boot-liquor-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Boot Liquor [SomaFM]",
     "description": "Americana Roots music for Cowhands, Cowpokes and Cowtippers",
     "tags": [
@@ -221,12 +221,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/bootliquor-128-mp3"
+    "stream": "https://ice6.somafm.com/bootliquor-128-mp3"
   },
   {
     "slug": "digitalis-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Digitalis [SomaFM]",
     "description": "Digitally affected analog rock to calm the agitated heart.",
     "tags": [
@@ -234,12 +234,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/digitalis-128-mp3"
+    "stream": "https://ice6.somafm.com/digitalis-128-mp3"
   },
   {
     "slug": "mission-control-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Mission Control [SomaFM]",
     "description": "Celebrating NASA and Space Explorers everywhere.",
     "tags": [
@@ -248,12 +248,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/missioncontrol-128-mp3"
+    "stream": "https://ice6.somafm.com/missioncontrol-128-mp3"
   },
   {
     "slug": "illinois-street-lounge-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Illinois Street Lounge [SomaFM]",
     "description": "Classic bachelor pad, playful exotica and vintage music of tomorrow.",
     "tags": [
@@ -263,12 +263,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/illstreet-128-mp3"
+    "stream": "https://ice6.somafm.com/illstreet-128-mp3"
   },
   {
     "slug": "indie-pop-rocks-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Indie Pop Rocks! [SomaFM]",
     "description": "New and classic favorite indie pop tracks.",
     "tags": [
@@ -277,12 +277,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/indiepop-128-mp3"
+    "stream": "https://ice6.somafm.com/indiepop-128-mp3"
   },
   {
     "slug": "left-coast-70s-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Left Coast 70s [SomaFM]",
     "description": "Mellow album rock from the Seventies. Yacht not required.",
     "tags": [
@@ -290,12 +290,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/seventies-128-mp3"
+    "stream": "https://ice6.somafm.com/seventies-128-mp3"
   },
   {
     "slug": "suburbs-of-goa-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Suburbs of Goa [SomaFM]",
     "description": "Desi-influenced Asian world beats and beyond.",
     "tags": [
@@ -303,12 +303,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/suburbsofgoa-128-mp3"
+    "stream": "https://ice6.somafm.com/suburbsofgoa-128-mp3"
   },
   {
     "slug": "underground-80s-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Underground 80s [SomaFM]",
     "description": "Early 80s UK Synthpop and a bit of New Wave.",
     "tags": [
@@ -317,12 +317,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/u80s-128-mp3"
+    "stream": "https://ice6.somafm.com/u80s-128-mp3"
   },
   {
     "slug": "beat-blender-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Beat Blender [SomaFM]",
     "description": "A late night blend of deep-house and downtempo chill.",
     "tags": [
@@ -332,7 +332,7 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/beatblender-128-mp3"
+    "stream": "https://ice6.somafm.com/beatblender-128-mp3"
   },
   {
     "slug": "bagel-radio",
@@ -350,7 +350,7 @@
   {
     "slug": "seven-inch-soul-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Seven Inch Soul [SomaFM]",
     "description": "Vintage soul tracks from the original 45 RPM vinyl.",
     "tags": [
@@ -359,12 +359,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/7soul-128-mp3"
+    "stream": "https://ice6.somafm.com/7soul-128-mp3"
   },
   {
     "slug": "folk-forward-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Folk Forward [SomaFM]",
     "description": "Indie Folk, Alt-folk and the occasional folk classics.",
     "tags": [
@@ -373,12 +373,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/folkfwd-128-mp3"
+    "stream": "https://ice6.somafm.com/folkfwd-128-mp3"
   },
   {
     "slug": "covers-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Covers [SomaFM]",
     "description": "Just covers. Songs you know by artists you don't. We've got you covered.",
     "tags": [
@@ -386,12 +386,12 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/covers-128-mp3"
+    "stream": "https://ice6.somafm.com/covers-128-mp3"
   },
   {
     "slug": "secret-agent-soma-fm",
     "dateAdded": "2018-05-10",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-06",
     "title": "Secret Agent [SomaFM]",
     "description": "The soundtrack for your stylish, mysterious, dangerous life. For Spies and PIs too!",
     "tags": [
@@ -399,6 +399,6 @@
     ],
     "website": "https://somafm.com",
     "bitrate": 128,
-    "stream": "https://ice1.somafm.com/secretagent-128-mp3"
+    "stream": "https://ice6.somafm.com/secretagent-128-mp3"
   }
 ]
