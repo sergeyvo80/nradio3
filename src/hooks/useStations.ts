@@ -30,37 +30,34 @@ const useStations = (): any => {
 
       if (!stations) return;
 
-      let localStations = getLocalStorage<StationInterface[]>('stations', []);
-      localStations = localStations?.map((localStation) => {
-        const station = stations.find((station) => station.uuid === localStation.uuid);
-        return {
-          ...localStation,
-          ...(station ? {
-            _id: station._id,
-            slug: station.slug,
-          } : {}),
-        };
-      }).filter((localStation) => !localStation._id || (stations.find((station) => station._id === localStation._id)));
+      // восстанавливаем состояние из localStorage: лайки - по slug (json-станции uuid не имеют,
+      // а сравнение uuid === undefined === undefined не имеет смысла)
+      const localStations = getLocalStorage<StationInterface[]>('stations', []) ?? [];
 
+      const likedSlugs = new Set(
+        localStations
+          .filter((localStation) => localStation.isLiked)
+          .map((localStation) => localStation.slug),
+      );
 
-      if (localStations) {
-        const mergedStations: StationInterface[] = [
-          ...localStations
-            .filter((localStation) =>
-              !stations.find((station) => station.uuid === localStation.uuid)),
-          ...stations.map((station: StationInterface) => ({
-            ...station,
-            isLiked: !!localStations.find((localStation) => localStation.slug === station.slug && localStation.isLiked)
-          }))
-        ].sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
+      // пользовательские (локальные) станции в json не входят - оставляем их как есть
+      const localOnlyStations = localStations.filter(
+        (localStation) => !stations.find((station) => station.slug === localStation.slug),
+      );
 
-        queryClient.setQueryData<StationInterface[]>(['stations'], mergedStations);
-        setLocalStorage<StationInterface[]>('stations', mergedStations);
+      const mergedStations: StationInterface[] = [
+        ...localOnlyStations,
+        ...stations.map((station: StationInterface) => ({
+          ...station,
+          isLocal: !!station.uuid,
+          isLiked: likedSlugs.has(station.slug),
+        })),
+      ].sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
 
-        return mergedStations;
-      }
+      queryClient.setQueryData<StationInterface[]>(['stations'], mergedStations);
+      setLocalStorage<StationInterface[]>('stations', mergedStations);
 
-      return false;
+      return mergedStations;
     },
   });
 
@@ -74,21 +71,20 @@ const useStations = (): any => {
 
       if (!stations) return;
 
-      const station = stations.find((station) => (station.slug === slug))
+      const newStations = stations.map((station: StationInterface) => (
+        station.slug === slug
+          ? { ...station, isLiked: !station.isLiked }
+          : station
+      ));
 
-      if (station) {
-        station.isLiked = !station.isLiked
-        queryClient.setQueryData<StationsInterface>(
-          ['stations'],
-          stations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
-        );
+      queryClient.setQueryData<StationsInterface>(
+        ['stations'],
+        [...newStations].sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
+      );
 
-        setLocalStorage<StationInterface[]>('stations', stations);
+      setLocalStorage<StationInterface[]>('stations', newStations);
 
-        return station;
-      }
-
-      return false;
+      return newStations.find((station: StationInterface) => station.slug === slug);
     },
   });
 
@@ -101,23 +97,19 @@ const useStations = (): any => {
 
       if (!stations) return;
 
-      let stationI;
-      const station = stations.find((station, i) => {
-        stationI = station.slug === slug ? i : undefined;
-        return station.slug === slug;
-      });
+      const station = stations.find((station) => station.slug === slug);
 
-      if (stationI !== undefined) {
-        stations.splice(stationI, 1);
+      if (!station) return false;
 
-        queryClient.setQueryData<StationsInterface>(['stations'], stations);
+      const newStations = stations.filter(
+        (filteredStation: StationInterface) => filteredStation.slug !== slug,
+      );
 
-        setLocalStorage<StationInterface[]>('stations', stations);
+      queryClient.setQueryData<StationsInterface>(['stations'], newStations);
 
-        return station;
-      }
+      setLocalStorage<StationInterface[]>('stations', newStations);
 
-      return false;
+      return station;
     },
   });
 
@@ -138,6 +130,7 @@ const useStations = (): any => {
         const newStations = [
           {
             ...newStation,
+            isLocal: true,
             isLiked: true,
             dateAdded: new Date().toDateString(),
             dateUpdated: new Date().toDateString(),
