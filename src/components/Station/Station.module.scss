@@ -18,9 +18,9 @@
   border-top-right-radius: 10px;
 
   @media #{main.$mob} {
-    padding: main.vwMax(10px) main.vwMax(10px) 0 main.vwMax(10px);
+    padding: main.vwMax(6px) main.vwMax(10px) 0;
     gap: main.vwMax(10px);
-    row-gap: 5px;
+    row-gap: main.vwMax(2px);
     border-top-left-radius: main.vwMax(10px);
     border-top-right-radius: main.vwMax(10px);
   }
@@ -29,12 +29,13 @@
 
 .player {
   cursor: pointer;
+  flex: none;
+
   svg {
     font-size: 48px;
 
     @media #{main.$mob} {
-      width: main.vwMax(40px);
-      font-size: main.vwMax(40px);
+      font-size: main.vwMax(32px);
     }
   }
 }
@@ -43,10 +44,10 @@
   cursor: pointer;
   color: var(--border-color);
   font-size: 48px;
+  flex: none;
 
   @media #{main.$mob} {
-    width: main.vwMax(40px);
-    font-size: main.vwMax(40px);
+    font-size: main.vwMax(28px);
   }
 }
 
@@ -56,12 +57,13 @@
 
 .title {
   margin: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 
   @include typography.h2;
-
-  @media #{main.$mob} {
-    width: main.vwMax(200px);
-  }
 }
 
 .error {

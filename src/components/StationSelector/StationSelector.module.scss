@@ -1,4 +1,11 @@
+@use '../../styles/main';
+
 .StationSelector {
   padding: 10px calc(var(--padding-right) - 8px) 10px calc(var(--padding-left) - 8px);
-  overflow: scroll;
+  overflow-y: auto;
+  min-height: 0;
+
+  @media #{main.$mob} {
+    padding: main.vwMax(6px) main.vwMax(10px) main.vwMax(6px);
+  }
 }

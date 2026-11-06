@@ -39,6 +39,8 @@ const StationSelectorItem = memo(({
         styles.StationSelectorItem,
         isCurrent ? styles['--current'] : '',
         isLiked ? styles['--liked'] : '',
+        // Место под метку local/крест резервируем только у локальных станций
+        station.isLocal ? styles['--local'] : '',
       ].join(' ')}
     >
       <Link href={`?slug=${station.slug}`} className={`${styles.link} stationSelectorLink`} shallow={true}>

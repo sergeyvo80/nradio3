@@ -13,7 +13,8 @@
   position: relative;
 
   @media #{main.$mob} {
-    padding: main.vwMax(5px) main.vwMax(5px);
+    margin: main.vwMax(3px) 0;
+    padding: main.vwMax(5px) main.vwMax(6px) main.vwMax(5px) main.vwMax(8px);
     border-radius: main.vwMax(10px);
   }
 }
@@ -21,10 +22,19 @@
 .title {
   margin: 0;
   white-space: nowrap;
-  overflow-x: hidden;
+  overflow: hidden;
+  text-overflow: ellipsis;
   @include typography.h3;
+}
 
-    // color: #f00 !important;
+// у локальных станций справа живёт метка "local" + крест удаления -
+// резервируем место под неё
+.--local .title {
+  padding-right: 60px;
+
+  @media #{main.$mob} {
+    padding-right: main.vwMax(44px);
+  }
 }
 
 .link {
@@ -32,9 +42,10 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  min-width: 0;
 
   @media #{main.$mob} {
-    gap: main.vwMax(10px);
+    gap: main.vwMax(8px);
   }
 
   &:link {
@@ -47,26 +58,42 @@
 
 .like {
   color: var(--border-color);
-  height: 27px;
+  flex: none;
   cursor: pointer;
 
+  // размер сердца масштабируем вместе с текстом названия
+  height: 27px;
+  width: 27px;
+
   @media #{main.$mob} {
-    height: main.vwMax(27px);
+    height: main.vwMax(16px);
+    width: main.vwMax(16px);
   }
 }
 
 .local {
   position: absolute;
   right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 13px;
-  bottom: 0px;
   display: flex;
   gap: 5px;
   align-items: center;
+
+  @media #{main.$mob} {
+    right: main.vwMax(8px);
+    font-size: main.vwMax(11px);
+    gap: main.vwMax(4px);
+  }
 }
 
 .remove {
   cursor: pointer;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(13px);
+  }
 }
 
 .--current {
