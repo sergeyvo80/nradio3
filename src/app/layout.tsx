@@ -7,6 +7,16 @@ import getStations from '@/api/stations';
 import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 import StationsInterface from '@/types/StationsInterface';
 
+import type { Metadata } from 'next';
+
+// SomaFM отдаёт 403 при Referer с http-origin (localhost-dev),
+// поэтому отсылаем браузеру не слать Referer на сторонние ресурсы
+export const metadata: Metadata = {
+  other: {
+    referrer: 'no-referrer',
+  },
+};
+
 
 const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) => {
 
