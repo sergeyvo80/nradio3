@@ -48,6 +48,7 @@
 .like {
   color: var(--border-color);
   height: 27px;
+  cursor: pointer;
 
   @media #{main.$mob} {
     height: main.vwMax(27px);

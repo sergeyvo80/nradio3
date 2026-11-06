@@ -11,6 +11,7 @@ interface StationInterface {
   stream: string;
   disabled?: boolean;
   isLiked?: boolean;
+  isLocal?: boolean;
 }
 
 export default StationInterface;

@@ -16,8 +16,8 @@ interface Props {
 const StationSelectorList = ({
   stations,
   slug,
+  onLike,
   onDeleteStation,
-  // onLike, // = () => {},
 }: Props) => (
   <ul className={styles.StationSelectorList}>
     {stations.map((station) => (
@@ -26,8 +26,8 @@ const StationSelectorList = ({
         key={station.slug}
         isCurrent={station.slug === slug}
         isLiked={station.isLiked || false}
-        onDeleteStation = {onDeleteStation}
-        // onLike={() => onLike(station.slug)}
+        onLike={onLike}
+        onDeleteStation={onDeleteStation}
       />
     ))}
   </ul>

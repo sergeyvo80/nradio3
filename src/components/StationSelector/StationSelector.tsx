@@ -15,13 +15,14 @@ interface Props {
 const StationSelector = ({
   stations,
   slug,
+  onLike,
   onDeleteStation,
-  // onLike, // = () => {},
 }: Props) => (
   <nav className={`${styles.StationSelector} StationSelector`}>
     <StationList
       stations={stations}
       slug={slug}
+      onLike={onLike}
       onDeleteStation={onDeleteStation}
     />
   </nav>
