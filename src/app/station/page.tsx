@@ -10,7 +10,7 @@ import type { Metadata } from 'next';
 
 
 interface Props {
-  slug: string;
+  station: string;
 }
 
 interface PageProps {
@@ -19,13 +19,13 @@ interface PageProps {
 }
 
 export const generateMetadata = async ({ searchParams }: PageProps): Promise<Metadata> => {
-  const { slug } = await searchParams;
+  const { station } = await searchParams;
 
   const stations = queryClient.getQueryData<StationsInterface>(['stations']);
-  const station = stations?.find((station) => station.slug === slug) || stationData;
+  const stationItem = stations?.find((listing) => listing.slug === station) || stationData;
 
   return {
-    title: `${station.title} -- ${META_TITLE}`,
+    title: `${stationItem.title} -- ${META_TITLE}`,
     description: META_DESCRIPTION,
     openGraph: {
       title: META_TITLE,
@@ -49,9 +49,9 @@ export const generateMetadata = async ({ searchParams }: PageProps): Promise<Met
 };
 
 const StationPage = async ({ searchParams }: PageProps): Promise<React.ReactNode> => {
-  const { slug } = await searchParams;
+  const { station } = await searchParams;
 
-  return <NRadioContainer slug={slug} />;
+  return <NRadioContainer slug={station} />;
 };
 
 export default StationPage;

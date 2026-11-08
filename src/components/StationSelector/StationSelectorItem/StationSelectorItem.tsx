@@ -43,7 +43,7 @@ const StationSelectorItem = memo(({
         station.isLocal ? styles['--local'] : '',
       ].join(' ')}
     >
-      <Link href={`?slug=${station.slug}`} className={`${styles.link} stationSelectorLink`} shallow={true}>
+      <Link href={`?station=${station.slug}`} className={`${styles.link} stationSelectorLink`} shallow={true}>
         <FontAwesomeIcon
           icon={faHeart}
           className={`${styles.like} stationSelectorLike`}

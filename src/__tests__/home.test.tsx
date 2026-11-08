@@ -7,7 +7,7 @@ import Home from '../app/page';
 describe('Page', () => {
   it('renders a heading', async () => {
     act(async () => {
-      await render(<Home searchParams={Promise.resolve({ slug: 'test' })} />);
+      await render(<Home searchParams={Promise.resolve({ station: 'test' })} />);
 
       const heading = await screen.findByRole('heading', { level: 1 });
       expect(heading).toHaveTextContent('NRadio');

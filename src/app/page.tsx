@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 const DEFAULT_SLUG = 'groove-salad-soma-fm';
 
 interface Props {
-  slug: string;
+  station: string;
 }
 
 interface PageProps {
@@ -19,13 +19,13 @@ interface PageProps {
 }
 
 export const generateMetadata = async ({ searchParams }: PageProps): Promise<Metadata> => {
-  const { slug } = await searchParams;
+  const { station } = await searchParams;
 
   const stations = queryClient.getQueryData<StationsInterface>(['stations']);
-  const station = stations?.find((station) => station.slug === (slug ?? DEFAULT_SLUG)) || stationData;
+  const stationItem = stations?.find((listing) => listing.slug === (station ?? DEFAULT_SLUG)) || stationData;
 
   return {
-    title: `${station.title} -- ${META_TITLE}`,
+    title: `${stationItem.title} -- ${META_TITLE}`,
     description: META_DESCRIPTION,
     openGraph: {
       title: META_TITLE,
@@ -49,9 +49,9 @@ export const generateMetadata = async ({ searchParams }: PageProps): Promise<Met
 };
 
 const HomePage = async ({ searchParams }: PageProps): Promise<React.ReactNode> => {
-  const { slug } = await searchParams;
+  const { station } = await searchParams;
 
-  return <NRadioContainer slug={slug || DEFAULT_SLUG} />;
+  return <NRadioContainer slug={station || DEFAULT_SLUG} />;
 };
 
 export default HomePage;
