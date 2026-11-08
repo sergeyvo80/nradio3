@@ -10,15 +10,17 @@
   z-index: 100;
   border-top: var(--current-color) solid 1px;
   box-shadow: 0px 0px 10px 0px var(--current-color);
-  padding: 25px main.$webSidePadding 0 main.$webSidePadding;
   color: var(--item-color);
   background-color: var(--second-bg-color);
   align-items: center;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  // отсуп снизу: плеер не прилипает к нижнему краю экрана
+  padding: 25px main.$webSidePadding 20px main.$webSidePadding;
 
   @media #{main.$mob} {
-    padding: main.vwMax(6px) main.vwMax(10px) 0;
+    // + safe-area на телефонах (полоска home-indicator)
+    padding: main.vwMax(6px) main.vwMax(10px) calc(main.vwMax(10px) + env(safe-area-inset-bottom, 0px));
     gap: main.vwMax(10px);
     row-gap: main.vwMax(2px);
     border-top-left-radius: main.vwMax(10px);
