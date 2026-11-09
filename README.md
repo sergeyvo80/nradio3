@@ -117,12 +117,19 @@ pnpm prettier
 
 Сервера нет — это serverless/static приложение, данные пользователей живут в браузере.
 
-### Vercel (основной вариант)
+### Vercel — деплой настроен
 
-1. Импорт GitHub-репозитория в Vercel: preset Next.js и pnpm подхватятся автоматически (`pnpm-lock.yaml` в корне).
-2. Environment Variables (Production): `NEXT_PUBLIC_GTM_ID`, `BASE_URL=https://<домен>`.
-3. Домен: сначала бесплатный `nradio3.vercel.app`; потом свой домен в Settings → Domains
-   (у регистратора: CNAME `@ → cname.vercel-dns.com`, проксирование Cloudflare выключить — DNS only).
+**Автодеплой из GitHub** ([sergeyvo80/nradio3](https://github.com/sergeyvo80/nradio3)) подключён:
+интеграция Vercel следит за этим репозиторием, и новая сборка делается по push'у в `main` в **https://nradio3.vercel.app**.
+Выпуск нового релиза — **вручную, по решению владельца** (push-нуть, когда готово собирать), а не по каждому коммиту.
+
+- Environment Variables: `NEXT_PUBLIC_GTM_ID`, `BASE_URL` — заведены в Settings → Environment Variables.
+- Свой домен позже: Settings → Domains (у регистратора: CNAME `@ → cname.vercel-dns.com`,
+  проксирование Cloudflare выключить — DNS only).
+- PWA: установлено как приложение (`chrome://apps` или ярлык); после каждого деплоя SW
+  подхватывает обновление (`skipWaiting`), старый кэш `nradio-v1` чистится на activate.
+- Проверки после релиза: сайт открывается, иконка install в Chrome на месте, DevTools → Application
+  → Service Workers — статус activated, кэш замещается свежим.
 
 План поддержки PWA: [docs/pwa-plan.md](docs/pwa-plan.md).
 

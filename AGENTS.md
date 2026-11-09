@@ -29,5 +29,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   никогда не сравнивать `station.uuid === localStation.uuid` (у json-станций uuid нет → `undefined === undefined`).
 - **Headless-скриншоты на macOS**: Chrome игнорирует `--window-size` < ~756px; узкие девайсы
   эмулировать iframe-обёрткой (см. историю: приём с `public/probe.html`).
+- **Деплой настроен: автодеплой из GitHub** ([sergeyvo80/nradio3](https://github.com/sergeyvo80/nradio3)) —
+  интеграция Vercel следит за репозиторием — **https://nradio3.vercel.app**; env `NEXT_PUBLIC_GTM_ID`, `BASE_URL`
+  заведены. Релиз **ручной**: владелец push'ует `main` сам, когда готов собирать — не по каждому коммиту.
+  Свой домен позже (Settings → Domains; `nradio.space` свободен). PWA-обновления после деплоя
+  подхватываются через `skipWaiting`, старый кэш чистится на activate.
+- Рабочий коммит только по команде пользователя («закомить»); gitmoji-формат (см. Preferences).
 
 
