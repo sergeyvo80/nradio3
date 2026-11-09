@@ -17,7 +17,7 @@ pnpm install
 ```bash
 pnpm dev        # http://localhost:3002
 pnpm build      # production-сборка
-pnpm start      # запуск production-сборки (порт 3002)
+pnpm start      # запуск production-сборки (порт 3003)
 ```
 
 ## .env.local
@@ -28,6 +28,16 @@ NEXT_PUBLIC_GTM_ID="G-0R759M4XXF"
 NEXT_TELEMETRY_DISABLED=1
 BASE_URL="http://nradio.pro"      # используется в meta-данных страниц
 ```
+
+## URL-параметры
+
+Выбранная станция задаётся query-параметром `station`:
+
+- `/?station=drone-zone-soma-fm` — главная
+- `/station?station=drone-zone-soma-fm` — альтернативный маршрут
+- `/station/drone-zone-soma-fm` — динамический маршрут
+
+Без параметра открывается станция по умолчанию (`groove-salad-soma-fm`, fallback — `src/data/station.json`).
 
 ## Как добавить станцию (без сервера)
 
@@ -62,7 +72,7 @@ BASE_URL="http://nradio.pro"      # используется в meta-данны�
 ## Структура (src/)
 
 ```
-app/         Next.js App Router: страницы, layout (SSR-гидрация данных, GTM)
+app/         Next.js App Router: страницы, layout (SSR-гидрация данных, GTM), manifest (PWA)
 api/         источники данных: stations.ts (json), localStorage (лайки, станции)
 components/  UI: Header, StationSelector, Station, Modal, NewStation, ColorPicker...
 containers/  клиентская логика: NRadioContainer (плеер), NRadioQueryContainer, ...
@@ -70,7 +80,21 @@ hooks/       useStations.ts — центальный хук: query + мутац�
 data/        stations.json (все станции), station.json (fallback default-станция)
 types/       TS-интерфейсы
 constants/   meta-константы
+docs/        планы и документация (например docs/pwa-plan.md)
 ```
+
+## Адаптивная вёрстка
+
+Дизайн мобильный «резиновый»: шрифты/отступы масштабируются функцией `vwMax()` (`src/styles/functions.scss`,
+clamp с base 320px и cap 2x) в диапазоне 0–1023px; ≥1024px — фиксированный десктоп. Список станций на всех
+устройствах — одна колонка. Каркас — grid `auto / minmax(0,1fr) / auto` c `height: 100svh`: хедер и плеер
+по контенту, список занимает остаток и прокручивается внутри.
+
+## Локальное состояние (offline-ready)
+
+- лайки station (`isLiked`), свои станции (`isLocal`, создаются с `uuid`) — хранятся в `localStorage('stations')`
+- при загрузке страницы `clientStateMergeMutate` (`src/hooks/useStations.ts`) сливает localStorage со списком станций: приоритет локальных лайков (по `slug`), пользовательские станции не теряются
+- поэтому приложение остаётся полностью функциональным UI-wise без сети (кроме самих аудио-потоков) — см. план PWA ниже
 
 ## Тесты
 
@@ -91,16 +115,25 @@ pnpm prettier
 
 ## Deploy
 
-Serverless-приложение без backend: достаточно nginx + static build.
+Сервера нет — это serverless/static приложение, данные пользователей живут в браузере.
 
-Действующий вариант деплоя — nginx конфиг в `.docker/nginx/`, systemd-сервис `.docker/nradio3.service`.
+### Vercel (основной вариант)
 
-Пример деплоя:
+1. Импорт GitHub-репозитория в Vercel: preset Next.js и pnpm подхватятся автоматически (`pnpm-lock.yaml` в корне).
+2. Environment Variables (Production): `NEXT_PUBLIC_GTM_ID`, `BASE_URL=https://<домен>`.
+3. Домен: сначала бесплатный `nradio3.vercel.app`; потом свой домен в Settings → Domains
+   (у регистратора: CNAME `@ → cname.vercel-dns.com`, проксирование Cloudflare выключить — DNS only).
+
+План поддержки PWA: [docs/pwa-plan.md](docs/pwa-plan.md).
+
+### Альтернатива: свой сервер (nginx + systemd)
 
 ```bash
 pnpm install && pnpm build
-# nginx: proxy_pass на порт 3002
-systemctl start nradio3.service
+# nginx: proxy_pass на порт 3003 (порт `pnpm start`)
+systemctl start nradio3.service   # юнит в .docker/nradio3.service
 ```
 
-Статьям, опубликованным локально пользователями, серверная модерация не требуется — все данные живут в браузере.
+Внимание: `.docker/nginx/nradio3.conf` — легаси времён сервера graphql/mongo (в нём остались
+локации `/graphql`, `/api`, `/mongo` и proxy_pass на 3002); при деплое на свой сервер его нужно
+почистить под текущий serverless-режим. Актуальный дефолт — Vercel (см. выше).
