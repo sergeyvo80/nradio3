@@ -6,8 +6,9 @@ import queryClient from '@/api/reactQueryClient';
 import getStations from '@/api/stations';
 import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 import StationsInterface from '@/types/StationsInterface';
+import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar/ServiceWorkerRegistrar';
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 // SomaFM отдаёт 403 при Referer с http-origin (localhost-dev),
 // поэтому отсылаем браузеру не слать Referer на сторонние ресурсы
@@ -15,6 +16,23 @@ export const metadata: Metadata = {
   other: {
     referrer: 'no-referrer',
   },
+  applicationName: 'NRadio',
+  appleWebApp: {
+    capable: true,
+    title: 'NRadio',
+    statusBarStyle: 'black-translucent',
+  },
+  icons: {
+    icon: '/icons/favicon-64.png',
+    apple: '/icons/apple-touch-icon.png',
+  },
+};
+
+// PWA: цвет системных элементов UI (строка заголовка браузера и пр.)
+export const viewport: Viewport = {
+  themeColor: '#202124',
+  width: 'device-width',
+  initialScale: 1,
 };
 
 
@@ -52,6 +70,7 @@ const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) =
         <NRadioQueryContainer state={state}>
           {children}
         </NRadioQueryContainer>
+        <ServiceWorkerRegistrar />
       </body>
     </html>
   );

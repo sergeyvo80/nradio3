@@ -41,10 +41,6 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: process.env.BASE_URL,
     },
-    icons: {
-      icon: '/favicon.ico',
-    },
-
   };
 };
 
