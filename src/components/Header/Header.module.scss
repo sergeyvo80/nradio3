@@ -26,6 +26,11 @@
 .title {
   display: inline;
   @include typography.h1;
+  // бокс строки строго до нижнего края букв + 2px:
+  // дефолтный (1.5em) давал ~12px невидимого свинца под NRadio,
+  // и версия визуально уезжала вниз. Формула под метрики Montserrat
+  // (asc 0.968 / desc 0.251, «NRadio» без выносных вниз + овершут 'o')
+  line-height: calc(0.75em + 5px);
 
   // на узких экранах длинное название сжимается с многоточием,
   // а кнопки справа остаются на виду
@@ -36,6 +41,44 @@
 
   @media #{main.$mob} {
     font-size: main.vwMax(20px);
+  }
+}
+
+// тексты логотипа в две строки: название (h1) + версия мелким зелёным под ним,
+// версия выровнена по правому краю NRadio; отступ задаётся .version margin-top
+.titles {
+  min-width: 0;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+// версия продукта («v3.1 (08.11.26)»): приглушённый зелёный в тон тёмной темы;
+// отступ 2px до NRadio зашит в line-height заголовка (см. .title), здесь margin-top: 0
+.version {
+  margin-right: 2px; // оптическое выравнивание по краю заголовка
+  color: #4CAF7D;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(9px);
+  }
+}
+
+// дата при версии: мельче и блеклее самого номера
+.versionDate {
+  color: inherit;
+  opacity: 0.55;
+  font-size: 9px;
+  font-weight: 500;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(8px);
   }
 }
 

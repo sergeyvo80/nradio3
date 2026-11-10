@@ -27,6 +27,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Локальное состояние**: лайки (`isLiked`), станции пользователя (`isLocal`+`uuid`) и тема живут
   в `localStorage('stations')`; восстановление — merge по `slug` в `useStations.ts` (`clientStateMergeMutate`);
   никогда не сравнивать `station.uuid === localStation.uuid` (у json-станций uuid нет → `undefined === undefined`).
+- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.1', `PRODUCT_VERSION_DATE` = '08.11.26'):
+  в шапке под NRadio показывается «v3.1 (08.11.26)» — номер зелёным #4CAF7D 11px, дата в скобках
+  мельче (9px) и блеклее (opacity .55, `.versionDate`); выравнивание по правому краю слова;
+  отступ 2px — зашит в line-height h1: `calc(0.75em + 5px)` под метрики Montserrat.
+  Правило: **перед каждым коммитом** инкрементить minor (цифру после точки) и обновлять дату на
+  дату коммита — версия в файле относится к текущему коммиту.
 - **Headless-скриншоты на macOS**: Chrome игнорирует `--window-size` < ~756px; узкие девайсы
   эмулировать iframe-обёрткой (см. историю: приём с `public/probe.html`).
 - **PWA реализована** (docs/pwa.md — устройство и обслуживание): `manifest.ts` обязан экспортировать
