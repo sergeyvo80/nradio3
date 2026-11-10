@@ -24,6 +24,7 @@ interface NRadioProps {
   onPause: () => void;
   onLike: (slug: string) => void;
   onNewStationAdd: (data: NewStationInterface) => void;
+  onSelect: (slug: string) => void;
   error?: string;
   onDeleteStation: (slug: string) => void;
 }
@@ -37,8 +38,9 @@ const NRadio = ({
   onPause,
   onLike,
   onNewStationAdd,
-  onDeleteStation,
+  onSelect,
   error,
+  onDeleteStation,
 }: NRadioProps): React.ReactNode => {
   const [isOpenAbout, setIsOpenAbout] = useState<boolean>(false);
   const [isOpenNewStation, setIsOpenNewStation] = useState<boolean>(false);
@@ -66,6 +68,7 @@ const NRadio = ({
         stations={stations}
         slug={station.slug}
         onLike={onLike}
+        onSelect={onSelect}
         onDeleteStation={onDeleteStation}
       />
       <Station

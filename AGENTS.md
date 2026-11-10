@@ -34,6 +34,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   `src/app/favicon.ico`, иконки в page-metadata не дублировать (заданы глобально в layout);
   в dev SW не регистрируется (глушит HMR), разово — `navigator.serviceWorker.register('/sw.js')`
   из консоли; кэш-версия SW меняется вручную `nradio-v1` → `nradio-v2`.
+- **Смена станции — клиентская** (`selectStation` в `NRadioContainer`): состояние + `history.replaceState`,
+  без запроса к серверу — работает офлайн. При hydration Next переписывает `<title>` (SSR-метадата),
+  поэтому `document.title` обновляется эффектом с ретраем 100 мс.
 - **Проверка prod-сервера после build**: `pnpm start` упрётся в занятый 3003 (`EADDRINUSE`) и
   старый процесс продолжит отдавать 404 — сначала `lsof -ti :3003 | xargs kill`.
 - **Деплой настроен: автодеплой из GitHub** ([sergeyvo80/nradio3](https://github.com/sergeyvo80/nradio3)) —

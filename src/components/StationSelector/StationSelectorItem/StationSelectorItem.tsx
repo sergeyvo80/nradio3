@@ -13,6 +13,7 @@ interface Props {
   isCurrent?: boolean;
   isLiked?: boolean;
   onLike?: (slug: string) => void;
+  onSelect?: (slug: string) => void;
   onDeleteStation: (slug: string) => void;
 }
 
@@ -21,6 +22,7 @@ const StationSelectorItem = memo(({
   isCurrent,
   isLiked,
   onLike,
+  onSelect,
   onDeleteStation,
 }: Props): React.ReactNode => {
 
@@ -33,6 +35,13 @@ const StationSelectorItem = memo(({
     onLike?.(station.slug);
   }, [station, onLike]);
 
+  // PWA/serverless: переключение станции — на клиенте (данные уже загружены),
+  // без запроса к серверу; href остаётся для SEO и «открыть в новой вкладке»
+  const onSelectHandler = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+    onSelect?.(station.slug);
+  }, [station, onSelect]);
+
   return (
     <li
       className={[
@@ -43,7 +52,7 @@ const StationSelectorItem = memo(({
         station.isLocal ? styles['--local'] : '',
       ].join(' ')}
     >
-      <Link href={`?station=${station.slug}`} className={`${styles.link} stationSelectorLink`} shallow={true}>
+      <Link href={`?station=${station.slug}`} className={`${styles.link} stationSelectorLink`} onClick={onSelectHandler}>
         <FontAwesomeIcon
           icon={faHeart}
           className={`${styles.like} stationSelectorLike`}

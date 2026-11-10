@@ -60,6 +60,7 @@ describe('Page', () => {
         onPause={() => {}}
         onLike={() => {}}
         onNewStationAdd={() => {}}
+        onSelect={() => {}}
         onDeleteStation={() => {}}
       />
     );

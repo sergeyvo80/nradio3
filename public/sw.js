@@ -6,7 +6,7 @@
  *  - прочие same-origin        -> network-first c фолбэком на кэш
  *  - cross-origin (аудио-стримы, GTM) -> не кэшируется вообще
  */
-const CACHE_NAME = 'nradio-v1';
+const CACHE_NAME = 'nradio-v2';
 const PRECACHE_URLS = ['/', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {
@@ -72,21 +72,25 @@ async function cacheFirst(request) {
 }
 
 async function networkFirst(request) {
-  try {
-    const response = await fetch(request);
-    if (response.ok && response.type === 'basic') {
-      const copy = response.clone();
-      caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-    }
+  const response = await fetch(request).catch(() => null);
+
+  if (response && response.ok && response.type === 'basic') {
+    const copy = response.clone();
+    caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
     return response;
-  } catch (error) {
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    // офлайн-фолбэк навигации: app-shell с главной
-    if (request.mode === 'navigate') {
-      const shell = await caches.match('/');
-      if (shell) return shell;
-    }
-    throw error;
   }
+  if (response && response.ok) return response;
+
+  // сеть недоступна или отдала ошибку (502/503, каптивный портал) - из кэша
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  // офлайн-фолбэк навигации: app-shell с главной
+  if (request.mode === 'navigate') {
+    const shell = await caches.match('/');
+    if (shell) return shell;
+  }
+
+  if (response) return response;
+  throw new Error(`${CACHE_NAME}: no cached response for ${request.url}`);
 }

@@ -9,6 +9,7 @@ import PlayerStateEnum from '@/types/PlayerStateEnum';
 import useStations from '@/hooks/useStations';
 import stationData from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
+import { META_TITLE } from '@/constants/meta';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
@@ -24,15 +25,31 @@ const NRadioContainer = ({ slug }: Props) => {
     deleteStationMutate,
   } = useStations();
 
-  const selectedStation = stations.find((station: StationInterface) => station.slug === slug) || stationData;
-
-  const [station, setStation] = useState<StationInterface>(selectedStation);
+  // PWA/serverless: активная станция живёт в клиентском состоянии,
+  // переключение — без обращения к серверу (важно для офлайна);
+  // серверный prop slug — только стартовое значение (SSR/ прямой заход по ссылке)
+  const [activeSlug, setActiveSlug] = useState<string>(slug);
+  const [station, setStation] = useState<StationInterface>(() =>
+    stations.find((station: StationInterface) => station.slug === slug) || stationData
+  );
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Paused);
   const [error, setError] = useState<string>();
 
   const like = useCallback((slug: string) => {
     likeMutate(slug);
   }, [likeMutate]);
+
+  // выбор станции из списка: состояние + адресная строка, без перехода к серверу
+  const selectStation = useCallback((nextSlug: string) => {
+    if (nextSlug === activeSlug) return;
+    setActiveSlug(nextSlug);
+    try {
+      // history.state сохраняем, чтобы не ломать внутреннее состояние Next-роутера
+      window.history.replaceState(window.history.state, '', `?station=${nextSlug}`);
+    } catch {
+      // окружения без history API — просто меняем станцию
+    }
+  }, [activeSlug]);
 
 
   // play() возвращает промис: браузер может отклонить его
@@ -97,8 +114,22 @@ const NRadioContainer = ({ slug }: Props) => {
   // автозапуск play() при монтировании убран: браузер блокирует воспроизведение
   // до первого взаимодействия пользователя (autoplay policy)
   useEffect(() => {
-    setStation(stations.find((station: StationInterface) => station.slug === slug) || stationData);
-  }, [slug, stations]);
+    setStation(stations.find((station: StationInterface) => station.slug === activeSlug) || stationData);
+  }, [activeSlug, stations]);
+
+  // синхронизация с адресной строкой: при загрузке офлайн-fallback shell отдаёт SSR-станцию
+  // по умолчанию, реальная выбранная станция — в ?station=; плюс back/forward в браузере
+  useEffect(() => {
+    const applyUrlSlug = () => {
+      const urlSlug = new URLSearchParams(window.location.search).get('station');
+      if (urlSlug) {
+        setActiveSlug(urlSlug);
+      }
+    };
+    applyUrlSlug();
+    window.addEventListener('popstate', applyUrlSlug);
+    return () => window.removeEventListener('popstate', applyUrlSlug);
+  }, []);
 
   // при смене станции продолжаем играть, если пользователь уже запустил плеер
   useEffect(() => {
@@ -112,6 +143,20 @@ const NRadioContainer = ({ slug }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- реагируем только на смену станции
   }, [station]);
 
+  // заголовок окна/вкладки — за станцией (в standalone-окне PWA виден сразу).
+  // Next при hydration переписывает <title> своим RSC-метадата (для офлайн-shell
+  // отдающей SSR «дефолтную» станцию), поэтому повторяем через 100 мс
+  useEffect(() => {
+    const title = `${station.title} -- ${META_TITLE}`;
+    document.title = title;
+    const retry = window.setTimeout(() => {
+      if (document.title !== title) {
+        document.title = title;
+      }
+    }, 100);
+    return () => window.clearTimeout(retry);
+  }, [station]);
+
   return (
     <NRadio
       title="NRadio"
@@ -123,6 +168,7 @@ const NRadioContainer = ({ slug }: Props) => {
       onPause={pause}
       onLike={like}
       onNewStationAdd={newStationAdd}
+      onSelect={selectStation}
       onDeleteStation={onDeleteStationHandler}
     />
   );
