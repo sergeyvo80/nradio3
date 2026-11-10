@@ -11,6 +11,8 @@ import stationData from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
 import { META_TITLE } from '@/constants/meta';
 
+const LAST_STATION_KEY = 'lastStation';
+
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
 interface Props {
@@ -44,10 +46,13 @@ const NRadioContainer = ({ slug }: Props) => {
     if (nextSlug === activeSlug) return;
     setActiveSlug(nextSlug);
     try {
+      // запоминаем последнюю выбранную (воспроизводимую) станцию — она
+      // откроется при следующем старте приложения/PWA
+      window.localStorage.setItem(LAST_STATION_KEY, nextSlug);
       // history.state сохраняем, чтобы не ломать внутреннее состояние Next-роутера
       window.history.replaceState(window.history.state, '', `?station=${nextSlug}`);
     } catch {
-      // окружения без history API — просто меняем станцию
+      // окружения без localStorage/history API — просто меняем станцию
     }
   }, [activeSlug]);
 
@@ -117,19 +122,46 @@ const NRadioContainer = ({ slug }: Props) => {
     setStation(stations.find((station: StationInterface) => station.slug === activeSlug) || stationData);
   }, [activeSlug, stations]);
 
-  // синхронизация с адресной строкой: при загрузке офлайн-fallback shell отдаёт SSR-станцию
-  // по умолчанию, реальная выбранная станция — в ?station=; плюс back/forward в браузере
+  // запуск: URL имеет приоритет (глубокая ссылка), затем восстановление последней
+  // воспроизводимой станции из localStorage — она же отражается в адресе
   useEffect(() => {
-    const applyUrlSlug = () => {
+    const urlSlug = new URLSearchParams(window.location.search).get('station');
+    if (urlSlug) {
+      setActiveSlug(urlSlug);
+      return;
+    }
+    try {
+      const saved = window.localStorage.getItem(LAST_STATION_KEY);
+      if (saved) {
+        setActiveSlug(saved);
+        window.history.replaceState(window.history.state, '', `?station=${saved}`);
+      }
+    } catch {
+      // нет доступа к localStorage — откроется стартовая станция
+    }
+  }, []);
+
+  // back/forward в браузере — синхронизация с ?station= из истории
+  useEffect(() => {
+    const onPopState = () => {
       const urlSlug = new URLSearchParams(window.location.search).get('station');
       if (urlSlug) {
         setActiveSlug(urlSlug);
       }
     };
-    applyUrlSlug();
-    window.addEventListener('popstate', applyUrlSlug);
-    return () => window.removeEventListener('popstate', applyUrlSlug);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
   }, []);
+
+  // каждая появившаяся на экране станция — «последняя воспроизводимая»
+  // (заодно перекрывает дефолт, записанный до завершения восстановления)
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(LAST_STATION_KEY, station.slug);
+    } catch {
+      // нет доступа к localStorage
+    }
+  }, [station]);
 
   // при смене станции продолжаем играть, если пользователь уже запустил плеер
   useEffect(() => {

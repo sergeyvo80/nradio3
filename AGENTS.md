@@ -27,8 +27,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Локальное состояние**: лайки (`isLiked`), станции пользователя (`isLocal`+`uuid`) и тема живут
   в `localStorage('stations')`; восстановление — merge по `slug` в `useStations.ts` (`clientStateMergeMutate`);
   никогда не сравнивать `station.uuid === localStation.uuid` (у json-станций uuid нет → `undefined === undefined`).
-- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.1', `PRODUCT_VERSION_DATE` = '08.11.26'):
-  в шапке под NRadio показывается «v3.1 (08.11.26)» — номер зелёным #4CAF7D 11px, дата в скобках
+- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2', `PRODUCT_VERSION_DATE` = '10.11.26'):
+  в шапке под NRadio показывается «v3.2 (10.11.26)» — номер зелёным #4CAF7D 11px, дата в скобках
   мельче (9px) и блеклее (opacity .55, `.versionDate`); выравнивание по правому краю слова;
   отступ 2px — зашит в line-height h1: `calc(0.75em + 5px)` под метрики Montserrat.
   Правило: **перед каждым коммитом** инкрементить minor (цифру после точки) и обновлять дату на
@@ -41,7 +41,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   в dev SW не регистрируется (глушит HMR), разово — `navigator.serviceWorker.register('/sw.js')`
   из консоли; кэш-версия SW меняется вручную `nradio-v1` → `nradio-v2`.
 - **Смена станции — клиентская** (`selectStation` в `NRadioContainer`): состояние + `history.replaceState`,
-  без запроса к серверу — работает офлайн. При hydration Next переписывает `<title>` (SSR-метадата),
+  без запроса к серверу — работает офлайн. Последняя воспроизводимая станция — в
+  `localStorage('lastStation')`, при старте приоритет: `?station=` → `lastStation` → дефолт.
+  При hydration Next переписывает `<title>` (SSR-метадата),
   поэтому `document.title` обновляется эффектом с ретраем 100 мс.
 - **Проверка prod-сервера после build**: `pnpm start` упрётся в занятый 3003 (`EADDRINUSE`) и
   старый процесс продолжит отдавать 404 — сначала `lsof -ti :3003 | xargs kill`.
