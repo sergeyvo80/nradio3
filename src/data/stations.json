@@ -4,13 +4,13 @@
     "title": "Drum & Bass [Bassdrive]",
     "website": "https://bassdrive.com",
     "dateAdded": "2026-11-05",
-    "dateUpdated": "2026-11-05",
+    "dateUpdated": "2026-11-10",
     "bitrate": 128,
     "tags": [
       "drumandbass",
       "jungle"
     ],
-    "stream": "http://ice.bassdrive.net:80/stream"
+    "stream": "https://ice.bassdrive.net/stream"
   },
   {
     "slug": "psy-chill-psyndora",
@@ -63,33 +63,6 @@
       "ambient"
     ],
     "stream": "https://hirschmilch.de:7001/psychill.mp3"
-  },
-  {
-    "slug": "progressive-psyradio-fm",
-    "dateAdded": "2019-08-27",
-    "dateUpdated": "2026-11-05",
-    "title": "Progressive - psyradio.fm",
-    "description": "progressive-psyradio-fm",
-    "tags": [
-      "progressive",
-      "dance"
-    ],
-    "website": "http://psyradio.fm",
-    "bitrate": 128,
-    "stream": "http://streamer.psyradio.org:8010/;listen.mp3"
-  },
-  {
-    "slug": "chillout-psyradio-fm",
-    "dateAdded": "2019-08-27",
-    "dateUpdated": "2026-11-05",
-    "title": "Chillout - psyradio.fm",
-    "description": "chillout-psyradio-fm",
-    "tags": [
-      "chillout"
-    ],
-    "website": "http://psyradio.fm",
-    "bitrate": 128,
-    "stream": "http://streamer.psyradio.org:8020/;listen.mp3"
   },
   {
     "slug": "groove-salad-soma-fm",
