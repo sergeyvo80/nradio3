@@ -54,10 +54,8 @@
   align-items: flex-end;
 }
 
-// версия продукта («v3.1 (08.11.26)»): приглушённый зелёный в тон тёмной темы;
-// отступ 2px до NRadio зашит в line-height заголовка (см. .title), здесь margin-top: 0
+// версия продукта («v3.2.1» / дата под ним): приглушённый зелёный в тон тёмной темы
 .version {
-  margin-right: 2px; // оптическое выравнивание по краю заголовка
   color: #4CAF7D;
   font-size: 11px;
   font-weight: 600;
@@ -70,25 +68,28 @@
   }
 }
 
-// дата при версии: мельче и блеклее самого номера
+// дата при версии: зелёная, как номер, мельче и блеклее, на строке ниже, без скобок
 .versionDate {
-  color: inherit;
+  display: block;
+  color: #4CAF7D;
   opacity: 0.55;
   font-size: 9px;
   font-weight: 500;
+  line-height: 1.2;
 
   @media #{main.$mob} {
     font-size: main.vwMax(8px);
   }
 }
 
-// логотип + название прижимаются влево и умеют сжиматься
+// логотип + название прижимаются влево и умеют сжиматься;
+// зазор иконка↔название задаётся только gap (nbsp убран — он раздувал отступ)
 .logo {
   margin-right: auto;
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--current-color);
   font-size: 30px;
 
@@ -101,22 +102,57 @@
   }
 
   @media #{main.$mob} {
-    gap: main.vwMax(6px);
+    gap: main.vwMax(10px);
     font-size: main.vwMax(22px);
   }
 }
 
-.color {
+// меню «⋮»: кнопка-три точки, выпадашка с пикером цвета и версией;
+// fixed-подложка закрывает экран и ловит клик вне меню
+.menu {
+  position: relative;
   flex: none;
 }
 
-.info, .newStation {
+.menuButton {
   color: var(--color);
   cursor: pointer;
   font-size: 20px;
-  flex: none;
+  padding: 4px 2px;
 
   @media #{main.$mob} {
     font-size: main.vwMax(17px);
+  }
+}
+
+.menuCover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 200;
+}
+
+.menuDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 210;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  padding: 10px 12px;
+  background-color: var(--second-bg-color);
+  border: var(--border-color) solid 1px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px 0 var(--shadow-color);
+
+  @media #{main.$mob} {
+    top: calc(100% + main.vwMax(8px));
+    padding: main.vwMax(8px) main.vwMax(10px);
+    gap: main.vwMax(8px);
+    border-radius: main.vwMax(10px);
   }
 }

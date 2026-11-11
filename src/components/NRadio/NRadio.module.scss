@@ -11,7 +11,8 @@
 
   @media #{main.$mob} {
     min-width: main.$minMobWidth;
-    max-width: main.$maxMobWidth;
+    // без max-width: на экранах 640–1023 контент растягивается на всю
+    // ширину (телефонам ≤640 ограничение и раньше ничего не делало)
     margin: 0 auto;
   }
 }

@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 
 import ColorPicker from '../ColorPicker/ColorPicker';
 import { PRODUCT_VERSION, PRODUCT_VERSION_DATE } from '@/constants/version';
@@ -13,35 +13,53 @@ interface Props {
   onOpenNewStation: () => void;
 }
 
-const Header = memo(({ title }: Props) => (
-  <header className={styles.Header}>
-    <div className={styles.logo}>
-      <FontAwesomeIcon icon={faPlayCircle} />
-      {'\u00a0'}
-      <div className={styles.titles}>
-        <h1 className={styles.title}>{title}</h1>
-        <span className={styles.version}>
-          {PRODUCT_VERSION}
-          {' '}
-          <span className={styles.versionDate}>({PRODUCT_VERSION_DATE})</span>
-        </span>
+const Header = memo(({ title }: Props) => {
+  // выпадающее меню «⋮»: пикер цвета + версия продукта
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  return (
+    <header className={styles.Header}>
+      <div className={styles.logo}>
+        <FontAwesomeIcon icon={faPlayCircle} />
+        <div className={styles.titles}>
+          <h1 className={styles.title}>{title}</h1>
+        </div>
       </div>
-    </div>
-    <div className={styles.color}><ColorPicker /></div>
-    {/* кнопки info и add скрыты по запросу — вернуть при необходимости:
-    <FontAwesomeIcon
-      icon={faInfoCircle}
-      className={styles.info}
-      onClick={onOpenAbout}
-    />
-    <FontAwesomeIcon
-      icon={faAdd}
-      className={`${styles.newStation} newStationButton`}
-      onClick={onOpenNewStation}
-    />
-    */}
-  </header>
-));
+      <div className={styles.menu}>
+        {/* подложка на весь экран: клик вне меню закрывает его */}
+        {menuOpen && <div className={styles.menuCover} onClick={closeMenu} />}
+        <FontAwesomeIcon
+          icon={faEllipsisVertical}
+          className={styles.menuButton}
+          onClick={toggleMenu}
+        />
+        {menuOpen && (
+          <div className={styles.menuDropdown}>
+            <div className={styles.menuItem}>
+              <span className={styles.version}>{PRODUCT_VERSION}</span>
+              <span className={styles.versionDate}>{PRODUCT_VERSION_DATE}</span>
+            </div>
+            <div className={styles.menuItem}><ColorPicker /></div>
+          </div>
+        )}
+      </div>
+      {/* кнопки info и add скрыты по запросу — вернуть при необходимости:
+      <FontAwesomeIcon
+        icon={faInfoCircle}
+        className={styles.info}
+        onClick={onOpenAbout}
+      />
+      <FontAwesomeIcon
+        icon={faAdd}
+        className={`${styles.newStation} newStationButton`}
+        onClick={onOpenNewStation}
+      />
+      */}
+    </header>
+  );
+});
 
 Header.displayName = 'Header';
 
