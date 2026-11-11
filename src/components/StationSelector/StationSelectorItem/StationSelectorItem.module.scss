@@ -2,9 +2,9 @@
 @use '../../../styles/typography';
 
 .StationSelectorItem {
-  border: var(--border-color) solid 1px;
-  box-shadow: -1px 1px 12px 0 var(--shadow-color);
-  margin: 5px 0;
+  // лёгкая карточка: только фон, без рамки и свечения —
+  // поверхность отделяется воздухом (см. макет design-mockup)
+  margin: 6px 0;
   border-radius: 10px;
   padding: 10px 10px;
   color: var(--item-color);
@@ -18,7 +18,7 @@
   gap: 10px;
 
   @media #{main.$mob} {
-    margin: main.vwMax(3px) 0;
+    margin: main.vwMax(5px) 0;
     padding: main.vwMax(5px) main.vwMax(6px) main.vwMax(5px) main.vwMax(8px);
     border-radius: main.vwMax(10px);
     gap: main.vwMax(6px);
@@ -93,13 +93,14 @@
   }
 }
 
+// текущая станция: подсветка фоном + тонкая акцентная планка слева
 .--current {
-  border-color: var(--current-color);
-  box-shadow: -1px 1px 12px 0 var(--current-color);
+  background-color: color-mix(in srgb, var(--current-color) 14%, var(--second-bg-color));
+  box-shadow: inset 3px 0 0 var(--current-color);
 }
 
 .--liked {
   .like {
-    color: var(--color);
+    color: var(--positive-color);
   }
 }

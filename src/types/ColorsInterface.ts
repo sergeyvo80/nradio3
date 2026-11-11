@@ -11,6 +11,7 @@ interface ColorsInterface {
   '--error-color':  string;
   '--link-color':  string;
   '--visited-color':  string;
+  '--positive-color':  string;
 };
 
 export default ColorsInterface;

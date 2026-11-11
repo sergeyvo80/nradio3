@@ -10,6 +10,7 @@ import useStations from '@/hooks/useStations';
 import stationData from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
 import { META_TITLE } from '@/constants/meta';
+import { initTheme } from '@/theme/theme';
 
 const LAST_STATION_KEY = 'lastStation';
 
@@ -121,6 +122,12 @@ const NRadioContainer = ({ slug }: Props) => {
   useEffect(() => {
     setStation(stations.find((station: StationInterface) => station.slug === activeSlug) || stationData);
   }, [activeSlug, stations]);
+
+  // тема: восстановить выбранную (Yaru/Aurora) при старте;
+  // custom-тему пикера восстанавливает сам ColorPicker
+  useEffect(() => {
+    initTheme();
+  }, []);
 
   // запуск: URL имеет приоритет (глубокая ссылка), затем восстановление последней
   // воспроизводимой станции из localStorage — она же отражается в адресе

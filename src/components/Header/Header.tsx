@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 
 import ColorPicker from '../ColorPicker/ColorPicker';
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import { PRODUCT_VERSION, PRODUCT_VERSION_DATE } from '@/constants/version';
 
 import styles from './Header.module.scss';
@@ -41,6 +42,7 @@ const Header = memo(({ title }: Props) => {
               <span className={styles.version}>{PRODUCT_VERSION}</span>
               <span className={styles.versionDate}>{PRODUCT_VERSION_DATE}</span>
             </div>
+            <div className={styles.menuItem}><ThemeSwitcher /></div>
             <div className={styles.menuItem}><ColorPicker /></div>
           </div>
         )}

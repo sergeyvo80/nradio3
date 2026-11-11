@@ -1,0 +1,39 @@
+@use '../../styles/main';
+
+// переключатель тем в меню «⋮»: две пилюли — Yaru / Aurora
+.ThemeSwitcher {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+
+  @media #{main.$mob} {
+    gap: main.vwMax(5px);
+  }
+}
+
+.option {
+  flex: 1;
+  padding: 6px 10px;
+  border: var(--border-color) solid 1px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--item-color);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+
+  // активная тема: заливка акцентным цветом
+  &.--active {
+    background-color: var(--current-color);
+    border-color: var(--current-color);
+    color: var(--bg-color);
+  }
+
+  @media #{main.$mob} {
+    padding: main.vwMax(5px) main.vwMax(8px);
+    border-radius: main.vwMax(8px);
+    font-size: main.vwMax(11px);
+  }
+}

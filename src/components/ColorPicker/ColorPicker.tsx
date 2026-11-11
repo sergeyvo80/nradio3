@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
 import ColorsInterface from '@/types/ColorsInterface';
+import { getTheme, setTheme, THEME_EVENT } from '@/theme/theme';
 
 import styles from './ColorPicker.module.scss';
 
@@ -25,6 +26,7 @@ const colors: ColorsInterface = {
   '--error-color': '#E98380',
   '--link-color': '#E59A6F',
   '--visited-color': '#6AD1C7',
+  '--positive-color': '#4CAF7D',
 };
 
 type ColorKeys = keyof typeof colors;
@@ -112,14 +114,18 @@ const ColorPicker = (): React.ReactNode => {
       });
       return newState;
     });
+    // произвольная тема через пикер перекрывает named-тему —
+    // оповещаем переключатель тем
+    window.dispatchEvent(new Event(THEME_EVENT));
   }, [setState]);
 
   const resetToDefault = () => {
     setState(defaultState);
-    for (const color in colors) {
-      document.documentElement.style.setProperty(color, null);
-    }
     setLocalStorage('colorState', defaultState);
+    // сброс = возврат к выбранной named-теме (Yaru/Aurora),
+    // а не к старой жёсткой палитре; getTheme уже видит,
+    // что colorState очищен, и вернёт named-тему
+    setTheme(getTheme());
   };
 
   useEffect(() => {
@@ -129,6 +135,19 @@ const ColorPicker = (): React.ReactNode => {
       handleChange(colorState.colorFull);
     }
   }, [handleChange]);
+
+  // named-тема включена в другом месте (переключатель в меню «⋮») —
+  // приводим локальное состояние пикера к дефолту, чтобы свотч не показывал
+  // цвет прежней custom-темы
+  useEffect(() => {
+    const onThemeChange = () => {
+      if (getTheme() !== 'custom') {
+        setState(defaultState);
+      }
+    };
+    window.addEventListener(THEME_EVENT, onThemeChange);
+    return () => window.removeEventListener(THEME_EVENT, onThemeChange);
+  }, []);
 
   // тема считается изменённой, когда её hex отличается от дефолтного —
   // крест сброса показываем только в этом случае

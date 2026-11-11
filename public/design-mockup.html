@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>NRadio — концепты дизайна</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:#101013;
+    font-family:-apple-system, 'Segoe UI', Roboto, sans-serif;
+    color:#F6F5F4;
+    display:flex; gap:56px; align-items:flex-start; justify-content:center;
+    padding:48px; min-height:100vh;
+    zoom:.62;
+  }
+  .variant { display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .caption { font-size:15px; color:#9B98A0; letter-spacing:.3px; }
+  .caption b { color:#F6F5F4; font-weight:600; }
+  .phone {
+    width:390px; height:800px; border-radius:28px; overflow:hidden;
+    display:grid; grid-template-rows:auto minmax(0,1fr) auto;
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+  }
+
+  /* ============ Палитра A: Yaru (современный Ubuntu) ============ */
+  .a { background:#1B1922; color:#F4F2F7;
+    --bg:#1B1922; --panel:#26232E; --panel-hi:#2E2A3A;
+    --text:#F4F2F7; --muted:#8B8794; --line:#322E3D;
+    --accent:#E95420; --green:#26A269; --green-hi:#33D17A;
+  }
+  /* ============ Палитра B: Aurora (классический терминал Ubuntu) ============ */
+  .b { background:#300A24; color:#F3EDEA;
+    --bg:#300A24; --panel:#3D2140; --panel-hi:#4A2850;
+    --text:#F3EDEA; --muted:#9A7E93; --line:#4A2C4D;
+    --accent:#F5894B; --green:#8AE234; --green-hi:#A7F05A;
+  }
+
+  /* ---------- Header ---------- */
+  .hd {
+    display:flex; align-items:center; gap:10px;
+    padding:14px 18px; background:var(--panel);
+  }
+  .hd .logo { width:26px; height:26px; border-radius:50%;
+    background:var(--accent); display:grid; place-items:center; flex:none; }
+  .hd .logo::after { content:''; width:0; height:0;
+    border-left:9px solid var(--bg); border-top:6px solid transparent;
+    border-bottom:6px solid transparent; margin-left:3px; }
+  .hd .name { font-size:19px; font-weight:700; letter-spacing:.2px; }
+  .hd .ver { margin-left:auto; text-align:right; line-height:1.25; }
+  .hd .ver .n { font-size:11px; font-weight:600; color:var(--green-hi); }
+  .hd .ver .d { font-size:9px; color:var(--green); opacity:.75; }
+  .dots { margin-left:10px; color:var(--muted); font-size:20px; letter-spacing:1px; }
+
+  /* ---------- List ---------- */
+  .list { padding:14px 12px; display:flex; flex-direction:column; gap:8px; overflow:hidden; }
+  .section { font-size:10px; font-weight:700; letter-spacing:1.6px;
+    color:var(--muted); text-transform:uppercase; padding:4px 8px 2px; }
+  .item {
+    display:flex; align-items:center; gap:12px;
+    padding:13px 14px; border-radius:12px;
+    background:var(--panel);
+    font-size:15px; font-weight:600;
+  }
+  .item .t { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text); }
+  .item .sub { font-size:11px; font-weight:500; color:var(--muted); margin-top:2px; }
+  .item .txt { min-width:0; display:flex; flex-direction:column; }
+  .star { margin-left:auto; flex:none; width:18px; height:18px; opacity:.45;
+    color:var(--muted); }
+  .star.on { opacity:1; color:var(--green-hi); }
+  /* текущая станция: тонкая оранжевая планка слева, без свечения */
+  .item.cur { background:var(--panel-hi); box-shadow:inset 3px 0 0 var(--accent); }
+  .item.cur .eq { margin-left:auto; display:flex; gap:3px; align-items:flex-end; height:14px; flex:none; }
+  .item .eq i { width:3px; background:var(--accent); border-radius:1px; display:block; }
+  .item .eq i:nth-child(1){ height:6px; } .item .eq i:nth-child(2){ height:12px; }
+  .item .eq i:nth-child(3){ height:9px; } .item .eq i:nth-child(4){ height:14px; }
+  .item.cur .star { margin-left:12px; }
+
+  /* ---------- Player ---------- */
+  .pl { display:flex; align-items:center; gap:14px;
+    padding:16px 18px; background:var(--panel);
+    border-top:1px solid var(--line); }
+  .play { width:46px; height:46px; border-radius:50%; flex:none;
+    background:var(--accent); display:grid; place-items:center; }
+  .play::after { content:''; width:0; height:0;
+    border-left:14px solid var(--bg); border-top:9px solid transparent;
+    border-bottom:9px solid transparent; margin-left:4px; }
+  .pl .txt { min-width:0; }
+  .pl .t { font-size:16px; font-weight:700; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis; }
+  .pl .s { font-size:12px; color:var(--green-hi); margin-top:2px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .pl .star { width:22px; height:22px; margin-left:auto; }
+</style>
+</head>
+<body>
+
+  <!-- ============ Вариант A: Yaru ============ -->
+  <div class="variant">
+    <div class="phone a">
+      <div class="hd">
+        <div class="logo"></div>
+        <div class="name">NRadio</div>
+        <div class="ver"><div class="n">v3.2.2</div><div class="d">11.11.2026</div></div>
+        <div class="dots">⋮</div>
+      </div>
+      <div class="list">
+        <div class="section">Понравившиеся</div>
+        <div class="item">
+          <div class="txt"><span class="t">Drum &amp; Bass [Bassdrive]</span></div>
+          <div class="star on">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">Psy Chill [Psyndora]</span></div>
+          <div class="star on">★</div>
+        </div>
+        <div class="section">Все станции</div>
+        <div class="item cur">
+          <div class="txt"><span class="t">Groove Salad [SomaFM]</span>
+            <span class="sub">ambient · играет</span></div>
+          <div class="eq"><i></i><i></i><i></i><i></i></div>
+          <div class="star on">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">Old Psy &amp; Goa [Goa Base]</span></div>
+          <div class="star">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">Psy Prog [Hirschmilch]</span></div>
+          <div class="star">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">The Trip [SomaFM]</span></div>
+          <div class="star">★</div>
+        </div>
+      </div>
+      <div class="pl">
+        <div class="play"></div>
+        <div class="txt">
+          <div class="t">Groove Salad [SomaFM]</div>
+          <div class="s">128 kbps · SomaFM</div>
+        </div>
+        <div class="star on">★</div>
+      </div>
+    </div>
+    <div class="caption"><b>A · Yaru</b> — тёмно-графитовый, оранжевый акцент, зелёные звёзды</div>
+  </div>
+
+  <!-- ============ Вариант B: Aurora ============ -->
+  <div class="variant">
+    <div class="phone b">
+      <div class="hd">
+        <div class="logo"></div>
+        <div class="name">NRadio</div>
+        <div class="ver"><div class="n">v3.2.2</div><div class="d">11.11.2026</div></div>
+        <div class="dots">⋮</div>
+      </div>
+      <div class="list">
+        <div class="section">Понравившиеся</div>
+        <div class="item">
+          <div class="txt"><span class="t">Drum &amp; Bass [Bassdrive]</span></div>
+          <div class="star on">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">Psy Chill [Psyndora]</span></div>
+          <div class="star on">★</div>
+        </div>
+        <div class="section">Все станции</div>
+        <div class="item cur">
+          <div class="txt"><span class="t">Groove Salad [SomaFM]</span>
+            <span class="sub">ambient · играет</span></div>
+          <div class="eq"><i></i><i></i><i></i><i></i></div>
+          <div class="star on">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">Old Psy &amp; Goa [Goa Base]</span></div>
+          <div class="star">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">Psy Prog [Hirschmilch]</span></div>
+          <div class="star">★</div>
+        </div>
+        <div class="item">
+          <div class="txt"><span class="t">The Trip [SomaFM]</span></div>
+          <div class="star">★</div>
+        </div>
+      </div>
+      <div class="pl">
+        <div class="play"></div>
+        <div class="txt">
+          <div class="t">Groove Salad [SomaFM]</div>
+          <div class="s">128 kbps · SomaFM</div>
+        </div>
+        <div class="star on">★</div>
+      </div>
+    </div>
+    <div class="caption"><b>B · Aurora</b> — фиолетовый классического терминала Ubuntu, тёплый оранжевый</div>
+  </div>
+
+</body>
+</html>

@@ -27,7 +27,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Локальное состояние**: лайки (`isLiked`), станции пользователя (`isLocal`+`uuid`) и тема живут
   в `localStorage('stations')`; восстановление — merge по `slug` в `useStations.ts` (`clientStateMergeMutate`);
   никогда не сравнивать `station.uuid === localStation.uuid` (у json-станций uuid нет → `undefined === undefined`).
-- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.2', `PRODUCT_VERSION_DATE` = '11.11.2026'):
+- **Темы Yaru/Aurora** (`src/theme/theme.ts`, переключатель `ThemeSwitcher` в меню «⋮» шапки):
+  две named-темы из макета `public/design-mockup.html` — **yaru** (графитово-фиолетовый #1B1922,
+  оранжевый #E95420, зелёный #33D17A) и **aurora** (классический терминал Ubuntu #300A24,
+  тёплый оранжевый #F5894B, лаймовый #8AE234). Хранение: `localStorage('theme')` = yaru|aurora;
+  custom-тема пикера определяется по `colorState.colorFull` (getTheme → 'custom'). Новый ключ
+  палитры `--positive-color` (зелёный: версия, дата, лайкнутые звёзды — `.--liked .like`).
+  Карточки станций — без рамок/теней, только фон + воздух; текущая станция: `inset 3px` планка
+  `--current-color` + подмес 14% акцента в фон (color-mix). initTheme() зовётся из NRadioContainer
+  при монтировании; setTheme снимает custom (удаляет colorState); сброс пикера возвращает named-тему.
+- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.3', `PRODUCT_VERSION_DATE` = '11.11.2026'):
   формат «v + major.minor.patch» — **перед каждым коммитом инкрементить ТРЕТЬЕ число (patch)**
   и обновлять дату на дату коммита; версия в файле относится к текущему коммиту. Показывается
   в выпадающем меню «⋮» шапки (`menuDropdown` в Header): номер зелёным #4CAF7D 11px,

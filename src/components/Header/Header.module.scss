@@ -54,9 +54,9 @@
   align-items: flex-end;
 }
 
-// версия продукта («v3.2.1» / дата под ним): приглушённый зелёный в тон тёмной темы
+// версия продукта: зелёный акцент темы (var(--positive-color))
 .version {
-  color: #4CAF7D;
+  color: var(--positive-color);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -68,10 +68,10 @@
   }
 }
 
-// дата при версии: зелёная, как номер, мельче и блеклее, на строке ниже, без скобок
+// дата при версии: тот же зелёный, мельче и блеклее, на строке ниже, без скобок
 .versionDate {
   display: block;
-  color: #4CAF7D;
+  color: var(--positive-color);
   opacity: 0.55;
   font-size: 9px;
   font-weight: 500;
