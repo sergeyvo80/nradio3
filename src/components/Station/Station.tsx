@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faSpinner, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faSpinner, faStar } from '@fortawesome/free-solid-svg-icons';
 
 import StationInterface from '@/types/StationInterface';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
@@ -39,16 +39,16 @@ const Station = memo(({
       )}
     </div>
 
+    <h2 className={styles.title}>{station.title}</h2>
+
     <div className={styles.actions}>
       <FontAwesomeIcon
-        icon={faHeart}
+        icon={faStar}
         size="3x"
         className={styles.like}
         onClick={() => onLike(station.slug)}
       />
     </div>
-
-    <h2 className={styles.title}>{station.title}</h2>
 
     {error !== undefined && <div className={styles.error}>Error: {error}</div>}
   </main>

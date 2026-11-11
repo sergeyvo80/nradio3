@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { faHeart, faRemove } from '@fortawesome/free-solid-svg-icons';
+import { faRemove, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { memo, useCallback } from 'react';
 
@@ -29,8 +29,7 @@ const StationSelectorItem = memo(({
   const onDeleteStationHandler = useCallback(() => onDeleteStation(station.slug), [station, onDeleteStation]);
 
   const onLikeHandler = useCallback((event: React.MouseEvent) => {
-    // клик по сердцу внутри Link: не переходить на станцию, только лайк
-    event.stopPropagation();
+    // звезда-лайк живёт вне Link: клик по ней только лайкает
     event.preventDefault();
     onLike?.(station.slug);
   }, [station, onLike]);
@@ -53,11 +52,6 @@ const StationSelectorItem = memo(({
       ].join(' ')}
     >
       <Link href={`?station=${station.slug}`} className={`${styles.link} stationSelectorLink`} onClick={onSelectHandler}>
-        <FontAwesomeIcon
-          icon={faHeart}
-          className={`${styles.like} stationSelectorLike`}
-          onClick={onLikeHandler}
-        />
         <h3 className={styles.title}>{station.title}</h3>
       </Link>
       {station.isLocal && (
@@ -66,6 +60,11 @@ const StationSelectorItem = memo(({
           <FontAwesomeIcon icon={faRemove} onClick={onDeleteStationHandler} className={styles.remove} />
         </div>
       )}
+      <FontAwesomeIcon
+        icon={faStar}
+        className={`${styles.like} stationSelectorLike`}
+        onClick={onLikeHandler}
+      />
     </li>
   );
 });

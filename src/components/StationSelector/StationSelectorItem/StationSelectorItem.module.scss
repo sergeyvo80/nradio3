@@ -12,10 +12,16 @@
   font-weight: bold;
   position: relative;
 
+  // строка: название слева (умеет сжиматься), звезда лайка справа
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
   @media #{main.$mob} {
     margin: main.vwMax(3px) 0;
     padding: main.vwMax(5px) main.vwMax(6px) main.vwMax(5px) main.vwMax(8px);
     border-radius: main.vwMax(10px);
+    gap: main.vwMax(6px);
   }
 }
 
@@ -27,13 +33,17 @@
   @include typography.h3;
 }
 
-// у локальных станций справа живёт метка "local" + крест удаления -
-// резервируем место под неё
-.--local .title {
-  padding-right: 60px;
+// метка "local" + крест удаления у локальных станций — справа, перед звездой
+.local {
+  font-size: 13px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex: none;
 
   @media #{main.$mob} {
-    padding-right: main.vwMax(44px);
+    font-size: main.vwMax(11px);
+    gap: main.vwMax(4px);
   }
 }
 
@@ -41,12 +51,8 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 15px;
   min-width: 0;
-
-  @media #{main.$mob} {
-    gap: main.vwMax(8px);
-  }
+  flex: 1;
 
   &:link {
     color: var(--link-color);
@@ -61,7 +67,7 @@
   flex: none;
   cursor: pointer;
 
-  // размер сердца масштабируем вместе с текстом названия
+  // размер звезды масштабируем вместе с текстом названия
   height: 27px;
   width: 27px;
 
@@ -71,20 +77,11 @@
   }
 }
 
-.local {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 13px;
-  display: flex;
-  gap: 5px;
-  align-items: center;
+.remove {
+  cursor: pointer;
 
   @media #{main.$mob} {
-    right: main.vwMax(8px);
-    font-size: main.vwMax(11px);
-    gap: main.vwMax(4px);
+    font-size: main.vwMax(13px);
   }
 }
 
