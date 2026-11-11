@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SketchPicker,  RGBColor, HSLColor, ColorResult } from 'react-color';
 import Color from 'color';
-import { faRemove } from '@fortawesome/free-solid-svg-icons';
+import { faRemove, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
@@ -101,7 +101,9 @@ const ColorPicker = (): React.ReactNode => {
     calculateColorScheme(color.hex);
 
     setState(prevState => {
-      const newState = { ...prevState, color: color.rgb };
+      // colorHex нужен в состоянии: по нему определяем, что тема кастомная
+      // (крест сброса показывается только тогда)
+      const newState = { ...prevState, color: color.rgb, colorHex: color.hex };
       setLocalStorage('colorState', {
         ...prevState,
         color: color.rgb,
@@ -128,6 +130,10 @@ const ColorPicker = (): React.ReactNode => {
     }
   }, [handleChange]);
 
+  // тема считается изменённой, когда её hex отличается от дефолтного —
+  // крест сброса показываем только в этом случае
+  const isCustomTheme = state.colorHex !== defaultState.colorHex;
+
   return (
     <div className={styles.ColorPicker}>
       <div>
@@ -135,15 +141,27 @@ const ColorPicker = (): React.ReactNode => {
           <div className={styles.color} style={{ backgroundColor: `rgba(${state.color.r}, ${state.color.g}, ${state.color.b}, ${state.color.a})` }} />
         </div>
         {state.displayColorPicker ? (
-          <div className={styles.popover}>
+          <>
+            {/* подложка на весь экран — клик вне окна закрывает пикер;
+                вне .popover, т.к. его transform делает fixed-детей
+                относительными поповера, а не экрана */}
             <div className={styles.cover} onClick={handleClose} />
-            <SketchPicker color={state.color} onChange={handleChange} />
-          </div>
+            <div className={styles.popover}>
+              <FontAwesomeIcon
+                icon={faXmark}
+                className={styles.close}
+                onClick={handleClose}
+              />
+              <SketchPicker color={state.color} onChange={handleChange} />
+            </div>
+          </>
         ) : null}
       </div>
-      <div className={styles.remove}>
-        <FontAwesomeIcon icon={faRemove} onClick={resetToDefault} />
-      </div>
+      {isCustomTheme && (
+        <div className={styles.remove}>
+          <FontAwesomeIcon icon={faRemove} onClick={resetToDefault} />
+        </div>
+      )}
     </div>
   );
 

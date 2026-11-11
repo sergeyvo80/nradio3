@@ -21,9 +21,14 @@
   cursor: pointer;
 }
 
+// поповер пикера центрируется на экране (fixed): при absolute-позиции
+// он уезжал за правый край, т.к. свотч прижат к правому краю шапки
 .popover {
-  position: absolute;
-  z-index: 2;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 300;
 }
 
 .cover {
@@ -32,6 +37,22 @@
   right: 0px;
   bottom: 0px;
   left: 0px;
+}
+
+// крест закрытия — вне окна пикера, справа от него по верхней кромке
+// (отрицательные offset: .popover не обрезает содержимое)
+.close {
+  position: absolute;
+  top: 0;
+  right: -48px;
+  color: var(--color);
+  cursor: pointer;
+  font-size: 16px;
+
+  @media #{main.$mob} {
+    right: main.vwMax(-48px);
+    font-size: main.vwMax(16px);
+  }
 }
 
 .remove {

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faPlayCircle, faAdd } from '@fortawesome/free-solid-svg-icons';
+import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 
 import ColorPicker from '../ColorPicker/ColorPicker';
 import { PRODUCT_VERSION, PRODUCT_VERSION_DATE } from '@/constants/version';
@@ -13,7 +13,7 @@ interface Props {
   onOpenNewStation: () => void;
 }
 
-const Header = memo(({ title, onOpenAbout, onOpenNewStation }: Props) => (
+const Header = memo(({ title }: Props) => (
   <header className={styles.Header}>
     <div className={styles.logo}>
       <FontAwesomeIcon icon={faPlayCircle} />
@@ -28,16 +28,18 @@ const Header = memo(({ title, onOpenAbout, onOpenNewStation }: Props) => (
       </div>
     </div>
     <div className={styles.color}><ColorPicker /></div>
+    {/* кнопки info и add скрыты по запросу — вернуть при необходимости:
     <FontAwesomeIcon
       icon={faInfoCircle}
       className={styles.info}
       onClick={onOpenAbout}
-    />      
+    />
     <FontAwesomeIcon
       icon={faAdd}
       className={`${styles.newStation} newStationButton`}
       onClick={onOpenNewStation}
     />
+    */}
   </header>
 ));
 
