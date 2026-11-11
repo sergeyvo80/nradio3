@@ -36,7 +36,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   Карточки станций — без рамок/теней, только фон + воздух; текущая станция: `inset 3px` планка
   `--current-color` + подмес 14% акцента в фон (color-mix). initTheme() зовётся из NRadioContainer
   при монтировании; setTheme снимает custom (удаляет colorState); сброс пикера возвращает named-тему.
-- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.3', `PRODUCT_VERSION_DATE` = '11.11.2026'):
+  Все элементы макета применены: список разбит на секции «Понравившиеся»/«Все станции»
+  (StationSelectorList, заголовки только при двух группах), у текущей станции подпись
+  «`tags[0]` · играет» + мини-эквалайзер (4 полоски, keyframes `eq`, `prefers-reduced-motion`
+  отключает), в плеере круглая акцентная кнопка play (`.playCircle`, треугольник цвета фона) и
+  подпись «`bitrate` kbps · источник» (источник — из скобок названия, `src/utils/getStationSource.ts`).
+- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.4', `PRODUCT_VERSION_DATE` = '11.11.2026'):
   формат «v + major.minor.patch» — **перед каждым коммитом инкрементить ТРЕТЬЕ число (patch)**
   и обновлять дату на дату коммита; версия в файле относится к текущему коммиту. Показывается
   в выпадающем меню «⋮» шапки (`menuDropdown` в Header): номер зелёным #4CAF7D 11px,

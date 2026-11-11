@@ -1,6 +1,25 @@
+@use '../../../styles/main';
+
 .StationSelectorList {
   list-style: none;
   margin-block: 0;
   margin-inline: 0;
   padding: 0;
+}
+
+// заголовок секции («Понравившиеся», «Все станции»): капс, приглушённый
+.section {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--item-color);
+  opacity: 0.5;
+  padding: 8px 8px 2px;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(9px);
+    letter-spacing: main.vwMax(1.4px);
+    padding: main.vwMax(6px) main.vwMax(8px) main.vwMax(2px);
+  }
 }

@@ -30,7 +30,6 @@
 
 
 .player {
-  cursor: pointer;
   flex: none;
 
   svg {
@@ -39,6 +38,57 @@
     @media #{main.$mob} {
       font-size: main.vwMax(32px);
     }
+  }
+}
+
+// круглая акцентная кнопка play: треугольник цвета фона внутри
+.playCircle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--current-color);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  @media #{main.$mob} {
+    width: main.vwMax(38px);
+    height: main.vwMax(38px);
+  }
+}
+
+// иконка внутри круга — цвет фона, компактный размер
+.playIcon {
+  color: var(--bg-color);
+  font-size: 20px !important;
+  margin-left: 2px; // оптическое центрирование треугольника
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(16px) !important;
+  }
+}
+
+// обёртка названия + подписи
+.txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+// подпись под названием в плеере: «128 kbps · SomaFM»
+.sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--positive-color);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(10px);
+    margin-top: main.vwMax(2px);
   }
 }
 

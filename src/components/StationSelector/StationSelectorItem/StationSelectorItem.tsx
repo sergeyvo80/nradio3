@@ -52,8 +52,21 @@ const StationSelectorItem = memo(({
       ].join(' ')}
     >
       <Link href={`?station=${station.slug}`} className={`${styles.link} stationSelectorLink`} onClick={onSelectHandler}>
-        <h3 className={styles.title}>{station.title}</h3>
+        <div className={styles.txt}>
+          <h3 className={styles.title}>{station.title}</h3>
+          {/* подпись только у текущей: жанр · играет (как в макете) */}
+          {isCurrent && (
+            <span className={styles.sub}>
+              {station.tags[0]} · играет
+            </span>
+          )}
+        </div>
       </Link>
+      {isCurrent && (
+        <div className={styles.eq} aria-hidden="true">
+          <i /><i /><i /><i />
+        </div>
+      )}
       {station.isLocal && (
         <div className={styles.local}>
           local

@@ -4,6 +4,7 @@ import { faPlay, faPause, faSpinner, faStar } from '@fortawesome/free-solid-svg-
 
 import StationInterface from '@/types/StationInterface';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
+import getStationSource from '@/utils/getStationSource';
 
 import styles from './Station.module.scss';
 
@@ -25,21 +26,35 @@ const Station = memo(({
   error,
 }: Props): React.ReactNode => (
   <main className={[styles.Station, station.isLiked ? styles['--liked'] : ''].join(' ')}>
+    {/* круглая кнопка play: акцентный круг, треугольник цвета фона (как в макете) */}
     <div className={styles.player}>
       {(playerState === PlayerStateEnum.Paused || playerState === undefined) && (
-        <FontAwesomeIcon icon={faPlay} size="3x" onClick={onPlay} />
+        <div className={styles.playCircle} onClick={onPlay}>
+          <FontAwesomeIcon icon={faPlay} className={styles.playIcon} />
+        </div>
       )}
 
       {playerState === PlayerStateEnum.Playing && (
-        <FontAwesomeIcon icon={faPause} size="3x" onClick={onPause} />
+        <div className={styles.playCircle} onClick={onPause}>
+          <FontAwesomeIcon icon={faPause} className={styles.playIcon} />
+        </div>
       )}
 
       {(playerState === PlayerStateEnum.Play || playerState === PlayerStateEnum.Pause) && (
-        <FontAwesomeIcon icon={faSpinner} pulse size="3x" />
+        <div className={styles.playCircle}>
+          <FontAwesomeIcon icon={faSpinner} pulse className={styles.playIcon} />
+        </div>
       )}
     </div>
 
-    <h2 className={styles.title}>{station.title}</h2>
+    <div className={styles.txt}>
+      <h2 className={styles.title}>{station.title}</h2>
+      {/* подпись: битрейт · источник */}
+      <div className={styles.sub}>
+        {station.bitrate ? `${station.bitrate} kbps · ` : ''}
+        {getStationSource(station)}
+      </div>
+    </div>
 
     <div className={styles.actions}>
       <FontAwesomeIcon

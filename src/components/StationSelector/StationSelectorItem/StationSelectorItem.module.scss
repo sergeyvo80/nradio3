@@ -62,6 +62,69 @@
   }
 }
 
+// обёртка названия + подписи: колонка, сжимается под скобки/звёзды
+.txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+// подпись текущей станции: «жанр · играет»
+.sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--positive-color);
+  opacity: 0.85;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(10px);
+    margin-top: main.vwMax(2px);
+  }
+}
+
+// мини-эквалайзер «играет» у текущей станции: 4 оранжевые полоски
+.eq {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 14px;
+  flex: none;
+
+  i {
+    width: 3px;
+    border-radius: 1px;
+    background-color: var(--current-color);
+    display: block;
+    animation: eq 1s ease-in-out infinite;
+
+    &:nth-child(1) { height: 40%; animation-delay: 0s; }
+    &:nth-child(2) { height: 90%; animation-delay: .25s; }
+    &:nth-child(3) { height: 60%; animation-delay: .5s; }
+    &:nth-child(4) { height: 100%; animation-delay: .75s; }
+  }
+
+  @media #{main.$mob} {
+    height: main.vwMax(12px);
+    gap: main.vwMax(2px);
+
+    i { width: main.vwMax(3px); }
+  }
+}
+
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq i { animation: none; }
+}
+
 .like {
   color: var(--border-color);
   flex: none;
