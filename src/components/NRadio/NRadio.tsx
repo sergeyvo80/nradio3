@@ -11,6 +11,7 @@ import Station from '../Station/Station';
 import Modal from '../Modal/Modal';
 import About from '../About/About';
 import NewStation from '../NewStation/NewStation';
+import useLang from '@/hooks/useLang';
 
 import styles from './NRadio.module.scss';
 
@@ -48,6 +49,7 @@ const NRadio = ({
   const [isOpenAbout, setIsOpenAbout] = useState<boolean>(false);
   const [isOpenNewStation, setIsOpenNewStation] = useState<boolean>(false);
   const [isSent, setIsSent] = useState<boolean>(false);
+  const { t } = useLang();
   const toggleAboutHandler = () => setIsOpenAbout(!isOpenAbout);
   const toggleOpenNewStation = useCallback(() => {
     setIsOpenNewStation(!isOpenNewStation);
@@ -84,10 +86,10 @@ const NRadio = ({
         onLike={onLike}
         error={error}
       />
-      <Modal title="О проекте" isOpen={isOpenAbout} onClose={toggleAboutHandler}>
+      <Modal title={t('about')} isOpen={isOpenAbout} onClose={toggleAboutHandler}>
         <About />
       </Modal>
-      <Modal title="Новая станция" isOpen={isOpenNewStation} onClose={toggleOpenNewStation}>
+      <Modal title={t('newStation')} isOpen={isOpenNewStation} onClose={toggleOpenNewStation}>
         <NewStation
           onNewStationAdd={handleNewStationAdd}
           isSent={isSent}

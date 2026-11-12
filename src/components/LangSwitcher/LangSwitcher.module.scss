@@ -1,0 +1,37 @@
+@use '../../styles/main';
+
+// переключатель языков в меню «⋮»: два флажка — 🇷🇺 / 🇬🇧
+.LangSwitcher {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+
+  @media #{main.$mob} {
+    gap: main.vwMax(5px);
+  }
+}
+
+.option {
+  flex: 1;
+  padding: 5px 10px;
+  border: var(--border-color) solid 1px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--item-color);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+  cursor: pointer;
+
+  // активный язык: заливка акцентным цветом
+  &.--active {
+    background-color: var(--current-color);
+    border-color: var(--current-color);
+  }
+
+  @media #{main.$mob} {
+    padding: main.vwMax(4px) main.vwMax(8px);
+    border-radius: main.vwMax(8px);
+    font-size: main.vwMax(12px);
+  }
+}

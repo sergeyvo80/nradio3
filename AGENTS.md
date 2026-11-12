@@ -55,6 +55,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   приглушены (opacity .55); нижний бордюр шапки = верхний бордюр плеера: `1px solid var(--border-color)`.
   Плеер: круглая кнопка `.playCircle`, заголовок 16px, звезда 22px opacity .45 (лайкнутая —
   `--positive-color` opacity 1).
+- **Языки ru/en** (`src/i18n/i18n.ts` + `src/hooks/useLang.ts`, переключатель `LangSwitcher`
+  с флажками 🇷🇺/🇬🇧 в меню «⋮»): язык по умолчанию из браузера (`navigator.language` —
+  начинается с ru → 'ru', иначе 'en'); выбор руками сохраняется в `localStorage('lang')`
+  и переживает перезагрузку; событие `nr-lang-change` синхронизирует компоненты (как у тем).
+  useLang при первом рендере всегда 'ru' (совпадение с SSR-HTML), реальный язык — в
+  useEffect (иначе hydration mismatch). Переведены секции списка (Favorites/All stations),
+  модалки About/NewStation; названия станций и manifest — не переводятся.
 - **SSG всех страниц** (Next 16, `next build` выводит ○/● вместо ƒ): главная `/` и `/station`
   статические — не читают `searchParams` (выбор станции целиком клиентский: NRadioContainer
   сам читает `?station=` и `lastStation` при монтировании, SSR-HTML всегда со стартовой

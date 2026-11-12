@@ -1,6 +1,7 @@
 import React from 'react';
 
 import StationInterface from '@/types/StationInterface';
+import useLang from '@/hooks/useLang';
 
 import StationSelectorItem from '../StationSelectorItem/StationSelectorItem';
 
@@ -61,11 +62,12 @@ const StationSelectorList = ({
 }: Props) => {
   const liked = stations.filter((station) => station.isLiked);
   const rest = stations.filter((station) => !station.isLiked);
+  const { t } = useLang();
 
   return (
     <ul className={styles.StationSelectorList}>
-      {renderGroup(liked, slug, playingSlug, onLike, onSelect, onDeleteStation, 'Понравившиеся')}
-      {renderGroup(rest, slug, playingSlug, onLike, onSelect, onDeleteStation, liked.length > 0 ? 'Все станции' : undefined)}
+      {renderGroup(liked, slug, playingSlug, onLike, onSelect, onDeleteStation, t('favorites'))}
+      {renderGroup(rest, slug, playingSlug, onLike, onSelect, onDeleteStation, liked.length > 0 ? t('all') : undefined)}
     </ul>
   );
 };
