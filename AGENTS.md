@@ -38,7 +38,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   при монтировании; setTheme снимает custom (удаляет colorState); сброс пикера возвращает named-тему.
   Все элементы макета применены: список разбит на секции «Понравившиеся»/«Все станции»
   (StationSelectorList, заголовки только при двух группах), у текущей станции подпись
-  «`tags[0]` · играет» + мини-эквалайзер (4 полоски, keyframes `eq`, `prefers-reduced-motion`
+  «`tags[0]`» (слово «играет» убрано по просьбе пользователя) + мини-эквалайзер (4 полоски, keyframes `eq`, `prefers-reduced-motion`
   отключает), в плеере круглая акцентная кнопка play (`.playCircle`, треугольник цвета фона) и
   подпись «`bitrate` kbps · источник» (источник — из скобок названия, `src/utils/getStationSource.ts`).
 - **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.6', `PRODUCT_VERSION_DATE` = '12.11.2026'):

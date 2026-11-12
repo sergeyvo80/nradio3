@@ -11,6 +11,8 @@ import styles from './StationSelectorItem.module.scss';
 interface Props {
   station: StationInterface;
   isCurrent?: boolean;
+  // станция реально воспроизводится — показываем эквалайзер
+  isPlaying?: boolean;
   isLiked?: boolean;
   onLike?: (slug: string) => void;
   onSelect?: (slug: string) => void;
@@ -20,6 +22,7 @@ interface Props {
 const StationSelectorItem = memo(({
   station,
   isCurrent,
+  isPlaying,
   isLiked,
   onLike,
   onSelect,
@@ -54,15 +57,16 @@ const StationSelectorItem = memo(({
       <Link href={`?station=${station.slug}`} className={`${styles.link} stationSelectorLink`} onClick={onSelectHandler}>
         <div className={styles.txt}>
           <h3 className={styles.title}>{station.title}</h3>
-          {/* подпись только у текущей: жанр · играет (как в макете) */}
+          {/* подпись только у текущей: жанр (как в макете) */}
           {isCurrent && (
             <span className={styles.sub}>
-              {station.tags[0]} · играет
+              {station.tags[0]}
             </span>
           )}
         </div>
       </Link>
-      {isCurrent && (
+      {/* эквалайзер «играет» — только пока станция реально воспроизводится */}
+      {isCurrent && isPlaying && (
         <div className={styles.eq} aria-hidden="true">
           <i /><i /><i /><i />
         </div>

@@ -9,6 +9,8 @@ import styles from './StationSelectorList.module.scss';
 interface Props {
   stations: StationInterface[];
   slug: string;
+  // slug станции, которая реально воспроизводится (для эквалайзера в списке)
+  playingSlug?: string;
   onLike?: (slug: string) => void;
   onSelect?: (slug: string) => void;
   onDeleteStation: (slug: string) => void;
@@ -18,6 +20,7 @@ interface Props {
 const renderGroup = (
   stations: StationInterface[],
   slug: string,
+  playingSlug: Props['playingSlug'],
   onLike: Props['onLike'],
   onSelect: Props['onSelect'],
   onDeleteStation: Props['onDeleteStation'],
@@ -35,6 +38,7 @@ const renderGroup = (
           station={station}
           key={station.slug}
           isCurrent={station.slug === slug}
+          isPlaying={playingSlug === station.slug}
           isLiked={station.isLiked || false}
           onLike={onLike}
           onSelect={onSelect}
@@ -50,6 +54,7 @@ const renderGroup = (
 const StationSelectorList = ({
   stations,
   slug,
+  playingSlug,
   onLike,
   onSelect,
   onDeleteStation,
@@ -59,8 +64,8 @@ const StationSelectorList = ({
 
   return (
     <ul className={styles.StationSelectorList}>
-      {renderGroup(liked, slug, onLike, onSelect, onDeleteStation, 'Понравившиеся')}
-      {renderGroup(rest, slug, onLike, onSelect, onDeleteStation, liked.length > 0 ? 'Все станции' : undefined)}
+      {renderGroup(liked, slug, playingSlug, onLike, onSelect, onDeleteStation, 'Понравившиеся')}
+      {renderGroup(rest, slug, playingSlug, onLike, onSelect, onDeleteStation, liked.length > 0 ? 'Все станции' : undefined)}
     </ul>
   );
 };
