@@ -29,6 +29,9 @@ interface NRadioProps {
   onDeleteStation: (slug: string) => void;
 }
 
+// эквалайзер «играет» в списке показываем только у станции,
+// которая реально воспроизводится (playerState === Playing)
+
 const NRadio = ({
   title,
   station,
@@ -67,6 +70,8 @@ const NRadio = ({
       <StationSelector
         stations={stations}
         slug={station.slug}
+        // эквалайзер в списке — только у реально играющей станции
+        playingSlug={playerState === PlayerStateEnum.Playing ? station.slug : undefined}
         onLike={onLike}
         onSelect={onSelect}
         onDeleteStation={onDeleteStation}
