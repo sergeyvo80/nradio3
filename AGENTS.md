@@ -41,12 +41,18 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   «`tags[0]` · играет» + мини-эквалайзер (4 полоски, keyframes `eq`, `prefers-reduced-motion`
   отключает), в плеере круглая акцентная кнопка play (`.playCircle`, треугольник цвета фона) и
   подпись «`bitrate` kbps · источник» (источник — из скобок названия, `src/utils/getStationSource.ts`).
-- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.4', `PRODUCT_VERSION_DATE` = '11.11.2026'):
+- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.5', `PRODUCT_VERSION_DATE` = '12.11.2026'):
   формат «v + major.minor.patch» — **перед каждым коммитом инкрементить ТРЕТЬЕ число (patch)**
   и обновлять дату на дату коммита; версия в файле относится к текущему коммиту. Показывается
-  в выпадающем меню «⋮» шапки (`menuDropdown` в Header): номер зелёным #4CAF7D 11px,
-  дата под ним, без скобок, полным годом (дд.мм.гггг), тем же зелёным (#4CAF7D), мельче (9px)
-  и блеклее (opacity .55, `.versionDate`).
+  в шапке справа (`.ver` в Header, `margin-left:auto`, прижата к «⋮», выравнивание вправо):
+  номер зелёным `var(--positive-color)` 11px, дата под ним без скобок, полным годом
+  (дд.мм.гггг), тем же зелёным, мельче (9px) и блеклее (opacity .75, `.versionDate`);
+  в меню «⋮» версии нет — там только ThemeSwitcher и ColorPicker.
+- **Шапка и плеер по макету**: спокойные панели без свечения/скруглений; шапка — кружок-логотип
+  `.logoIcon` (26px акцент + CSS-треугольник `var(--bg-color)`), название белым 19px, точки «⋮»
+  приглушены (opacity .55); нижний бордюр шапки = верхний бордюр плеера: `1px solid var(--border-color)`.
+  Плеер: круглая кнопка `.playCircle`, заголовок 16px, звезда 22px opacity .45 (лайкнутая —
+  `--positive-color` opacity 1).
 - **Headless-скриншоты на macOS**: Chrome игнорирует `--window-size` < ~756px; узкие девайсы
   эмулировать iframe-обёрткой (см. историю: приём с `public/probe.html`).
 - **PWA реализована** (docs/pwa.md — устройство и обслуживание): `manifest.ts` обязан экспортировать

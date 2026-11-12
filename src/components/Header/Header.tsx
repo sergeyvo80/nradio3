@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
@@ -23,10 +23,13 @@ const Header = memo(({ title }: Props) => {
   return (
     <header className={styles.Header}>
       <div className={styles.logo}>
-        <FontAwesomeIcon icon={faPlayCircle} />
-        <div className={styles.titles}>
-          <h1 className={styles.title}>{title}</h1>
-        </div>
+        <div className={styles.logoIcon} aria-hidden="true" />
+        <h1 className={styles.title}>{title}</h1>
+      </div>
+      {/* версия и дата — справа в шапке, как в макете */}
+      <div className={styles.ver}>
+        <span className={styles.version}>{PRODUCT_VERSION}</span>
+        <span className={styles.versionDate}>{PRODUCT_VERSION_DATE}</span>
       </div>
       <div className={styles.menu}>
         {/* подложка на весь экран: клик вне меню закрывает его */}
@@ -38,10 +41,6 @@ const Header = memo(({ title }: Props) => {
         />
         {menuOpen && (
           <div className={styles.menuDropdown}>
-            <div className={styles.menuItem}>
-              <span className={styles.version}>{PRODUCT_VERSION}</span>
-              <span className={styles.versionDate}>{PRODUCT_VERSION_DATE}</span>
-            </div>
             <div className={styles.menuItem}><ThemeSwitcher /></div>
             <div className={styles.menuItem}><ColorPicker /></div>
           </div>

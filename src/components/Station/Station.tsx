@@ -59,7 +59,6 @@ const Station = memo(({
     <div className={styles.actions}>
       <FontAwesomeIcon
         icon={faStar}
-        size="3x"
         className={styles.like}
         onClick={() => onLike(station.slug)}
       />

@@ -1,36 +1,31 @@
 @use '../../styles/main';
-@use '../../styles/typography';
 
 .Header {
   z-index: 100;
   display: flex;
   align-items: center;
-  min-height: 50px;
-  padding: 0 main.$webSidePadding;
-  border-bottom: var(--current-color) solid 1px;
-  box-shadow: 0 0px 8px 0px var(--current-color);
+  // спокойная панель; снизу — тонкая серая линия, как у плеера сверху
+  border-bottom: var(--border-color) solid 1px;
+  padding: 14px 18px;
   background-color: var(--second-bg-color);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  gap: 12px;
+  gap: 10px;
 
   @media #{main.$mob} {
-    min-height: main.vwMax(34px);
-    padding: main.vwMax(6px) main.vwMax(10px);
-    gap: main.vwMax(8px);
-    border-bottom-left-radius: main.vwMax(10px);
-    border-bottom-right-radius: main.vwMax(10px);
+    padding: main.vwMax(12px) main.vwMax(14px);
+    gap: main.vwMax(10px);
   }
 }
 
 .title {
   display: inline;
-  @include typography.h1;
-  // бокс строки строго до нижнего края букв + 2px:
-  // дефолтный (1.5em) давал ~12px невидимого свинца под NRadio,
-  // и версия визуально уезжала вниз. Формула под метрики Montserrat
-  // (asc 0.968 / desc 0.251, «NRadio» без выносных вниз + овершут 'o')
-  line-height: calc(0.75em + 5px);
+  margin: 0;
+  // как в макете: белое название 19px, не акцентное
+  font-family: Montserrat, sans-serif;
+  font-size: 19px;
+  font-weight: bold;
+  letter-spacing: 0.2px;
+  line-height: 1.25;
+  color: var(--item-color);
 
   // на узких экранах длинное название сжимается с многоточием,
   // а кнопки справа остаются на виду
@@ -40,70 +35,84 @@
   min-width: 0;
 
   @media #{main.$mob} {
-    font-size: main.vwMax(20px);
+    font-size: main.vwMax(16px);
   }
 }
 
-// тексты логотипа в две строки: название (h1) + версия мелким зелёным под ним,
-// версия выровнена по правому краю NRadio; отступ задаётся .version margin-top
-.titles {
-  min-width: 0;
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+// версия и дата справа в шапке, прижаты к «⋮»
+.ver {
+  margin-left: auto;
+  text-align: right;
+  line-height: 1.25;
+  flex: none;
 }
 
 // версия продукта: зелёный акцент темы (var(--positive-color))
 .version {
+  display: block;
   color: var(--positive-color);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.4px;
-  line-height: 1.2;
   white-space: nowrap;
 
   @media #{main.$mob} {
-    font-size: main.vwMax(9px);
+    font-size: main.vwMax(10px);
   }
 }
 
-// дата при версии: тот же зелёный, мельче и блеклее, на строке ниже, без скобок
+// дата под версией: тот же зелёный, мельче и блеклее
 .versionDate {
   display: block;
   color: var(--positive-color);
-  opacity: 0.55;
+  opacity: 0.75;
   font-size: 9px;
   font-weight: 500;
-  line-height: 1.2;
+  white-space: nowrap;
 
   @media #{main.$mob} {
     font-size: main.vwMax(8px);
   }
 }
 
-// логотип + название прижимаются влево и умеют сжиматься;
-// зазор иконка↔название задаётся только gap (nbsp убран — он раздувал отступ)
+// кружок-логотип: акцентная заливка, треугольник цвета фона (как в макете)
 .logo {
-  margin-right: auto;
   min-width: 0;
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--current-color);
-  font-size: 30px;
+}
 
-  svg {
-    flex: none;
+.logoIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--current-color);
+  display: grid;
+  place-items: center;
+  flex: none;
 
-    @media #{main.$mob} {
-      font-size: main.vwMax(22px);
-    }
+  // треугольник play цвета фона
+  &::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 9px solid var(--bg-color);
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    margin-left: 3px;
   }
 
   @media #{main.$mob} {
-    gap: main.vwMax(10px);
-    font-size: main.vwMax(22px);
+    width: main.vwMax(22px);
+    height: main.vwMax(22px);
+
+    &::after {
+      border-left: main.vwMax(7px) solid var(--bg-color);
+      border-top: main.vwMax(5px) solid transparent;
+      border-bottom: main.vwMax(5px) solid transparent;
+      margin-left: main.vwMax(3px);
+    }
   }
 }
 
@@ -115,7 +124,9 @@
 }
 
 .menuButton {
-  color: var(--color);
+  // как в макете: приглушённые точки
+  color: var(--item-color);
+  opacity: 0.55;
   cursor: pointer;
   font-size: 20px;
   padding: 4px 2px;

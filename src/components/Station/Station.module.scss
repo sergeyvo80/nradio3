@@ -5,40 +5,27 @@
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  gap: 20px;
+  gap: 14px;
   row-gap: 5px;
   z-index: 100;
-  border-top: var(--current-color) solid 1px;
-  box-shadow: 0px 0px 10px 0px var(--current-color);
+  // спокойная панель: тонкая серая линия сверху, без оранжевого свечения
+  border-top: var(--border-color) solid 1px;
   color: var(--item-color);
   background-color: var(--second-bg-color);
   align-items: center;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  // отсуп снизу: плеер не прилипает к нижнему краю экрана
-  padding: 25px main.$webSidePadding 20px main.$webSidePadding;
+  padding: 16px 18px;
 
   @media #{main.$mob} {
     // + safe-area на телефонах (полоска home-indicator)
-    padding: main.vwMax(6px) main.vwMax(10px) calc(main.vwMax(10px) + env(safe-area-inset-bottom, 0px));
-    gap: main.vwMax(10px);
+    padding: main.vwMax(12px) main.vwMax(14px) calc(main.vwMax(12px) + env(safe-area-inset-bottom, 0px));
+    gap: main.vwMax(12px);
     row-gap: main.vwMax(2px);
-    border-top-left-radius: main.vwMax(10px);
-    border-top-right-radius: main.vwMax(10px);
   }
 }
 
 
 .player {
   flex: none;
-
-  svg {
-    font-size: 48px;
-
-    @media #{main.$mob} {
-      font-size: main.vwMax(32px);
-    }
-  }
 }
 
 // круглая акцентная кнопка play: треугольник цвета фона внутри
@@ -94,12 +81,14 @@
 
 .like {
   cursor: pointer;
-  color: var(--border-color);
-  font-size: 48px;
+  // как в макете: полупрозрачная звезда 22px, лайкнутая — зелёная непрозрачная
+  color: var(--item-color);
+  opacity: 0.45;
+  font-size: 22px;
   flex: none;
 
   @media #{main.$mob} {
-    font-size: main.vwMax(28px);
+    font-size: main.vwMax(18px);
   }
 }
 
@@ -107,6 +96,7 @@
 .actions {
 }
 
+// заголовок плеера: 16px, как в макете
 .title {
   margin: 0;
   flex: 1;
@@ -116,6 +106,11 @@
   word-break: break-word;
 
   @include typography.h2;
+  font-size: 16px;
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(14px);
+  }
 }
 
 .error {
@@ -132,5 +127,6 @@
 .--liked {
   .like {
     color: var(--positive-color);
+    opacity: 1;
   }
 }

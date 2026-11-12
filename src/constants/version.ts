@@ -2,5 +2,5 @@
 // дата де.мм.гггг (полный год, дата коммита) — под номером, без скобок.
 // Правило: перед каждым коммитом инкрементить ТРЕТЬЕ число (patch)
 // и обновлять дату (см. skill «Версия продукта» в AGENTS.md).
-export const PRODUCT_VERSION = 'v3.2.4';
-export const PRODUCT_VERSION_DATE = '11.11.2026';
+export const PRODUCT_VERSION = 'v3.2.5';
+export const PRODUCT_VERSION_DATE = '12.11.2026';
