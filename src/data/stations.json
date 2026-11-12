@@ -373,5 +373,134 @@
     "website": "https://somafm.com",
     "bitrate": 128,
     "stream": "https://ice6.somafm.com/secretagent-128-mp3"
+  },
+  {
+    "slug": "heavyweight-reggae-soma-fm",
+    "title": "Heavyweight Reggae [SomaFM]",
+    "website": "https://somafm.com/reggae/",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "reggae",
+      "ska"
+    ],
+    "stream": "https://ice2.somafm.com/reggae-128-mp3"
+  },
+  {
+    "slug": "dub-step-beyond-soma-fm",
+    "title": "Dub Step Beyond [SomaFM]",
+    "website": "https://somafm.com/dubstep/",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "dubstep",
+      "electronic"
+    ],
+    "stream": "https://ice.somafm.com/dubstep-128-mp3"
+  },
+  {
+    "slug": "fluid-soma-fm",
+    "title": "Fluid [SomaFM]",
+    "website": "https://somafm.com/fluid/",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "hiphop",
+      "futuresoul"
+    ],
+    "stream": "https://ice.somafm.com/fluid-128-mp3"
+  },
+  {
+    "slug": "vaporwaves-soma-fm",
+    "title": "Vaporwaves [SomaFM]",
+    "website": "https://somafm.com/vaporwaves/",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "vaporwave",
+      "retro"
+    ],
+    "stream": "https://ice.somafm.com/vaporwaves-128-mp3"
+  },
+  {
+    "slug": "thistle-radio-soma-fm",
+    "title": "ThistleRadio [SomaFM]",
+    "website": "https://somafm.com/thistle/",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "celtic",
+      "folk"
+    ],
+    "stream": "https://ice.somafm.com/thistle-128-mp3"
+  },
+  {
+    "slug": "cliqhop-soma-fm",
+    "title": "Cliqhop [SomaFM]",
+    "website": "https://somafm.com/cliqhop/",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "idm",
+      "electronic"
+    ],
+    "stream": "https://ice.somafm.com/cliqhop-128-mp3"
+  },
+  {
+    "slug": "bossa-beyond-soma-fm",
+    "title": "Bossa Beyond [SomaFM]",
+    "website": "https://somafm.com/bossa/",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "bossanova",
+      "samba"
+    ],
+    "stream": "https://ice2.somafm.com/bossa-128-mp3"
+  },
+  {
+    "slug": "wqxr-classical-wqxr",
+    "title": "WQXR Classical [WQXR]",
+    "website": "https://www.wqxr.org",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "classical"
+    ],
+    "stream": "https://stream.wqxr.org/wqxr"
+  },
+  {
+    "slug": "radio-paradise-global-radio-paradise",
+    "title": "Radio Paradise Global [Radio Paradise]",
+    "website": "https://radioparadise.com",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "world",
+      "global"
+    ],
+    "stream": "https://stream.radioparadise.com/global-128"
+  },
+  {
+    "slug": "wwoz-new-orleans",
+    "title": "WWOZ New Orleans [WWOZ]",
+    "website": "https://www.wwoz.org",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "blues",
+      "roots"
+    ],
+    "stream": "https://wwoz-sc.streamguys1.com/wwoz-hi.mp3"
   }
 ]
