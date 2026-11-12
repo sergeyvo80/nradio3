@@ -41,7 +41,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   «`tags[0]`» (слово «играет» убрано по просьбе пользователя) + мини-эквалайзер (4 полоски, keyframes `eq`, `prefers-reduced-motion`
   отключает), в плеере круглая акцентная кнопка play (`.playCircle`, треугольник цвета фона) и
   подпись «`bitrate` kbps · источник» (источник — из скобок названия, `src/utils/getStationSource.ts`).
-- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.6', `PRODUCT_VERSION_DATE` = '12.11.2026'):
+- **Версия продукта** (`src/constants/version.ts`: `PRODUCT_VERSION` = 'v3.2.7', `PRODUCT_VERSION_DATE` = '12.11.2026'):
   формат «v + major.minor.patch». **При коммитах версию НЕ трогать** (авто-bump отключён);
   **перед каждым пушем** поднимать ТРЕТЬЕ число (patch) и обновлять дату на дату пуша
   (дд.мм.гггг, полным годом) — версия в файле относится к деплою, который пуш создаёт.
