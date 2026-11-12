@@ -502,5 +502,158 @@
       "roots"
     ],
     "stream": "https://wwoz-sc.streamguys1.com/wwoz-hi.mp3"
+  },
+  {
+    "slug": "techno-hirschmilch",
+    "title": "Techno [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "techno"
+    ],
+    "stream": "https://hirschmilch.de:7001/techno.mp3"
+  },
+  {
+    "slug": "kexp-seattle",
+    "title": "KEXP Seattle [KEXP]",
+    "website": "https://www.kexp.org",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 160,
+    "tags": [
+      "alternative",
+      "eclectic"
+    ],
+    "stream": "https://kexp.streamguys1.com/kexp160.aac"
+  },
+  {
+    "slug": "wfmu-freeform",
+    "title": "WFMU Freeform [WFMU]",
+    "website": "https://wfmu.org",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "experimental",
+      "freeform"
+    ],
+    "stream": "https://stream0.wfmu.org/freeform-128k"
+  },
+  {
+    "slug": "listen-moe-jpop",
+    "title": "LISTEN.moe J-Pop [LISTEN.moe]",
+    "website": "https://listen.moe",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "jpop",
+      "anime"
+    ],
+    "stream": "https://listen.moe/fallback"
+  },
+  {
+    "slug": "lo-fi-radio-record",
+    "title": "Lo-Fi [Radio Record]",
+    "website": "https://radiorecord.ru",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 96,
+    "tags": [
+      "lofi",
+      "hiphop"
+    ],
+    "stream": "https://radiorecord.hostingradio.ru/lofi96.aacp"
+  },
+  {
+    "slug": "synthwave-radio-record",
+    "title": "Synthwave [Radio Record]",
+    "website": "https://radiorecord.ru",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 96,
+    "tags": [
+      "synthwave",
+      "retro"
+    ],
+    "stream": "https://radiorecord.hostingradio.ru/synth96.aacp"
+  },
+  {
+    "slug": "disco-funk-radio-record",
+    "title": "Disco/Funk [Radio Record]",
+    "website": "https://radiorecord.ru",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 96,
+    "tags": [
+      "disco",
+      "funk"
+    ],
+    "stream": "https://radiorecord.hostingradio.ru/discofunk96.aacp"
+  },
+  {
+    "slug": "dream-pop-radio-record",
+    "title": "Dream Pop [Radio Record]",
+    "website": "https://radiorecord.ru",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 96,
+    "tags": [
+      "dreampop",
+      "indie"
+    ],
+    "stream": "https://radiorecord.hostingradio.ru/dreampop96.aacp"
+  },
+  {
+    "slug": "trance-classics-radio-record",
+    "title": "Trance Classics [Radio Record]",
+    "website": "https://radiorecord.ru",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 96,
+    "tags": [
+      "trance"
+    ],
+    "stream": "https://radiorecord.hostingradio.ru/trancehits96.aacp"
+  },
+  {
+    "slug": "phonk-radio-record",
+    "title": "Phonk [Radio Record]",
+    "website": "https://radiorecord.ru",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 96,
+    "tags": [
+      "phonk"
+    ],
+    "stream": "https://radiorecord.hostingradio.ru/phonk96.aacp"
+  },
+  {
+    "slug": "radio-paradise-rock-radio-paradise",
+    "title": "Radio Paradise Rock [Radio Paradise]",
+    "website": "https://radioparadise.com",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "rock",
+      "classic"
+    ],
+    "stream": "https://stream.radioparadise.com/rock-128"
+  },
+  {
+    "slug": "radio-paradise-mellow-radio-paradise",
+    "title": "Radio Paradise Mellow [Radio Paradise]",
+    "website": "https://radioparadise.com",
+    "dateAdded": "2026-11-12",
+    "dateUpdated": "2026-11-12",
+    "bitrate": 128,
+    "tags": [
+      "mellow",
+      "acoustic"
+    ],
+    "stream": "https://stream.radioparadise.com/mellow-128"
   }
 ]
