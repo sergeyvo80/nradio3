@@ -1,28 +1,18 @@
 import React from 'react';
 
-import stationData from '@/data/station.json';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-import queryClient from '@/api/reactQueryClient';
-import StationsInterface from '@/types/StationsInterface';
+import findStationBySlug from '@/utils/findStationBySlug';
 import NRadioContainer from '@/containers/NRadioContainer';
 
 import type { Metadata } from 'next';
 
 const DEFAULT_SLUG = 'groove-salad-soma-fm';
 
-interface Props {
-  station: string;
-}
-
-interface PageProps {
-  searchParams: Promise<Props>;
-}
-
-export const generateMetadata = async ({ searchParams }: PageProps): Promise<Metadata> => {
-  const { station } = await searchParams;
-
-  const stations = queryClient.getQueryData<StationsInterface>(['stations']);
-  const stationItem = stations?.find((listing) => listing.slug === (station ?? DEFAULT_SLUG)) || stationData;
+// SSG: главная не читает searchParams — выбор станции целиком клиентский
+// (NRadioContainer сам учитывает ?station= и lastStation при монтировании),
+// поэтому страница прегенерируется в статический html
+export const generateMetadata = (): Metadata => {
+  const stationItem = findStationBySlug();
 
   return {
     title: `${stationItem.title} -- ${META_TITLE}`,
@@ -44,10 +34,8 @@ export const generateMetadata = async ({ searchParams }: PageProps): Promise<Met
   };
 };
 
-const HomePage = async ({ searchParams }: PageProps): Promise<React.ReactNode> => {
-  const { station } = await searchParams;
-
-  return <NRadioContainer slug={station || DEFAULT_SLUG} />;
+const HomePage = (): React.ReactNode => {
+  return <NRadioContainer slug={DEFAULT_SLUG} />;
 };
 
 export default HomePage;

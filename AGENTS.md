@@ -53,6 +53,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   приглушены (opacity .55); нижний бордюр шапки = верхний бордюр плеера: `1px solid var(--border-color)`.
   Плеер: круглая кнопка `.playCircle`, заголовок 16px, звезда 22px opacity .45 (лайкнутая —
   `--positive-color` opacity 1).
+- **SSG всех страниц** (Next 16, `next build` выводит ○/● вместо ƒ): главная `/` и `/station`
+  статические — не читают `searchParams` (выбор станции целиком клиентский: NRadioContainer
+  сам читает `?station=` и `lastStation` при монтировании, SSR-HTML всегда со стартовой
+  станцией, клиент её переключает). `/station/[slug]` — `generateStaticParams` по всем
+  слагам из `stations.json` + стартовой; метаданные по слагу — синхронный хелпер
+  `src/utils/findStationBySlug.ts` (прямо из json, не queryClient — он на билде пуст);
+  `dynamicParams` по умолчанию true — неизвестные слаги (локальные станции с uuid) рендерятся
+  по запросу. Проверка статики в prod: заголовки `x-nextjs-prerender: 1`, `x-nextjs-cache: HIT`.
+  При изменении `stations.json` нужно пересобирать (страницы вшиты в билд).
 - **Headless-скриншоты на macOS**: Chrome игнорирует `--window-size` < ~756px; узкие девайсы
   эмулировать iframe-обёрткой (см. историю: приём с `public/probe.html`).
 - **PWA реализована** (docs/pwa.md — устройство и обслуживание): `manifest.ts` обязан экспортировать

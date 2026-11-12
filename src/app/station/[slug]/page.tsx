@@ -1,13 +1,13 @@
 import React from 'react';
 
 import stationData from '@/data/station.json';
+import stationsData from '@/data/stations.json';
 import { META_DESCRIPTION, META_TITLE } from '@/constants/meta';
-import queryClient from '@/api/reactQueryClient';
-import StationsInterface from '@/types/StationsInterface';
+import findStationBySlug from '@/utils/findStationBySlug';
+import StationInterface from '@/types/StationInterface';
 import NRadioContainer from '@/containers/NRadioContainer';
 
 import type { Metadata } from 'next';
-
 
 interface Props {
   slug: string;
@@ -15,14 +15,23 @@ interface Props {
 
 interface PageProps {
   params: Promise<Props>;
-  // stations: StationInterface[];
+}
+
+// SSG: прегенерируем страницу для каждой станции из локального json
+// (+ стартовая). Неизвестные слаги (например, локальные станции пользователя
+// с uuid) по-прежнему рендерятся по запросу — dynamicParams включён по умолчанию
+export function generateStaticParams(): Array<{ slug: string }> {
+  const stations = stationsData as unknown as StationInterface[];
+  return [
+    ...stations.map((station) => ({ slug: station.slug })),
+    { slug: stationData.slug },
+  ];
 }
 
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { slug } = await params;
 
-  const stations = queryClient.getQueryData<StationsInterface>(['stations']);
-  const station = stations?.find((station) => station.slug === slug) || stationData;
+  const station = findStationBySlug(slug);
 
   return {
     title: `${station.title} -- ${META_TITLE}`,
@@ -39,7 +48,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
       siteName: process.env.BASE_URL,
     },
     alternates: {
-      canonical: process.env.BASE_URL,
+      canonical: `${process.env.BASE_URL}/station/${station.slug}`,
     },
   };
 };
