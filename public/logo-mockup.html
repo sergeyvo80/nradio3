@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NRadio — варианты логотипа</title>
+<style>
+  :root {
+    --bg: #1B1922;
+    --panel: #232030;
+    --item: #EDEBF2;
+    --dim: #9B97A8;
+    --border: #3A3648;
+    --accent: #E95420;
+    --accent2: #33D17A;
+  }
+  body {
+    margin: 0;
+    padding: 32px 24px 64px;
+    background: var(--bg);
+    color: var(--item);
+    font-family: Montserrat, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h2 { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin: 40px 0 4px; }
+  p.hint { color: var(--dim); font-size: 13px; margin: 0 0 14px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 14px; }
+
+  /* строка-демо: шапка как в приложении */
+  .row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 22px;
+    min-width: 300px;
+  }
+
+  /* ============ ЛОГОТИПЫ ============ */
+
+  /* A. улучшенный текущий: круг-градиент + play */
+  .logoA {
+    width: 26px; height: 26px; border-radius: 50%; flex: none;
+    background: linear-gradient(180deg, var(--accent) 0%, #b23a12 100%);
+    display: grid; place-items: center;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.14);
+    position: relative;
+  }
+  .logoA::after {
+    content: ''; width: 0; height: 0;
+    border-left: 10px solid var(--bg);
+    border-top: 6.5px solid transparent;
+    border-bottom: 6.5px solid transparent;
+    margin: 1px 0 0 3.5px;
+  }
+
+  /* B. эфир: точка-игра + две дуги радиоволн */
+  .logoB {
+    width: 26px; height: 26px; flex: none; position: relative;
+  }
+  .logoB .dot {
+    position: absolute; left: 4px; top: 50%; transform: translateY(-50%);
+    width: 9px; height: 9px; border-radius: 50%; background: var(--accent);
+  }
+  .logoB .wave {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    border: 2px solid var(--accent); border-radius: 50%;
+    border-left-color: transparent; border-bottom-color: transparent;
+  }
+  .logoB .w1 { right: 6px; width: 10px; height: 10px; opacity: .9; }
+  .logoB .w2 { right: 0;  width: 16px; height: 16px; opacity: .45; }
+
+  /* C. эквалайзер в квадрате со скруглением */
+  .logoC {
+    width: 26px; height: 26px; border-radius: 7px; flex: none;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center; gap: 2px;
+  }
+  .logoC i {
+    width: 3px; border-radius: 1px; background: var(--bg); display: block;
+  }
+  .logoC i:nth-child(1) { height: 9px; }
+  .logoC i:nth-child(2) { height: 14px; }
+  .logoC i:nth-child(3) { height: 7px; }
+
+  /* D. виниловая пластинка */
+  .logoD {
+    width: 26px; height: 26px; border-radius: 50%; flex: none;
+    background:
+      radial-gradient(circle at center, var(--accent) 0 4px, var(--bg) 4px 6px, var(--accent) 6px 9px, var(--bg) 9px 10px, var(--accent) 10px 13px);
+    display: grid; place-items: center;
+  }
+  .logoD::after {
+    content: ''; width: 3px; height: 3px; border-radius: 50%; background: var(--bg);
+  }
+
+  /* E. чистый play без круга (минимализм) */
+  .logoE {
+    width: 26px; height: 26px; flex: none;
+    display: grid; place-items: center;
+  }
+  .logoE::after {
+    content: ''; width: 0; height: 0;
+    border-left: 14px solid var(--accent);
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    margin-left: 2px;
+  }
+
+  /* F. радиоволны вокруг play-точки (антенна) */
+  .logoF {
+    width: 26px; height: 26px; flex: none; position: relative;
+    display: grid; place-items: center;
+  }
+  .logoF::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  }
+  .logoF i {
+    position: absolute; inset: 0;
+    border: 2px solid var(--accent); border-radius: 50%;
+    border-left-color: transparent; border-bottom-color: transparent;
+  }
+  .logoF i.r1 { inset: 2px; opacity: .9; }
+  .logoF i.r2 { inset: -2px; opacity: .4; }
+
+  /* ============ ПОДПИСИ ============ */
+
+  .t1 { font-size: 19px; font-weight: bold; color: var(--item); letter-spacing: .2px; }            /* текущая */
+  .t2 { font-size: 19px; font-weight: bold; background: linear-gradient(90deg, var(--accent), #ff9a5c); -webkit-background-clip: text; background-clip: text; color: transparent; }  /* градиент */
+  .t3 { font-size: 17px; font-weight: 700; color: var(--item); letter-spacing: 3px; text-transform: uppercase; }  /* прописью, разрядка */
+  .t4 { font-size: 19px; font-weight: 600; color: var(--item); }                                    /* две краски: N акцент */
+  .t4 b { color: var(--accent); font-weight: bold; }
+  .t5 { font-size: 18px; font-weight: 500; color: var(--item); font-family: ui-monospace, 'JetBrains Mono', Menlo, monospace; }  /* терминал */
+  .t5::after { content: '_'; color: var(--accent); animation: blink 1.2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .label { color: var(--dim); font-size: 11px; margin-top: 10px; }
+
+  /* переключение тем на стенде */
+  .switch { position: fixed; top: 14px; right: 14px; display: flex; gap: 8px; }
+  .switch button {
+    padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--item); cursor: pointer; font-size: 13px;
+  }
+  body.aurora {
+    --bg: #300A24; --panel: #3d1230; --border: #542a45; --accent: #F5894B; --accent2: #8AE234;
+  }
+</style>
+</head>
+<body>
+<div class="switch">
+  <button onclick="document.body.classList.remove('aurora')">Yaru</button>
+  <button onclick="document.body.classList.add('aurora')">Aurora</button>
+</div>
+
+<h2>Логотипы</h2>
+<p class="hint">A — улучшенный текущий (градиент + кольцо + оптическая центровка) · B — эфир: точка и радиоволны · C — эквалайзер · D — винил · E — чистый play · F — антенна</p>
+<div class="grid">
+  <div><div class="row"><div class="logoA"></div><span class="t1">NRadio</span></div><div class="label">A · круг-градиент + play (текущий, улучшен)</div></div>
+  <div><div class="row"><div class="logoB"><i class="dot"></i><i class="wave w1"></i><i class="wave w2"></i></div><span class="t1">NRadio</span></div><div class="label">B · эфир: точка + волны</div></div>
+  <div><div class="row"><div class="logoC"><i></i><i></i><i></i></div><span class="t1">NRadio</span></div><div class="label">C · эквалайзер</div></div>
+  <div><div class="row"><div class="logoD"></div><span class="t1">NRadio</span></div><div class="label">D · виниловая пластинка</div></div>
+  <div><div class="row"><div class="logoE"></div><span class="t1">NRadio</span></div><div class="label">E · чистый play</div></div>
+  <div><div class="row"><div class="logoF"><i class="r1"></i><i class="r2"></i></div><span class="t1">NRadio</span></div><div class="label">F · антенна</div></div>
+</div>
+
+<h2>Стили надписи</h2>
+<p class="hint">1 — текущая · 2 — градиент · 3 — прописью с разрядкой · 4 — две краски · 5 — терминал (мигающий курсор)</p>
+<div class="grid">
+  <div><div class="row"><div class="logoA"></div><span class="t1">NRadio</span></div><div class="label">1 · текущая: белая жирная 19px</div></div>
+  <div><div class="row"><div class="logoA"></div><span class="t2">NRadio</span></div><div class="label">2 · градиент акцентом</div></div>
+  <div><div class="row"><div class="logoA"></div><span class="t3">NRadio</span></div><div class="label">3 · прописью, разрядка 3px</div></div>
+  <div><div class="row"><div class="logoA"></div><span class="t4"><b>N</b>Radio</span></div><div class="label">4 · «N» акцентом + «Radio» белым</div></div>
+  <div><div class="row"><div class="logoA"></div><span class="t5">NRadio</span></div><div class="label">5 · терминал с курсором</div></div>
+</div>
+
+<h2>Комбо — рекомендация</h2>
+<div class="grid">
+  <div><div class="row"><div class="logoB"><i class="dot"></i><i class="wave w1"></i><i class="wave w2"></i></div><span class="t4"><b>N</b>Radio</span></div><div class="label">B + 4: эфир и акцентная N</div></div>
+  <div><div class="row"><div class="logoC"><i></i><i></i><i></i></div><span class="t3">NRadio</span></div><div class="label">C + 3: эквалайзер и прописью</div></div>
+  <div><div class="row"><div class="logoD"></div><span class="t2">NRadio</span></div><div class="label">D + 2: винил и градиент</div></div>
+</div>
+</body>
+</html>
