@@ -40,9 +40,13 @@ const useStations = (): any => {
           .map((localStation) => localStation.slug),
       );
 
-      // пользовательские (локальные) станции в json не входят - оставляем их как есть
+      // пользовательские (локальные) станции в json не входят - оставляем их как есть;
+      // удалённые из каталога станции resurrect'ить нельзя (у них мёртвый поток),
+      // поэтому из localStorage возвращаем только лайкнутые и созданные пользователем
       const localOnlyStations = localStations.filter(
-        (localStation) => !stations.find((station) => station.slug === localStation.slug),
+        (localStation) =>
+          !stations.find((station) => station.slug === localStation.slug) &&
+          (localStation.isLiked || localStation.isLocal),
       );
 
       const mergedStations: StationInterface[] = [
