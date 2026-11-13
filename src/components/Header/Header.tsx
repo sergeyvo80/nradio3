@@ -24,7 +24,11 @@ const Header = memo(({ title }: Props) => {
   return (
     <header className={styles.Header}>
       <div className={styles.logo}>
-        <div className={styles.logoIcon} aria-hidden="true" />
+        <div className={styles.logoIcon} aria-hidden="true">
+          <span className={styles.logoBar} />
+          <span className={styles.logoBar} />
+          <span className={styles.logoBar} />
+        </div>
         <h1 className={styles.title}>{title}</h1>
       </div>
       <div className={styles.menu}>

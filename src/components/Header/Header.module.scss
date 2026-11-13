@@ -19,13 +19,15 @@
 .title {
   display: inline;
   margin: 0;
-  // как в макете: белое название 19px, не акцентное
+  // как в референсе: капс, широкий трекинг, белый жирный
   font-family: Montserrat, sans-serif;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: bold;
-  letter-spacing: 0.2px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   line-height: 1.25;
-  color: var(--item-color);
+  // цвет надписи = цвет иконки (акцент темы/пикера)
+  color: var(--current-color);
 
   // на узких экранах длинное название сжимается с многоточием,
   // а кнопки справа остаются на виду
@@ -35,7 +37,8 @@
   min-width: 0;
 
   @media #{main.$mob} {
-    font-size: main.vwMax(16px);
+    font-size: main.vwMax(15px);
+    letter-spacing: main.vwMax(1.6px);
   }
 }
 
@@ -69,7 +72,8 @@
   }
 }
 
-// кружок-логотип: акцентная заливка, треугольник цвета фона (как в макете)
+// кружок-логотип: акцентная заливка с лёгким вертикальным градиентом,
+// треугольник play цвета фона, оптически отцентрован (чуть правее центра)
 .logo {
   min-width: 0;
   display: flex;
@@ -77,36 +81,45 @@
   gap: 10px;
 }
 
+// лого «эквалайзер» (вариант C со стенда): акцентный квадрат со скруглением,
+// внутри три полоски цвета фона разной высоты. Геометрия — logo-mockup.html 1:1.
 .logoIcon {
   width: 26px;
   height: 26px;
-  border-radius: 50%;
+  border-radius: 7px;
   background-color: var(--current-color);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   flex: none;
-
-  // треугольник play цвета фона
-  &::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-left: 9px solid var(--bg-color);
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    margin-left: 3px;
-  }
 
   @media #{main.$mob} {
     width: main.vwMax(22px);
     height: main.vwMax(22px);
+    border-radius: main.vwMax(6px);
+    gap: main.vwMax(2px);
+  }
+}
 
-    &::after {
-      border-left: main.vwMax(7px) solid var(--bg-color);
-      border-top: main.vwMax(5px) solid transparent;
-      border-bottom: main.vwMax(5px) solid transparent;
-      margin-left: main.vwMax(3px);
-    }
+// полоски эквалайзера: средняя выше, по краям ниже
+.logoBar {
+  width: 3px;
+  border-radius: 1px;
+  background-color: var(--bg-color);
+  display: block;
+
+  &:nth-child(1) { height: 9px; }
+  &:nth-child(2) { height: 14px; }
+  &:nth-child(3) { height: 7px; }
+
+  @media #{main.$mob} {
+    width: main.vwMax(2.5px);
+    border-radius: main.vwMax(1px);
+
+    &:nth-child(1) { height: main.vwMax(8px); }
+    &:nth-child(2) { height: main.vwMax(12px); }
+    &:nth-child(3) { height: main.vwMax(6px); }
   }
 }
 
