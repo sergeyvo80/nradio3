@@ -704,5 +704,598 @@
       "hacker"
     ],
     "stream": "https://ice.somafm.com/defcon-128-mp3"
+  },
+  {
+    "slug": "synthwave-nightride",
+    "title": "Synthwave [Nightride]",
+    "website": "https://www.nightride.fm",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "synthwave",
+      "retro"
+    ],
+    "stream": "https://stream.nightride.fm/nightride.ogg"
+  },
+  {
+    "slug": "chill-synth-nightride",
+    "title": "ChillSynth [Nightride]",
+    "website": "https://www.nightride.fm",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "synthwave",
+      "chillout"
+    ],
+    "stream": "https://stream.nightride.fm/chillsynth.ogg"
+  },
+  {
+    "slug": "dark-synth-nightride",
+    "title": "DarkSynth [Nightride]",
+    "website": "https://www.nightride.fm",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "synthwave",
+      "dark"
+    ],
+    "stream": "https://stream.nightride.fm/darksynth.ogg"
+  },
+  {
+    "slug": "space-synth-nightride",
+    "title": "SpaceSynth [Nightride]",
+    "website": "https://www.nightride.fm",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "synthwave",
+      "space"
+    ],
+    "stream": "https://stream.nightride.fm/spacesynth.ogg"
+  },
+  {
+    "slug": "ebsm-nightride",
+    "title": "EBSM [Nightride]",
+    "website": "https://www.nightride.fm",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "electronic",
+      "dark"
+    ],
+    "stream": "https://stream.nightride.fm/ebsm.ogg"
+  },
+  {
+    "slug": "psytrance-hirschmilch",
+    "title": "Psytrance [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "psytrance",
+      "goa"
+    ],
+    "stream": "https://hirschmilch.de:7001/psytrance.mp3"
+  },
+  {
+    "slug": "progressive-hirschmilch",
+    "title": "Progressive [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "progressive"
+    ],
+    "stream": "https://hirschmilch.de:7001/progressive.mp3"
+  },
+  {
+    "slug": "classics-hirschmilch",
+    "title": "Classics [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "classics",
+      "dance"
+    ],
+    "stream": "https://hirschmilch.de:7001/classics.mp3"
+  },
+  {
+    "slug": "chillout-hirschmilch",
+    "title": "Chillout [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "chillout",
+      "lounge"
+    ],
+    "stream": "https://hirschmilch.de:7001/chillout.mp3"
+  },
+  {
+    "slug": "hard-techno-hirschmilch",
+    "title": "Hardtechno [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "hardtechno",
+      "techno"
+    ],
+    "stream": "https://hirschmilch.de:7001/hardtechno.mp3"
+  },
+  {
+    "slug": "vocal-house-hirschmilch",
+    "title": "Vocal House [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "vocal",
+      "house"
+    ],
+    "stream": "https://hirschmilch.de:7001/vocal.mp3"
+  },
+  {
+    "slug": "downtempo-hirschmilch",
+    "title": "Downtempo [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "downtempo",
+      "chillout"
+    ],
+    "stream": "https://hirschmilch.de:7001/downtempo.mp3"
+  },
+  {
+    "slug": "kcrw-eclectic24",
+    "title": "KCRW Eclectic 24 [KCRW]",
+    "website": "https://www.kcrw.com",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "alternative",
+      "eclectic"
+    ],
+    "stream": "https://streams.kcrw.com/e24_mp3"
+  },
+  {
+    "slug": "nashe-radio",
+    "title": "Nashe Radio [Nashe]",
+    "website": "https://www.nashe.ru",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "rock",
+      "russian"
+    ],
+    "stream": "https://nashe1.hostingradio.ru/nashe-128.mp3"
+  },
+  {
+    "slug": "3fm-npo",
+    "title": "3FM [NPO]",
+    "website": "https://www.nporadio2.nl/3fm",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "pop",
+      "alternative"
+    ],
+    "stream": "https://icecast.omroep.nl/3fm-bb-mp3"
+  },
+  {
+    "slug": "classic-fm-uk",
+    "title": "Classic FM [UK]",
+    "website": "https://www.classicfm.com",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "classical",
+      "orchestral"
+    ],
+    "stream": "https://media-ssl.musicradio.com/ClassicFMMP3"
+  },
+  {
+    "slug": "club-hits-1fm",
+    "title": "1.FM Club Hits [1.FM]",
+    "website": "https://www.1.fm",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "club",
+      "dance"
+    ],
+    "stream": "https://strm112.1.fm/club_mobile_mp3"
+  },
+  {
+    "slug": "nts-one",
+    "title": "NTS 1 [NTS]",
+    "website": "https://www.nts.live",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "eclectic",
+      "leftfield"
+    ],
+    "stream": "https://stream-relay-geo.ntslive.net/stream"
+  },
+  {
+    "slug": "nts-two",
+    "title": "NTS 2 [NTS]",
+    "website": "https://www.nts.live",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "eclectic",
+      "underground"
+    ],
+    "stream": "https://stream-relay-geo.ntslive.net/stream2"
+  },
+  {
+    "slug": "rnz-concert",
+    "title": "RNZ Concert [RNZ]",
+    "website": "https://www.rnz.co.nz/concert",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "classical",
+      "concert"
+    ],
+    "stream": "https://stream-ice.radionz.co.nz/concert.mp3"
+  },
+  {
+    "slug": "synphaera-soma-fm",
+    "title": "Synphaera [SomaFM]",
+    "website": "https://somafm.com/synphaera/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "ambient",
+      "spacemusic"
+    ],
+    "stream": "https://ice.somafm.com/synphaera-128-mp3"
+  },
+  {
+    "slug": "dark-zone-soma-fm",
+    "title": "The Dark Zone [SomaFM]",
+    "website": "https://somafm.com/darkzone/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "ambient",
+      "dark"
+    ],
+    "stream": "https://ice.somafm.com/darkzone-128-mp3"
+  },
+  {
+    "slug": "doomed-soma-fm",
+    "title": "Doomed [SomaFM]",
+    "website": "https://somafm.com/doomed/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "industrial",
+      "ambient"
+    ],
+    "stream": "https://ice.somafm.com/doomed-128-mp3"
+  },
+  {
+    "slug": "in-sound-soma-fm",
+    "title": "The In-Sound [SomaFM]",
+    "website": "https://somafm.com/insound/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "oldies",
+      "60s"
+    ],
+    "stream": "https://ice.somafm.com/insound-128-mp3"
+  },
+  {
+    "slug": "chillits-soma-fm",
+    "title": "Chillits Radio [SomaFM]",
+    "website": "https://somafm.com/chillits/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "chill",
+      "live"
+    ],
+    "stream": "https://ice.somafm.com/chillits-128-mp3"
+  },
+  {
+    "slug": "n5md-soma-fm",
+    "title": "n5MD Radio [SomaFM]",
+    "website": "https://somafm.com/n5md/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "experimental",
+      "electronic"
+    ],
+    "stream": "https://ice.somafm.com/n5md-128-mp3"
+  },
+  {
+    "slug": "tiki-time-soma-fm",
+    "title": "Tiki Time [SomaFM]",
+    "website": "https://somafm.com/tikitime/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "tiki",
+      "exotica"
+    ],
+    "stream": "https://ice.somafm.com/tikitime-128-mp3"
+  },
+  {
+    "slug": "ebm-hirschmilch",
+    "title": "EBM [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "ebm",
+      "industrial"
+    ],
+    "stream": "https://hirschmilch.de:7001/ebm.mp3"
+  },
+  {
+    "slug": "minimal-hirschmilch",
+    "title": "Minimal [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "minimal",
+      "electronic"
+    ],
+    "stream": "https://hirschmilch.de:7001/minimal.mp3"
+  },
+  {
+    "slug": "club-hirschmilch",
+    "title": "Club [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "club",
+      "dance"
+    ],
+    "stream": "https://hirschmilch.de:7001/club.mp3"
+  },
+  {
+    "slug": "hardstyle-hirschmilch",
+    "title": "Hardstyle [Hirschmilch]",
+    "website": "https://hirschmilch.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "hardstyle"
+    ],
+    "stream": "https://hirschmilch.de:7001/hardstyle.mp3"
+  },
+  {
+    "slug": "tsf-jazz",
+    "title": "TSF Jazz [TSF Jazz]",
+    "website": "https://www.tsfjazz.com",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "jazz"
+    ],
+    "stream": "https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3"
+  },
+  {
+    "slug": "oui-fm",
+    "title": "OUI FM [OUI FM]",
+    "website": "https://www.ouifm.fr",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "classicrock",
+      "rock"
+    ],
+    "stream": "https://ouifm.ice.infomaniak.ch/ouifm-high.mp3"
+  },
+  {
+    "slug": "jazz-radio-fr",
+    "title": "Jazz Radio [Jazz Radio]",
+    "website": "https://www.jazzradio.com",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "jazz",
+      "smooth"
+    ],
+    "stream": "https://jazzradio.ice.infomaniak.ch/jazzradio-high.mp3"
+  },
+  {
+    "slug": "nova-fr",
+    "title": "Nova [Nova]",
+    "website": "https://www.radionova.fr",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "eclectic",
+      "jazz"
+    ],
+    "stream": "https://novazz.ice.infomaniak.ch/novazz-128.mp3"
+  },
+  {
+    "slug": "radio-meuh",
+    "title": "Radio Meuh [Radio Meuh]",
+    "website": "https://www.radiomeuh.com",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "downtempo",
+      "eclectic"
+    ],
+    "stream": "https://radiomeuh.ice.infomaniak.ch/radiomeuh-128.mp3"
+  },
+  {
+    "slug": "rock-antenne",
+    "title": "Rock Antenne [Rock Antenne]",
+    "website": "https://www.rockantenne.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "rock"
+    ],
+    "stream": "https://s1-webradio.rockantenne.de/rockantenne/stream/mp3"
+  },
+  {
+    "slug": "sunshine-live",
+    "title": "Sunshine Live [Sunshine Live]",
+    "website": "https://www.sunshine-live.de",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 192,
+    "tags": [
+      "edm",
+      "electronic"
+    ],
+    "stream": "https://stream.sunshine-live.de/live/mp3-192"
+  },
+  {
+    "slug": "radio-x-uk",
+    "title": "Radio X [Radio X]",
+    "website": "https://www.radiox.co.uk",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "indie",
+      "rock"
+    ],
+    "stream": "https://media-ssl.musicradio.com/RadioXUKMP3"
+  },
+  {
+    "slug": "radio-x-90s",
+    "title": "Radio X 90s [Radio X]",
+    "website": "https://www.radiox.co.uk",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "90s",
+      "britpop"
+    ],
+    "stream": "https://media-ssl.musicradio.com/RadioX90sMP3"
+  },
+  {
+    "slug": "capital-uk",
+    "title": "Capital [Capital]",
+    "website": "https://www.capitalfm.com",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "pop",
+      "chr"
+    ],
+    "stream": "https://media-ssl.musicradio.com/CapitalMP3"
+  },
+  {
+    "slug": "capital-dance",
+    "title": "Capital Dance [Capital]",
+    "website": "https://www.capitalfm.com",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "dance",
+      "house"
+    ],
+    "stream": "https://media-ssl.musicradio.com/CapitalDanceMP3"
+  },
+  {
+    "slug": "comercial-pt",
+    "title": "Rádio Comercial [Bauer]",
+    "website": "https://www.radiocomercial.pt",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "pop"
+    ],
+    "stream": "https://stream-icy.bauermedia.pt/comercial.mp3"
+  },
+  {
+    "slug": "m80-pt",
+    "title": "M80 [Bauer]",
+    "website": "https://www.m80.pt",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "classicrock",
+      "rock"
+    ],
+    "stream": "https://stream-icy.bauermedia.pt/m80.mp3"
+  },
+  {
+    "slug": "nrk-p3",
+    "title": "NRK P3 [NRK]",
+    "website": "https://www.nrk.no/p3",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "pop",
+      "alternative"
+    ],
+    "stream": "https://lyd.nrk.no/nrk_radio_p3_mp3_h"
+  },
+  {
+    "slug": "groove-salad-2-soma-fm",
+    "title": "Groove Salad 2 [SomaFM]",
+    "website": "https://somafm.com/groovesalad2/",
+    "dateAdded": "2026-11-13",
+    "dateUpdated": "2026-11-13",
+    "bitrate": 128,
+    "tags": [
+      "ambient",
+      "electronic"
+    ],
+    "stream": "https://ice.somafm.com/groovesalad2-128-mp3"
   }
 ]
