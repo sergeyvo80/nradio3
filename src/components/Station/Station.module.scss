@@ -28,12 +28,14 @@
   flex: none;
 }
 
-// круглая акцентная кнопка play: треугольник цвета фона внутри
+// круглая акцентная кнопка play: лёгкий вертикальный градиент и тонкое
+// внутреннее кольцо — объём без свечения, как у улучшенного лого A
 .playCircle {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background-color: var(--current-color);
+  background: linear-gradient(180deg, var(--current-color) 0%, color-mix(in srgb, var(--current-color) 78%, #000) 100%);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--bg-color) 22%, transparent);
   display: grid;
   place-items: center;
   cursor: pointer;
