@@ -11,10 +11,19 @@ import stationData from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
 import { META_TITLE } from '@/constants/meta';
 import { initTheme } from '@/theme/theme';
+import { getVisualizerAudio, resumeVisualizer, probeCorsStream, visualizerContextState, isAnalyserSilent } from '@/api/visualizerEngine';
 
 const LAST_STATION_KEY = 'lastStation';
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
+
+// элемент, на котором играем сейчас: «визуализаторный» (CORS-потоки,
+// через Web Audio) или обычный player (остальные - напрямую)
+let currentPlayer: HTMLAudioElement | undefined = player;
+
+// потоки, у которых Web Audio граф молчит (контекст suspended и т.п.) -
+// играем их сразу напрямую, без 4-секундного ожидания страховки
+const silentRoutedStreams = new Set<string>();
 
 interface Props {
   slug: string
@@ -60,7 +69,10 @@ const NRadioContainer = ({ slug }: Props) => {
 
   // play() возвращает промис: браузер может отклонить его
   // (autoplay policy, сеть и т.д.), поэтому PlayerStateEnum.Playing
-  // ставится только после успешного старта
+  // ставится только после успешного старта.
+  // CORS-проба: потоки с Access-Control-Allow-Origin играем через Web Audio
+  // (визуализатор), без CORS - напрямую на обычном <audio>: пропуск чужого
+  // потока через MediaElementSource глушит звук (см. visualizerEngine.ts)
   const play = useCallback(() => {
     setError(undefined);
 
@@ -70,20 +82,92 @@ const NRadioContainer = ({ slug }: Props) => {
     }
 
     setPlayerState(PlayerStateEnum.Play);
-    player.src = station.stream;
 
-    if (process.env.NEXT_PUBLIC_DISABLE_PLAY) {
-      setPlayerState(PlayerStateEnum.Playing);
-      return;
-    }
+    const start = async () => {
+      // контекст Web Audio создаём и заводим СИНХРОННО в жесте клика:
+      // await ниже выходит из контекста жеста, и отложенный resume
+      // может не пройти (autoplay policy)
+      const routed = silentRoutedStreams.has(station.stream) ? null : getVisualizerAudio();
+      resumeVisualizer();
 
-    player
-      .play()
-      .then(() => setPlayerState(PlayerStateEnum.Playing))
-      .catch((err: unknown) => {
-        setPlayerState(PlayerStateEnum.Paused);
-        setError(err instanceof Error ? `Error playing: ${err.message}` : 'Error playing: unknown');
-      });
+      // тянем поток сразу, пока идёт CORS-проба - экономит время
+      // соединения на первом запуске станции
+      if (routed) {
+        const abs = new URL(station.stream, window.location.href).href;
+        if (routed.src !== abs) routed.src = station.stream;
+      }
+
+      const cors = process.env.NEXT_PUBLIC_DISABLE_PLAY
+        ? false
+        : await probeCorsStream(station.stream);
+      const el = (cors ? routed : null) || player;
+
+      // останавливаем другой элемент, если играли через него
+      if (currentPlayer && currentPlayer !== el) {
+        currentPlayer.pause();
+        if (currentPlayer === routed) {
+          routed.removeAttribute('src');
+          routed.load(); // обрываем лишнюю загрузку, если проба не прошла
+        }
+      }
+      currentPlayer = el;
+
+      // перезапускать поток не нужно, если этот элемент уже его тянет
+      const abs = new URL(station.stream, window.location.href).href;
+      if (el.src !== abs) el.src = station.stream;
+
+      if (process.env.NEXT_PUBLIC_DISABLE_PLAY) {
+        setPlayerState(PlayerStateEnum.Playing);
+        return;
+      }
+
+      // AudioContext стартует suspended - возобновляем по жесту пользователя
+      resumeVisualizer();
+
+      el.play()
+        .then(() => {
+          setPlayerState(PlayerStateEnum.Playing);
+
+          // страховка звука. Два случая:
+          //  - контекст suspended (autoplay policy) - звук не пойдёт никогда,
+          //    перескакиваем быстро (2 с);
+          //  - контекст running, но аналайзер молчит - это нормальная
+          //    БУФЕРИЗАЦИЯ потока (соединение + буфер до нескольких секунд),
+          //    убивать её нельзя - ждём долго (12 с) и только если тишина
+          //    не кончается, считаем граф мёртвым
+          if (el !== player) {
+            let silentSeconds = 0;
+            const watchdog = setInterval(() => {
+              if (currentPlayer !== el || el.paused) {
+                clearInterval(watchdog);
+                return;
+              }
+              const ctxBad = visualizerContextState() !== 'running';
+              const silent = ctxBad || isAnalyserSilent();
+              silentSeconds = silent ? silentSeconds + 1 : 0;
+              const shouldFallback = (ctxBad && silentSeconds >= 2) || silentSeconds >= 12;
+              if (shouldFallback) {
+                clearInterval(watchdog);
+                silentRoutedStreams.add(station.stream);
+                if (currentPlayer === el) {
+                  el.pause();
+                  currentPlayer = player;
+                  player.src = station.stream;
+                  player.play().catch(() => undefined);
+                  // маркер срабатывания страховки (для отладки звука)
+                  window.dispatchEvent(new CustomEvent('nr-audio-fallback'));
+                }
+              }
+            }, 1000);
+          }
+        })
+        .catch((err: unknown) => {
+          setPlayerState(PlayerStateEnum.Paused);
+          setError(err instanceof Error ? `Error playing: ${err.message}` : 'Error playing: unknown');
+        });
+    };
+
+    start();
   }, [station]);
   
 
@@ -109,7 +193,7 @@ const NRadioContainer = ({ slug }: Props) => {
     try {
       setPlayerState(PlayerStateEnum.Pause);
       if (player) {
-        player.pause();
+        currentPlayer?.pause();
         setPlayerState(PlayerStateEnum.Paused);
       }
     } catch (err: unknown) {
@@ -173,11 +257,7 @@ const NRadioContainer = ({ slug }: Props) => {
   // при смене станции продолжаем играть, если пользователь уже запустил плеер
   useEffect(() => {
     if (player && playerState === PlayerStateEnum.Playing) {
-      player.src = station.stream;
-      player.play().catch((err: unknown) => {
-        setPlayerState(PlayerStateEnum.Paused);
-        setError(err instanceof Error ? `Error playing: ${err.message}` : 'Error playing: unknown');
-      });
+      play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- реагируем только на смену станции
   }, [station]);

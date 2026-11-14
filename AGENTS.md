@@ -55,6 +55,18 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   приглушены (opacity .55); нижний бордюр шапки = верхний бордюр плеера: `1px solid var(--border-color)`.
   Плеер: круглая кнопка `.playCircle`, заголовок 16px, звезда 22px opacity .45 (лайкнутая —
   `--positive-color` opacity 1).
+- **Визуализатор (Winamp-style)** (`src/components/Visualizer/` + `src/api/visualizerEngine.ts`,
+  полный скил — **docs/skill-visualizer.md**: архитектура, отладка звука, правила расширения):
+  Web Audio MediaElementSource → AnalyserNode (fftSize 2048). **Два элемента плеера**: CORS-потоки
+  (probe `probeCorsStream`) играют через лениво создаваемый «визуализаторный» `<audio>` в Web Audio
+  графе (`getVisualizerAudio()`), потоки без ACAO — напрямую на обычном `player` (чужой поток через
+  MediaElementSource глушится по спеке). Контекст создаётся СИНХРОННО в жесте клика (до await);
+  `currentPlayer` — какой элемент играет сейчас. Страховка звука (watchdog): контекст не `running`
+  → 2 с, буферизация (тихий аналайзер при running) → 12 с; при срабатывании — прямой элемент +
+  событие `nr-audio-fallback`, поток запоминается в `silentRoutedStreams`. Два режима (bars /
+  осциллоскоп): клик по панели — фуллскрин (Fullscreen API, фолбэк CSS-оверлей для iOS/PWA; выход
+  Esc/✕), клик в фуллскрине — смена режима. Потоки без CORS → псевдо-VU после 20 пустых кадров.
+  rAF останавливается на паузе. crossOrigin у `<audio>` НЕ ставить.
 - **Языки ru/en** (`src/i18n/i18n.ts` + `src/hooks/useLang.ts`, переключатель `LangSwitcher`
   с флажками 🇷🇺/🇬🇧 в меню «⋮»): язык по умолчанию из браузера (`navigator.language` —
   начинается с ru → 'ru', иначе 'en'); выбор руками сохраняется в `localStorage('lang')`
