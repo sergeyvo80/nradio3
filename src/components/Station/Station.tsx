@@ -5,6 +5,7 @@ import { faPlay, faPause, faSpinner, faStar } from '@fortawesome/free-solid-svg-
 import StationInterface from '@/types/StationInterface';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import getStationSource from '@/utils/getStationSource';
+import Visualizer from '../Visualizer/Visualizer';
 
 import styles from './Station.module.scss';
 
@@ -57,6 +58,7 @@ const Station = memo(({
     </div>
 
     <div className={styles.actions}>
+      <Visualizer playerState={playerState} />
       <FontAwesomeIcon
         icon={faStar}
         className={styles.like}
