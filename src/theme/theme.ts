@@ -5,14 +5,17 @@ import ColorsInterface from '@/types/ColorsInterface';
 // - aurora   — классический терминал Ubuntu: фиолетовый #300A24, тёплый оранжевый
 // - midnight — глубокий индиго-нави, серебряный акцент (лого/play), орхидея для лайков
 // - forest   — тёмно-зелёный (лесная хвоя): мятный акцент (лого/play), лайм для лайков
+// - day      — светлая нейтральная: оранжевый акцент Yaru, тёмно-зелёный для лайков
+// - sage     — светло-зелёная (шалфей), парная к forest: тёмно-зелёный акцент, оливковый лайм
 // - custom   — произвольная тема через пикер цвета (colorState в localStorage)
 // Переключение — в меню «⋮» шапки (ThemeSwitcher), выбор хранится в localStorage('theme').
 
 export const THEME_KEY = 'theme';
-export type ThemeName = 'yaru' | 'aurora' | 'midnight' | 'forest' | 'custom';
+export type ThemeName = 'yaru' | 'aurora' | 'midnight' | 'forest' | 'day' | 'sage' | 'custom';
 export const THEME_EVENT = 'nr-theme-change';
 
-const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
+// палитры named-тем (нужны переключателю: свотч цвета в кнопке темы)
+export const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
   yaru: {
     '--bg-color': '#1B1922',
     '--second-bg-color': '#26232E',
@@ -82,6 +85,46 @@ const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
     // лайм: лайкнутые звёзды, подписи станций, версия в меню
     '--positive-color': '#B4E34F',
   },
+  day: {
+    // светлая нейтральная: светлый фон + тёмный текст; акцент — фирменный
+    // оранжевый Yaru; на светлом фоне positive темнее (читаемость 9-11px текста)
+    '--bg-color': '#F3F2F6',
+    '--second-bg-color': '#FFFFFF',
+    // светло-серый: нелайкнутые звёзды и разделители
+    '--border-color': '#D9D6E0',
+    // оранжевый: лого, NRADIO, play, планка текущей станции
+    '--current-color': '#E95420',
+    '--shadow-color': '#00000026',
+    '--error-bg-color': '#FBE9E7',
+    '--error-border-color': '#E6B0AC',
+    '--error-color': '#A32014',
+    '--color': '#26232E',
+    '--item-color': '#26232E',
+    '--link-color': '#26232E',
+    '--visited-color': '#726E7E',
+    // тёмно-зелёный: лайкнутые звёзды, подписи станций, версия в меню
+    '--positive-color': '#1E8E4E',
+  },
+  sage: {
+    // светло-зелёная, парная к forest: шалфейный фон, тёмно-зелёный акцент,
+    // оливковый лайм для лайков
+    '--bg-color': '#EAF1E8',
+    '--second-bg-color': '#FFFFFF',
+    // приглушённый шалфейный: нелайкнутые звёзды и разделители
+    '--border-color': '#C2D4C0',
+    // тёмно-зелёный: лого, NRADIO, play, планка текущей станции
+    '--current-color': '#1F8A50',
+    '--shadow-color': '#0000001a',
+    '--error-bg-color': '#FBEAE4',
+    '--error-border-color': '#E0B4A8',
+    '--error-color': '#A33018',
+    '--color': '#232D24',
+    '--item-color': '#232D24',
+    '--link-color': '#232D24',
+    '--visited-color': '#6E8272',
+    // оливковый (тёмный лайм): лайкнутые звёзды, подписи, версия
+    '--positive-color': '#5F7F1D',
+  },
 };
 
 // применяет набор переменных темы на корень документа
@@ -100,8 +143,8 @@ export const getTheme = (): ThemeName => {
       return 'custom';
     }
     const saved = window.localStorage.getItem(THEME_KEY);
-    if (saved === 'yaru' || saved === 'aurora' || saved === 'midnight' || saved === 'forest') {
-      return saved;
+    if (saved && ['yaru', 'aurora', 'midnight', 'forest', 'day', 'sage'].includes(saved)) {
+      return saved as ThemeName;
     }
   } catch {
     // нет localStorage — дефолт
