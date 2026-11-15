@@ -27,10 +27,14 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Локальное состояние**: лайки (`isLiked`), станции пользователя (`isLocal`+`uuid`) и тема живут
   в `localStorage('stations')`; восстановление — merge по `slug` в `useStations.ts` (`clientStateMergeMutate`);
   никогда не сравнивать `station.uuid === localStation.uuid` (у json-станций uuid нет → `undefined === undefined`).
-- **Темы Yaru/Aurora** (`src/theme/theme.ts`, переключатель `ThemeSwitcher` в меню «⋮» шапки):
-  две named-темы из макета `public/design-mockup.html` — **yaru** (графитово-фиолетовый #1B1922,
-  оранжевый #E95420, зелёный #33D17A) и **aurora** (классический терминал Ubuntu #300A24,
-  тёплый оранжевый #F5894B, лаймовый #8AE234). Хранение: `localStorage('theme')` = yaru|aurora;
+- **Темы Yaru/Aurora/Midnight/Forest** (`src/theme/theme.ts`, переключатель `ThemeSwitcher` в меню «⋮» шапки):
+  четыре named-темы — **yaru** (графитово-фиолетовый #1B1922, оранжевый #E95420, зелёный #33D17A),
+  **aurora** (классический терминал Ubuntu #300A24, тёплый оранжевый #F5894B, лаймовый #8AE234),
+  **midnight** (глубокий индиго #0C1134, серебряный акцент #BCC1CC — лого/NRADIO/play/планка,
+  орхидея #D26BD3 — лайки/подписи/версия, синие звёзды и разделители #2E3AB8 через `--border-color`) и
+  **forest** (тёмно-зелёный #0A1B12, мятный акцент #4ED88C — лого/NRADIO/play/планка, лайм #B4E34F —
+  лайки/подписи/версия, хвойные звёзды и разделители #2F5A3E).
+  Хранение: `localStorage('theme')` = yaru|aurora|midnight|forest;
   custom-тема пикера определяется по `colorState.colorFull` (getTheme → 'custom'). Новый ключ
   палитры `--positive-color` (зелёный: версия, дата, лайкнутые звёзды — `.--liked .like`).
   Карточки станций — без рамок/теней, только фон + воздух; текущая станция: `inset 3px` планка

@@ -1,13 +1,15 @@
 import ColorsInterface from '@/types/ColorsInterface';
 
 // Темы продукта (см. макет public/design-mockup.html):
-// - yaru   — современный Ubuntu (Yaru): графитово-фиолетовый, оранжевый акцент
-// - aurora — классический терминал Ubuntu: фиолетовый #300A24, тёплый оранжевый
-// - custom — произвольная тема через пикер цвета (colorState в localStorage)
+// - yaru     — современный Ubuntu (Yaru): графитово-фиолетовый, оранжевый акцент
+// - aurora   — классический терминал Ubuntu: фиолетовый #300A24, тёплый оранжевый
+// - midnight — глубокий индиго-нави, серебряный акцент (лого/play), орхидея для лайков
+// - forest   — тёмно-зелёный (лесная хвоя): мятный акцент (лого/play), лайм для лайков
+// - custom   — произвольная тема через пикер цвета (colorState в localStorage)
 // Переключение — в меню «⋮» шапки (ThemeSwitcher), выбор хранится в localStorage('theme').
 
 export const THEME_KEY = 'theme';
-export type ThemeName = 'yaru' | 'aurora' | 'custom';
+export type ThemeName = 'yaru' | 'aurora' | 'midnight' | 'forest' | 'custom';
 export const THEME_EVENT = 'nr-theme-change';
 
 const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
@@ -41,6 +43,45 @@ const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
     '--visited-color': '#D8BFD3',
     '--positive-color': '#8AE234',
   },
+  midnight: {
+    // глубокий индиго-нави + серебро + орхидея (по референсу пользователя)
+    '--bg-color': '#0C1134',
+    '--second-bg-color': '#131A45',
+    // насыщенный синий: нелайкнутые звёзды и разделители
+    '--border-color': '#2E3AB8',
+    // серебро: лого, NRADIO, play, планка текущей станции
+    '--current-color': '#BCC1CC',
+    '--shadow-color': '#0508178c',
+    '--error-bg-color': '#2C0A33',
+    '--error-border-color': '#5E1A62',
+    '--error-color': '#E983C8',
+    '--color': '#C9CCD4',
+    '--item-color': '#C9CCD4',
+    '--link-color': '#C9CCD4',
+    '--visited-color': '#8F93C9',
+    // орхидея: лайкнутые звёзды, подписи станций, версия в меню
+    '--positive-color': '#D26BD3',
+  },
+  forest: {
+    // тёмно-зелёный: хвойный фон + мятный акцент + лайм (по мотивам midnight:
+    // та же структура контрастов, зелёная гамма)
+    '--bg-color': '#0A1B12',
+    '--second-bg-color': '#10261A',
+    // приглушённый хвойный зелёный: нелайкнутые звёзды и разделители
+    '--border-color': '#2F5A3E',
+    // мята: лого, NRADIO, play, планка текущей станции
+    '--current-color': '#4ED88C',
+    '--shadow-color': '#04120B8c',
+    '--error-bg-color': '#2A0D06',
+    '--error-border-color': '#5C1A0A',
+    '--error-color': '#E9987F',
+    '--color': '#C8D8CC',
+    '--item-color': '#C8D8CC',
+    '--link-color': '#C8D8CC',
+    '--visited-color': '#8FB39B',
+    // лайм: лайкнутые звёзды, подписи станций, версия в меню
+    '--positive-color': '#B4E34F',
+  },
 };
 
 // применяет набор переменных темы на корень документа
@@ -59,7 +100,7 @@ export const getTheme = (): ThemeName => {
       return 'custom';
     }
     const saved = window.localStorage.getItem(THEME_KEY);
-    if (saved === 'yaru' || saved === 'aurora') {
+    if (saved === 'yaru' || saved === 'aurora' || saved === 'midnight' || saved === 'forest') {
       return saved;
     }
   } catch {
