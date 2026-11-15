@@ -1,5 +1,7 @@
 import ColorsInterface from '@/types/ColorsInterface';
 
+import { applyCustomColors } from './customTheme';
+
 // Темы продукта (см. макет public/design-mockup.html):
 // - yaru     — современный Ubuntu (Yaru): графитово-фиолетовый, оранжевый акцент
 // - aurora   — классический терминал Ubuntu: фиолетовый #300A24, тёплый оранжевый
@@ -134,6 +136,51 @@ export const applyColors = (colors: ColorsInterface): void => {
   }
 };
 
+// Последняя custom-тема пикера (объект colorFull из react-color).
+// Пишется пикером при каждом изменении цвета и НЕ удаляется при выборе
+// named-темы — поэтому custom остаётся в списке селектора и его можно
+// выбрать повторно (в отличие от colorState, который setTheme снимает).
+export const CUSTOM_KEY = 'customTheme';
+
+export interface CustomColorFullInterface {
+  hex: string;
+  rgb: { r: number; g: number; b: number; a?: number };
+}
+
+// сохранённая custom-тема (colorFull) или null
+export const getCustomColorFull = (): CustomColorFullInterface | null => {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(CUSTOM_KEY) || 'null');
+    if (saved && typeof saved.hex === 'string') {
+      return saved as CustomColorFullInterface;
+    }
+  } catch {
+    // нет localStorage / битый JSON
+  }
+  return null;
+};
+
+// повторное включение сохранённой custom-темы (из селектора тем):
+// восстанавливает colorState (на перезагрузке её поднимет пикер,
+// getTheme увидит 'custom') и сразу применяет схему
+export const setCustomTheme = (): boolean => {
+  const colorFull = getCustomColorFull();
+  if (!colorFull?.hex) {
+    return false;
+  }
+  try {
+    window.localStorage.setItem(
+      'colorState',
+      JSON.stringify({ colorHex: colorFull.hex, color: colorFull.rgb, colorFull })
+    );
+  } catch {
+    // нет localStorage
+  }
+  applyCustomColors(colorFull.hex);
+  window.dispatchEvent(new Event(THEME_EVENT));
+  return true;
+};
+
 // активная тема: named-тема из localStorage, либо custom,
 // если в localStorage('colorState') сохранён произвольный цвет пикера
 export const getTheme = (): ThemeName => {
@@ -167,11 +214,17 @@ export const setTheme = (name: ThemeName): void => {
   window.dispatchEvent(new Event(THEME_EVENT));
 };
 
-// при старте приложения: восстановить выбранную named-тему
-// (custom-тему восстанавливает сам ColorPicker из colorState)
+// при старте приложения: восстановить выбранную тему. Для custom применяем
+// схему из сохранённого цвета ('customTheme') — пикер в закрытом меню
+// не смонтирован, полагаться на его рестор-эффект нельзя
 export const initTheme = (): void => {
   const theme = getTheme();
   if (theme !== 'custom') {
     applyColors(THEMES[theme]);
+    return;
+  }
+  const colorFull = getCustomColorFull();
+  if (colorFull?.hex) {
+    applyCustomColors(colorFull.hex);
   }
 };

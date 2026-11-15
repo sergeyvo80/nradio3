@@ -44,7 +44,8 @@
 
 // версия и дата живут в меню «⋮» (первый пункт), выровнены вправо
 
-// версия продукта: зелёный акцент темы (var(--positive-color))
+// версия продукта + дата в одной строке через длинное тире,
+// зелёный акцент темы (var(--positive-color))
 .version {
   display: block;
   color: var(--positive-color);
@@ -58,18 +59,10 @@
   }
 }
 
-// дата под версией: тот же зелёный, мельче и блеклее
+// дата в той же строке: блеклее версии
 .versionDate {
-  display: block;
-  color: var(--positive-color);
   opacity: 0.75;
-  font-size: 9px;
   font-weight: 500;
-  white-space: nowrap;
-
-  @media #{main.$mob} {
-    font-size: main.vwMax(8px);
-  }
 }
 
 // кружок-логотип: акцентная заливка с лёгким вертикальным градиентом,

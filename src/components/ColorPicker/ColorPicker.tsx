@@ -1,84 +1,27 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { SketchPicker,  RGBColor, HSLColor, ColorResult } from 'react-color';
-import Color from 'color';
+import { SketchPicker, RGBColor, ColorResult } from 'react-color';
 import { faRemove, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
-import ColorsInterface from '@/types/ColorsInterface';
 import { getTheme, setTheme, THEME_EVENT } from '@/theme/theme';
+import { applyCustomColors } from '@/theme/customTheme';
 
 import styles from './ColorPicker.module.scss';
-
-// TODO:  get from css variables
-const colors: ColorsInterface = {
-  '--bg-color': '#292A2D',
-  '--second-bg-color': '#202124',
-  '--border-color': '#4A4C50',
-  '--current-color': '#E8AD47',
-  '--shadow-color': '#000000bf',
-  '--error-bg-color': '#250201',
-  '--error-border-color': '#540C06',
-  '--color': '#ffffff',
-  '--item-color': '#ffffff',
-  '--error-color': '#E98380',
-  '--link-color': '#E59A6F',
-  '--visited-color': '#6AD1C7',
-  '--positive-color': '#4CAF7D',
-};
-
-type ColorKeys = keyof typeof colors;
-
-interface ColorInterface  {
-  hex:string;
-  hsl: HSLColor;
-  hsv: HSLColor;
-  oldHue: number;
-  rgb: RGBColor;
-  source: string;
-}
 
 interface StateInterface {
   displayColorPicker: boolean,
   color: RGBColor,
   colorHex: string;
-  colorFull?: ColorInterface,
+  colorFull?: ColorResult,
 }
 
 const defaultState: StateInterface = {
   displayColorPicker: false,
   color: { r: 32, g: 33, b: 36, a: 1 },
   colorHex: '#202124'
-};
-
-
-const calculateColorScheme = (pickedColor: string) => {
-  const pickedColorObject = Color(pickedColor);
-  const pickedColorObjectHSL = pickedColorObject.hsl().object();
-
-  const isDark = pickedColorObject.isDark() ? -1 : 1;
-
-  // TODO: get color form css variables
-  // for (let color in colors) {   
-  //   colors[color] = document.documentElement.style.getPropertyValue(color);
-  // }
-
-  const baseColorObject = Color(colors['--bg-color']);
-  const baseColorObjectHSL = baseColorObject.hsl().object();
-
-  for (const color in colors) { 
-    const currentColorHSL = Color(colors[color as ColorKeys]).hsl().object();
-
-    const newColor = Color({
-      h: pickedColorObjectHSL.h - (currentColorHSL.h - baseColorObjectHSL.h),
-      s: pickedColorObjectHSL.s - (currentColorHSL.s - baseColorObjectHSL.s),
-      l: pickedColorObjectHSL.l - (currentColorHSL.l - baseColorObjectHSL.l) * isDark,
-    });
-
-    document.documentElement.style.setProperty(color, newColor.hex());
-  }
 };
 
 
@@ -100,7 +43,7 @@ const ColorPicker = (): React.ReactNode => {
   }, [setState]);
 
   const handleChange = useCallback((color: ColorResult) => {
-    calculateColorScheme(color.hex);
+    applyCustomColors(color.hex);
 
     setState(prevState => {
       // colorHex нужен в состоянии: по нему определяем, что тема кастомная
@@ -114,6 +57,9 @@ const ColorPicker = (): React.ReactNode => {
       });
       return newState;
     });
+    // последняя custom-тема — в отдельный ключ: он НЕ удаляется при выборе
+    // named-темы, поэтому custom остаётся в списке селектора
+    setLocalStorage('customTheme', color);
     // произвольная тема через пикер перекрывает named-тему —
     // оповещаем переключатель тем
     window.dispatchEvent(new Event(THEME_EVENT));
@@ -136,12 +82,21 @@ const ColorPicker = (): React.ReactNode => {
     }
   }, [handleChange]);
 
-  // named-тема включена в другом месте (переключатель в меню «⋮») —
-  // приводим локальное состояние пикера к дефолту, чтобы свотч не показывал
-  // цвет прежней custom-темы
+  // событие темы: named-тема включена в другом месте (переключатель в меню «⋮»)
+  // — приводим локальное состояние пикера к дефолту, чтобы свотч не показывал
+  // цвет прежней custom-темы; custom включён повторно из селектора —
+  // наоборот, показываем его цвет в свотче
   useEffect(() => {
     const onThemeChange = () => {
-      if (getTheme() !== 'custom') {
+      const colorState = getLocalStorage<StateInterface>('colorState', defaultState);
+      if (colorState?.colorFull) {
+        setState(prevState => ({
+          ...prevState,
+          color: colorState.colorFull!.rgb,
+          colorHex: colorState.colorFull!.hex,
+          colorFull: colorState.colorFull,
+        }));
+      } else if (getTheme() !== 'custom') {
         setState(defaultState);
       }
     };
