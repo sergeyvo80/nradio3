@@ -27,25 +27,22 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Локальное состояние**: лайки (`isLiked`), станции пользователя (`isLocal`+`uuid`) и тема живут
   в `localStorage('stations')`; восстановление — merge по `slug` в `useStations.ts` (`clientStateMergeMutate`);
   никогда не сравнивать `station.uuid === localStation.uuid` (у json-станций uuid нет → `undefined === undefined`).
-- **Темы Yaru/Aurora/Midnight/Forest/Day/Sage** (`src/theme/theme.ts`, переключатель `ThemeSwitcher` в меню «⋮» шапки):
+- **Темы Yaru/Aurora/Midnight/Forest/Day/Sage** (`src/theme/theme.ts`, селектор в меню «⋮» шапки,
+  полный скил — **docs/skill-themes.md**: архитектура, чек-лист новой темы, грабли):
   шесть named-тем — **yaru** (графитово-фиолетовый #1B1922, оранжевый #E95420, зелёный #33D17A),
   **aurora** (классический терминал Ubuntu #300A24, тёплый оранжевый #F5894B, лаймовый #8AE234),
-  **midnight** (глубокий индиго #0C1134, серебряный акцент #BCC1CC — лого/NRADIO/play/планка,
-  орхидея #D26BD3 — лайки/подписи/версия, синие звёзды и разделители #2E3AB8 через `--border-color`),
-  **forest** (тёмно-зелёный #0A1B12, мятный акцент #4ED88C, лайм #B4E34F — лайки/подписи/версия,
-  хвойные звёзды/разделители #2F5A3E) и две светлые: **day** (светло-серый #F3F2F6, белый карточки,
-  оранжевый акцент #E95420, тёмно-зелёный positive #1E8E4E) и **sage** (шалфейный #EAF1E8, белый
-  карточки, тёмно-зелёный акцент #1F8A50, оливковый positive #5F7F1D — парная к forest).
-  В светлых темах positive/акцент темнее ради читаемости 9-11px текста. Переключатель —
-  пилюли «свотч акцентного цвета + название» (палитра из экспортированного THEMES), ряды
-  `flex-wrap: wrap` + `flex: 1 1 auto`; контейнеру задана явная ширина (250px / vwMax(244px)) —
-  dropdown absolute и сжимается по контенту, у wrap-контейнера max-content схлопывается
-  в столбец. Хранение: `localStorage('theme')` = yaru|aurora|midnight|forest|day|sage;
-  custom-тема пикера определяется по `colorState.colorFull` (getTheme → 'custom'). Новый ключ
-  палитры `--positive-color` (зелёный: версия, дата, лайкнутые звёзды — `.--liked .like`).
-  Карточки станций — без рамок/теней, только фон + воздух; текущая станция: `inset 3px` планка
-  `--current-color` + подмес 14% акцента в фон (color-mix). initTheme() зовётся из NRadioContainer
-  при монтировании; setTheme снимает custom (удаляет colorState); сброс пикера возвращает named-тему.
+  **midnight** (глубокий индиго #0C1134, серебряный акцент #BCC1CC, орхидея #D26BD3),
+  **forest** (тёмно-зелёный #0A1B12, мятный акцент #4ED88C, лайм #B4E34F) и две светлые:
+  **day** (#F3F2F6, оранжевый #E95420, тёмно-зелёный positive #1E8E4E) и **sage** (#EAF1E8,
+  тёмно-зелёный акцент #1F8A50, оливковый #5F7F1D — парная к forest). В светлых темах
+  акценты/positive темнее ради читаемости 9-11px текста. Селектор — как обычный селект
+  (контрол текущей темы + плоский список; двухцветный свотч «фон+акцент», шрифт 25px,
+  фиксированные размеры БЕЗ vwMax; ширина 250px — dropdown сжимается по контенту).
+  Плеер Station z-index 90 (ниже шапки 100), иначе перекрывает dropdown.
+  Хранение: `localStorage('theme')` = имя; custom-тема пикера — по `colorState.colorFull`
+  (getTheme → 'custom'), setTheme снимает custom (удаляет colorState). Новый ключ палитры
+  `--positive-color` (версия/дата/подписи/лайкнутые звёзды). Карточки станций — без рамок/теней;
+  текущая станция: `inset 3px` планка `--current-color` + подмес 14% акцента в фон (color-mix).
   Все элементы макета применены: список разбит на секции «Понравившиеся»/«Все станции»
   (StationSelectorList, заголовки только при двух группах), у текущей станции подпись
   «`tags[0]`» (слово «играет» убрано по просьбе пользователя) + мини-эквалайзер (4 полоски, keyframes `eq`, `prefers-reduced-motion`

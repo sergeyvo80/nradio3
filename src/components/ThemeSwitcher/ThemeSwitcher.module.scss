@@ -1,66 +1,103 @@
 @use '../../styles/main';
 
-// переключатель тем в меню «⋮»: пилюли «свотч цвета + название»;
-// переносятся по несколько в ряд. Ширина фиксированная: dropdown absolute
-// и сжимается по контенту — у wrap-контейнера max-content схлопывается
-// в одну кнопку (столбец), поэтому контейнеру нужна явная ширина
+// переключатель тем в меню «⋮»: выглядит как обычный селект —
+// контрол с текущей темой + выпадающий плоский список строк.
+// Размеры фиксированные (без мобильной шкалы vwMax — она удваивает
+// всё на широких мобильных вьюпортах и раздувает селектор).
+// Ширина фиксированная: dropdown меню absolute и сжимается по контенту —
+// без явной ширины контейнер схлопывается в столбец
 .ThemeSwitcher {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 6px;
   width: 250px;
-
-  @media #{main.$mob} {
-    gap: main.vwMax(5px);
-    width: main.vwMax(244px);
-  }
 }
 
-.option {
-  // flex-basis auto: базовый размер = содержимое, тогда при переносе
-  // в ряд помещается несколько кнопок (flex: 1 дал бы basis 0 и столбец)
-  flex: 1 1 auto;
+// контрол текущей темы: свотч + название + стрелка, как у нативного select
+.current {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 6px 10px;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
   border: var(--border-color) solid 1px;
   border-radius: 8px;
   background: transparent;
   color: var(--item-color);
   font-family: inherit;
-  font-size: 12px;
+  font-size: 25px;
   font-weight: 600;
   letter-spacing: 0.3px;
   cursor: pointer;
+}
 
-  // активная тема: заливка акцентным цветом
-  &.--active {
-    background-color: var(--current-color);
-    border-color: var(--current-color);
-    color: var(--bg-color);
-  }
+// выпадающий список: одна рамка на весь блок, строки без своих бортиков
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  border: var(--border-color) solid 1px;
+  border-radius: 8px;
+  background-color: var(--second-bg-color);
+  box-shadow: 0 4px 12px 0 var(--shadow-color);
+}
 
-  @media #{main.$mob} {
-    gap: main.vwMax(5px);
-    padding: main.vwMax(5px) main.vwMax(8px);
-    border-radius: main.vwMax(8px);
-    font-size: main.vwMax(11px);
+// строка темы: свотч + название; без рамок, выделение только фоном
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--item-color);
+  font-family: inherit;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-align: left;
+  cursor: pointer;
+
+  // лёгкая подсветка при наведении
+  &:hover {
+    background-color: color-mix(in srgb, var(--current-color) 10%, transparent);
   }
 }
 
-// свотч акцентного цвета темы; тёмная окантовка — чтобы светлые
-// свотчи (серебро, мята) были видны и на светлых фонах, и в активной пилюле
+// текущая тема в списке: мягкая подложка акцентом
+.row.--active {
+  background-color: color-mix(in srgb, var(--current-color) 16%, transparent);
+}
+
+// свотч = фон темы; окантовка, чтобы тёмные фоны были видны на тёмном меню
 .dot {
   flex: none;
-  height: 10px;
-  width: 10px;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.28);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.28), inset 0 0 0 2px rgb(255 255 255 / 0.12);
+}
 
-  @media #{main.$mob} {
-    height: main.vwMax(9px);
-    width: main.vwMax(9px);
+// стрелка раскрытия: CSS-треугольник, крутится при open
+.chevron {
+  margin-left: auto;
+  width: 0;
+  height: 0;
+  border-left: 4.5px solid transparent;
+  border-right: 4.5px solid transparent;
+  border-top: 5.5px solid currentcolor;
+  opacity: 0.6;
+  transition: transform 0.15s ease;
+
+  &.--open {
+    transform: rotate(180deg);
   }
+}
+
+// галочка текущей темы в строке — справа
+.check {
+  margin-left: auto;
+  opacity: 0.85;
 }
