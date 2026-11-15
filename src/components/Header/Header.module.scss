@@ -102,11 +102,12 @@
   }
 }
 
-// полоски эквалайзера: средняя выше, по краям ниже
+// полоски эквалайзера: средняя выше, по краям ниже; белые — на любом
+// акценте темы смотрятся чисто (в т.ч. на светлых темах)
 .logoBar {
   width: 3px;
   border-radius: 1px;
-  background-color: var(--bg-color);
+  background-color: #ffffff;
   display: block;
 
   &:nth-child(1) { height: 9px; }
