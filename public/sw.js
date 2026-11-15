@@ -6,7 +6,7 @@
  *  - прочие same-origin        -> network-first c фолбэком на кэш
  *  - cross-origin (аудио-стримы, GTM) -> не кэшируется вообще
  */
-const CACHE_NAME = 'nradio-v2';
+const CACHE_NAME = 'nradio-v3'; // v3: побеленные иконки/favicon (они cache-first)
 const PRECACHE_URLS = ['/', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {
