@@ -27,14 +27,20 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Локальное состояние**: лайки (`isLiked`), станции пользователя (`isLocal`+`uuid`) и тема живут
   в `localStorage('stations')`; восстановление — merge по `slug` в `useStations.ts` (`clientStateMergeMutate`);
   никогда не сравнивать `station.uuid === localStation.uuid` (у json-станций uuid нет → `undefined === undefined`).
-- **Темы Yaru/Aurora/Midnight/Forest** (`src/theme/theme.ts`, переключатель `ThemeSwitcher` в меню «⋮» шапки):
-  четыре named-темы — **yaru** (графитово-фиолетовый #1B1922, оранжевый #E95420, зелёный #33D17A),
+- **Темы Yaru/Aurora/Midnight/Forest/Day/Sage** (`src/theme/theme.ts`, переключатель `ThemeSwitcher` в меню «⋮» шапки):
+  шесть named-тем — **yaru** (графитово-фиолетовый #1B1922, оранжевый #E95420, зелёный #33D17A),
   **aurora** (классический терминал Ubuntu #300A24, тёплый оранжевый #F5894B, лаймовый #8AE234),
   **midnight** (глубокий индиго #0C1134, серебряный акцент #BCC1CC — лого/NRADIO/play/планка,
-  орхидея #D26BD3 — лайки/подписи/версия, синие звёзды и разделители #2E3AB8 через `--border-color`) и
-  **forest** (тёмно-зелёный #0A1B12, мятный акцент #4ED88C — лого/NRADIO/play/планка, лайм #B4E34F —
-  лайки/подписи/версия, хвойные звёзды и разделители #2F5A3E).
-  Хранение: `localStorage('theme')` = yaru|aurora|midnight|forest;
+  орхидея #D26BD3 — лайки/подписи/версия, синие звёзды и разделители #2E3AB8 через `--border-color`),
+  **forest** (тёмно-зелёный #0A1B12, мятный акцент #4ED88C, лайм #B4E34F — лайки/подписи/версия,
+  хвойные звёзды/разделители #2F5A3E) и две светлые: **day** (светло-серый #F3F2F6, белый карточки,
+  оранжевый акцент #E95420, тёмно-зелёный positive #1E8E4E) и **sage** (шалфейный #EAF1E8, белый
+  карточки, тёмно-зелёный акцент #1F8A50, оливковый positive #5F7F1D — парная к forest).
+  В светлых темах positive/акцент темнее ради читаемости 9-11px текста. Переключатель —
+  пилюли «свотч акцентного цвета + название» (палитра из экспортированного THEMES), ряды
+  `flex-wrap: wrap` + `flex: 1 1 auto`; контейнеру задана явная ширина (250px / vwMax(244px)) —
+  dropdown absolute и сжимается по контенту, у wrap-контейнера max-content схлопывается
+  в столбец. Хранение: `localStorage('theme')` = yaru|aurora|midnight|forest|day|sage;
   custom-тема пикера определяется по `colorState.colorFull` (getTheme → 'custom'). Новый ключ
   палитры `--positive-color` (зелёный: версия, дата, лайкнутые звёзды — `.--liked .like`).
   Карточки станций — без рамок/теней, только фон + воздух; текущая станция: `inset 3px` планка

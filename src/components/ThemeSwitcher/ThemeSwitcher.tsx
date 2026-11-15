@@ -2,14 +2,16 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { getTheme, setTheme, THEME_EVENT } from '@/theme/theme';
+import { getTheme, setTheme, THEME_EVENT, THEMES } from '@/theme/theme';
 
 import styles from './ThemeSwitcher.module.scss';
 
-// Переключатель тем в меню «⋮» шапки: Yaru / Aurora / Midnight / Forest.
-// Тема custom (произвольный цвет через пикер) не подсвечивается.
+// Переключатель тем в меню «⋮» шапки: кнопка = свотч акцентного цвета + название.
+// Тема custom (произвольный цвет через пикер) не показывается.
+const NAMES = Object.keys(THEMES) as Array<keyof typeof THEMES>;
+
 const ThemeSwitcher = (): React.ReactNode => {
-  const [theme, setThemeState] = useState<'yaru' | 'aurora' | 'midnight' | 'forest' | 'custom'>('yaru');
+  const [theme, setThemeState] = useState<'custom' | keyof typeof THEMES>('yaru');
 
   useEffect(() => {
     setThemeState(getTheme());
@@ -18,41 +20,27 @@ const ThemeSwitcher = (): React.ReactNode => {
     return () => window.removeEventListener(THEME_EVENT, onThemeChange);
   }, []);
 
-  const select = useCallback((name: 'yaru' | 'aurora' | 'midnight' | 'forest') => {
+  const select = useCallback((name: keyof typeof THEMES) => {
     setTheme(name);
     setThemeState(name);
   }, []);
 
   return (
     <div className={styles.ThemeSwitcher}>
-      <button
-        type="button"
-        className={[styles.option, theme === 'yaru' ? styles['--active'] : ''].join(' ')}
-        onClick={() => select('yaru')}
-      >
-        Yaru
-      </button>
-      <button
-        type="button"
-        className={[styles.option, theme === 'aurora' ? styles['--active'] : ''].join(' ')}
-        onClick={() => select('aurora')}
-      >
-        Aurora
-      </button>
-      <button
-        type="button"
-        className={[styles.option, theme === 'midnight' ? styles['--active'] : ''].join(' ')}
-        onClick={() => select('midnight')}
-      >
-        Midnight
-      </button>
-      <button
-        type="button"
-        className={[styles.option, theme === 'forest' ? styles['--active'] : ''].join(' ')}
-        onClick={() => select('forest')}
-      >
-        Forest
-      </button>
+      {NAMES.map((name) => (
+        <button
+          key={name}
+          type="button"
+          className={[styles.option, theme === name ? styles['--active'] : ''].join(' ')}
+          onClick={() => select(name)}
+        >
+          <span
+            className={styles.dot}
+            style={{ backgroundColor: THEMES[name]['--current-color'] }}
+          />
+          {name[0].toUpperCase() + name.slice(1)}
+        </button>
+      ))}
     </div>
   );
 };
