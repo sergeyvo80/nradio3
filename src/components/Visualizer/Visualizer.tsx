@@ -138,7 +138,9 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       }
 
       if (mode === 'bars') {
-        const bands = Math.max(14, Math.min(48, Math.floor(w / (7 * dpr))));
+        // две последние полоски убраны: mp3 128 kbps режет верха ~с 16 кГц,
+        // они почти всегда пустые и визуализация выглядела обрезанной справа
+        const bands = Math.max(14, Math.min(48, Math.floor(w / (7 * dpr))) - 2);
         if (vals.length !== bands) {
           vals = new Array(bands).fill(0);
           peaks = new Array(bands).fill(0);
@@ -160,8 +162,9 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
           let v = 0;
 
           if (analyserNode && !pseudo) {
-            // логарифмический обход спектра: низы шире, верха сжаты
-            const usable = Math.floor(data.length * 0.72);
+            // логарифмический обход спектра: низы шире, верха сжаты;
+            // верхняя граница 0.68 — выше у mp3 почти нет энергии
+            const usable = Math.floor(data.length * 0.68);
             const idx = Math.min(data.length - 2, Math.floor(Math.pow(i / bands, 1.6) * usable));
             v = Math.max(data[idx], data[idx + 1]) / 255;
 
