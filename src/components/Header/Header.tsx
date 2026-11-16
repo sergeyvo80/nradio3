@@ -41,12 +41,13 @@ const Header = memo(({ title }: Props) => {
         />
         {menuOpen && (
           <div className={styles.menuDropdown}>
-            <div className={styles.menuItem}>
-              <span className={styles.version}>{PRODUCT_VERSION} — {PRODUCT_VERSION_DATE}</span>
-            </div>
             <div className={styles.menuItem}><LangSwitcher /></div>
             <div className={styles.menuItem}><ThemeSwitcher /></div>
             <div className={styles.menuItem}><ColorPicker /></div>
+            {/* версия прижата к нижней части выпадашки */}
+            <div className={styles.menuItem}>
+              <span className={styles.version}>{PRODUCT_VERSION}<span className={styles.versionDate}> — {PRODUCT_VERSION_DATE}</span></span>
+            </div>
           </div>
         )}
       </div>

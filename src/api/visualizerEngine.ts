@@ -30,6 +30,13 @@ const getVisualizerAudio = (): HTMLAudioElement | null => {
     analyser.smoothingTimeConstant = 0.82; // плавность столбиков
 
     audio = new Audio();
+    // CORS-режим: проба (probeCorsStream) уже проверила, что сервер отдаёт
+    // ACAO — с crossorigin='anonymous' медиа фетчится как CORS и граф
+    // получает данные. Без него cross-origin медиа считается tainted:
+    // MediaElementSource выдаёт нули (звук молчит до срабатывания
+    // страховки — звук стартовал ~через 30 с). На обычном player это
+    // ставить НЕЛЬЗЯ: станции без ACAO перестанут играть вовсе.
+    audio.crossOrigin = 'anonymous';
     // preload не трогаем (по умолчанию 'auto'): с 'none' медиа-элемент
     // начинает соединение только на play(), старт затягивается
 

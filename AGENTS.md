@@ -76,7 +76,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   событие `nr-audio-fallback`, поток запоминается в `silentRoutedStreams`. Два режима (bars /
   осциллоскоп): клик по панели — фуллскрин (Fullscreen API, фолбэк CSS-оверлей для iOS/PWA; выход
   Esc/✕), клик в фуллскрине — смена режима. Потоки без CORS → псевдо-VU после 20 пустых кадров.
-  rAF останавливается на паузе. crossOrigin у `<audio>` НЕ ставить.
+  rAF останавливается на паузе. crossOrigin на обычном player НЕ ставить (станции без ACAO
+  умрут), на routed-элементе ОБЯЗАТЕЛЕН 'anonymous' — без него CORS-медиа tainted, граф
+  молчит, звук стартовал ~через 30 с (страховка 12 с + второй буферинг); страховка при
+  отказе play() на routed тоже уводит на прямой элемент.
 - **Языки ru/en** (`src/i18n/i18n.ts` + `src/hooks/useLang.ts`, переключатель `LangSwitcher`
   с флажками 🇷🇺/🇬🇧 в меню «⋮»): язык по умолчанию из браузера (`navigator.language` —
   начинается с ru → 'ru', иначе 'en'); выбор руками сохраняется в `localStorage('lang')`
