@@ -45,23 +45,24 @@
 // версия и дата живут в меню «⋮» (первый пункт), выровнены вправо
 
 // версия продукта + дата в одной строке через длинное тире,
-// зелёный акцент темы (var(--positive-color))
+// зелёный акцент темы (var(--positive-color)); 15.4px − 20% = 12.32px
 .version {
   display: block;
   color: var(--positive-color);
-  font-size: 11px;
+  font-size: 12.32px;
   font-weight: 600;
   letter-spacing: 0.4px;
   white-space: nowrap;
 
   @media #{main.$mob} {
-    font-size: main.vwMax(10px);
+    font-size: main.vwMax(11.2px);
   }
 }
 
-// дата в той же строке: блеклее версии
+// дата (и длинное тире перед ней): бледнее версии, 7.2px + 30% = 9.36px
 .versionDate {
-  opacity: 0.75;
+  font-size: 9.36px;
+  opacity: 0.6;
   font-weight: 500;
 }
 

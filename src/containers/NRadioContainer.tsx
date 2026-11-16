@@ -162,6 +162,21 @@ const NRadioContainer = ({ slug }: Props) => {
           }
         })
         .catch((err: unknown) => {
+          // проба ACAO прошла, но медиа-запрос CORS не прошёл (редкий сервер):
+          // страховка — прямой элемент, как делает watchdog при тишине графа
+          if (el !== player) {
+            el.pause();
+            if (el === routed) {
+              routed.removeAttribute('src');
+              routed.load();
+            }
+            currentPlayer = player;
+            player.src = station.stream;
+            player.play().catch(() => undefined);
+            setPlayerState(PlayerStateEnum.Playing);
+            window.dispatchEvent(new CustomEvent('nr-audio-fallback'));
+            return;
+          }
           setPlayerState(PlayerStateEnum.Paused);
           setError(err instanceof Error ? `Error playing: ${err.message}` : 'Error playing: unknown');
         });
