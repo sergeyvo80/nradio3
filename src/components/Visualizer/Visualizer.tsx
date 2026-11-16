@@ -20,7 +20,8 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [full, setFull] = useState(false);      // нативный фуллскрин или оверлей
   const [overlay, setOverlay] = useState(false); // фолбэк, когда Fullscreen API недоступен (iOS Safari)
-  const [mode, setMode] = useState<Mode>('bars');
+  // по умолчанию — синусоида (осциллоскоп), как просили
+  const [mode, setMode] = useState<Mode>('wave');
 
   // компактный клик -> фуллскрин; клик в фуллскрине -> смена режима
   const onWrapClick = useCallback(() => {
@@ -111,16 +112,27 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       };
     };
 
-    const drawIdle = () => {
-      syncSize();
-      const { width: w, height: h } = canvas;
+    // плавная синусоида: пока реального сигнала нет (пауза, лоадер,
+    // поток без аналайзера или данные молчат) — спокойная бегущая волна
+    const drawSine = (w: number, h: number) => {
       const { accent } = themeColors();
 
-      ctx2d.clearRect(0, 0, w, h);
-      ctx2d.globalAlpha = 0.25;
-      ctx2d.fillStyle = accent;
-      ctx2d.fillRect(0, h - Math.max(2, h * 0.04), w, Math.max(2, h * 0.04));
-      ctx2d.globalAlpha = 1;
+      ctx2d.lineWidth = 2 * dpr;
+      ctx2d.strokeStyle = accent;
+      ctx2d.beginPath();
+
+      const mid = h / 2;
+      // размах волны = высота логотипа (полоска 14px) -> амплитуда ±7px
+      const amp = 7 * dpr;
+
+      for (let x = 0; x <= w; x += 2 * dpr) {
+        const p = x / w;
+        const y = mid + Math.sin(p * 11 + t * 0.055) * amp;
+        if (x === 0) ctx2d.moveTo(x, y);
+        else ctx2d.lineTo(x, y);
+      }
+
+      ctx2d.stroke();
     };
 
     const draw = () => {
@@ -133,8 +145,11 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       ctx2d.clearRect(0, 0, w, h);
 
       if (!playing) {
-        drawIdle();
-        return; // без rAF, пока пауза (экономия батареи)
+        // пауза/лоадер: плавная синусоида вместо «нулевого» сигнала
+        drawSine(w, h);
+        t += 1;
+        raf = requestAnimationFrame(draw);
+        return;
       }
 
       if (mode === 'bars') {
@@ -212,30 +227,28 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
         if (analyserNode) analyserNode.getByteTimeDomainData(data);
 
         const silent = data.every((s) => s === 128 || s === 0);
-        ctx2d.lineWidth = 2 * dpr;
-        ctx2d.strokeStyle = accent;
-        ctx2d.beginPath();
 
-        const mid = h / 2;
-        const amp = h * 0.38;
+        if (silent) {
+          // реального сигнала ещё нет - плавная синусоида
+          drawSine(w, h);
+        } else {
+          ctx2d.lineWidth = 2 * dpr;
+          ctx2d.strokeStyle = accent;
+          ctx2d.beginPath();
 
-        for (let x = 0; x <= w; x += 2 * dpr) {
-          const p = x / w;
-          let y: number;
+          const mid = h / 2;
+          const amp = h * 0.38;
 
-          if (analyserNode && !silent) {
-            y = mid + ((data[Math.floor(p * data.length)] - 128) / 128) * amp;
-          } else {
-            // мёртвые данные: красивая псевдоволна
-            y = mid + Math.sin(p * 18 + t * 0.09) * amp
-              * (0.35 + 0.6 * Math.abs(Math.sin(t * 0.004)));
+          for (let x = 0; x <= w; x += 2 * dpr) {
+            const p = x / w;
+            const y = mid + ((data[Math.floor(p * data.length)] - 128) / 128) * amp;
+
+            if (x === 0) ctx2d.moveTo(x, y);
+            else ctx2d.lineTo(x, y);
           }
 
-          if (x === 0) ctx2d.moveTo(x, y);
-          else ctx2d.lineTo(x, y);
+          ctx2d.stroke();
         }
-
-        ctx2d.stroke();
       }
 
       t += 1;

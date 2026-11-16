@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Генератор иконок NRadio: лого «эквалайзер» (вариант C со стенда).
+"""Генератор иконок NRadio: лого «эквалайзер» (как в шапке приложения).
 
-Рисует оранжевый скруглённый квадрат (#E95420) с тремя белыми
-полосками (#FFFFFF) — геометрия из Header.module.scss 1:1 (сетка 26 ед.):
-полоски шириной 3, зазор 2, высоты 9/14/7, радиус угла квадрата 7.
+Обычные иконки: прозрачный фон + три полоски акцентного цвета (#E95420) —
+геометрия из Header.module.scss 1:1 (сетка 26 ед.): полоски шириной 3,
+зазор 2, высоты 9/14/7, масштаб 1.15 (блок ~60% канвы).
+Maskable/apple: платформа требует непрозрачную подложку — оранжевый квадрат
+с белыми полосками (safe-zone 80% у maskable).
 Без PIL: PNG собирается вручную (zlib + struct), антиалиасинг —
 суперсэмплинг 4x4 на пиксель.
 """
 import zlib, struct, os
 
-ACCENT = (233, 84, 32)    # #E95420
-DARK = (255, 255, 255)    # белый — как в UI: полоски и play-иконка побелены
+ACCENT = (233, 84, 32)    # #E95420 — цвет полосок лого (как надпись NRADIO)
+WHITE = (255, 255, 255)
 
 S = 4  # суперсэмплинг
 
@@ -25,22 +27,23 @@ def inside_rounded_rect(x, y, cx, cy, hw, hh, r):
 def render(size, maskable=False, apple=False):
     """RGBA-строки канвы size x size.
 
-    - обычные иконки: прозрачный фон + скруглённый квадрат во всю канву
-    - maskable: полная заливка акцентом (без скруглений), полоски в safe-zone 80%
-    - apple: полная заливка акцентом, полоски 100% (Apple сам скругляет)
+    - обычные иконки: прозрачный фон + полоски ACCENT (масштаб 1.15)
+    - maskable: полная заливка ACCENT, белые полоски в safe-zone 80%
+    - apple: полная заливка ACCENT, белые полоски 100% (Apple сам скругляет)
     """
     u = size / 26.0
-    cx = cy = size / 2.0
-    r = 7.0 * u
-    bar_w, gap = 3.0 * u, 2.0 * u
-    scale = 0.8 if maskable else 1.0
-    bw = bar_w * scale
+    cy = size / 2.0
+    if maskable or apple:
+        bg_color, bar_color, scale = ACCENT, WHITE, (0.8 if maskable else 1.0)
+    else:
+        bg_color, bar_color, scale = None, ACCENT, 1.15
+    bar_w = 3.0 * u * scale
     heights = [9.0 * u * scale, 14.0 * u * scale, 7.0 * u * scale]
     # центры полосок по X: 8, 13, 18 (в единицах сетки 26)
     bar_centers = [8.0 * u, 13.0 * u, 18.0 * u]
     bars = []
     for bcx, h in zip(bar_centers, heights):
-        bars.append((bcx - bw / 2, cy - h / 2, bcx + bw / 2, cy + h / 2, 1.0 * u * scale))
+        bars.append((bcx - bar_w / 2, cy - h / 2, bcx + bar_w / 2, cy + h / 2, 1.0 * u * scale))
 
     rows = []
     for py in range(size):
@@ -51,11 +54,8 @@ def render(size, maskable=False, apple=False):
                 for sx in range(S):
                     x = px + (sx + 0.5) / S
                     y = py + (sy + 0.5) / S
-                    # квадрат-подложка
-                    if maskable or apple:
-                        bg_hit = True
-                    else:
-                        bg_hit = inside_rounded_rect(x, y, cx, cy, cx, cy, r)
+                    # квадрат-подложка (только maskable/apple)
+                    bg_hit = True if (maskable or apple) else False
                     # полоски
                     bar_hit = False
                     for x0, y0, x1, y1, br in bars:
@@ -64,9 +64,9 @@ def render(size, maskable=False, apple=False):
                             bar_hit = True
                             break
                     if bar_hit:
-                        col, a = DARK, 255
+                        col, a = bar_color, 255
                     elif bg_hit:
-                        col, a = ACCENT, 255
+                        col, a = bg_color, 255
                     else:
                         col, a = (0, 0, 0), 0
                     acc[0] += col[0]; acc[1] += col[1]; acc[2] += col[2]; acc[3] += a
