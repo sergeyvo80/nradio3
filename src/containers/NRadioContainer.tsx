@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/StationInterface';
@@ -47,6 +47,11 @@ const NRadioContainer = ({ slug }: Props) => {
   const [playerState, setPlayerState] = useState<PlayerStateEnum>(PlayerStateEnum.Paused);
   const [error, setError] = useState<string>();
 
+  // номер актуального запуска воспроизведения. Любой новый play()/pause()
+  // и смена станции делают предыдущий асинхронный запуск (CORS-проба до 3 с +
+  // буферизация) устаревшим: его колбэки не должны трогать состояние и звук
+  const playTokenRef = useRef<number>(0);
+
   const like = useCallback((slug: string) => {
     likeMutate(slug);
   }, [likeMutate]);
@@ -83,6 +88,9 @@ const NRadioContainer = ({ slug }: Props) => {
 
     setPlayerState(PlayerStateEnum.Play);
 
+    // новый запуск делает все предыдущие устаревшими
+    const token = ++playTokenRef.current;
+
     const start = async () => {
       // контекст Web Audio создаём и заводим СИНХРОННО в жесте клика:
       // await ниже выходит из контекста жеста, и отложенный resume
@@ -100,6 +108,13 @@ const NRadioContainer = ({ slug }: Props) => {
       const cors = process.env.NEXT_PUBLIC_DISABLE_PLAY
         ? false
         : await probeCorsStream(station.stream);
+
+      // запуск устарел (станцию сменили или нажали паузу, пока шла проба):
+      // ничего не трогаем — актуальный запуск сам остановит старый элемент
+      if (playTokenRef.current !== token) {
+        return;
+      }
+
       const el = (cors ? routed : null) || player;
 
       // останавливаем другой элемент, если играли через него
@@ -126,6 +141,16 @@ const NRadioContainer = ({ slug }: Props) => {
 
       el.play()
         .then(() => {
+          // промис дозрел после смены станции/паузы. Если элемент переиспользован
+          // актуальным запуском (тот же player) — не глушим; иначе останавливаем,
+          // чтобы старый поток не заиграл внезапно
+          if (playTokenRef.current !== token) {
+            if (currentPlayer !== el) {
+              el.pause();
+            }
+            return;
+          }
+
           setPlayerState(PlayerStateEnum.Playing);
 
           // страховка звука. Два случая:
@@ -138,7 +163,8 @@ const NRadioContainer = ({ slug }: Props) => {
           if (el !== player) {
             let silentSeconds = 0;
             const watchdog = setInterval(() => {
-              if (currentPlayer !== el || el.paused) {
+              // устаревший запуск: элемент уже отдал актуальному
+              if (playTokenRef.current !== token || currentPlayer !== el || el.paused) {
                 clearInterval(watchdog);
                 return;
               }
@@ -162,6 +188,10 @@ const NRadioContainer = ({ slug }: Props) => {
           }
         })
         .catch((err: unknown) => {
+          // промис отклонён после смены станции/паузы — не наша забота
+          if (playTokenRef.current !== token) {
+            return;
+          }
           // проба ACAO прошла, но медиа-запрос CORS не прошёл (редкий сервер):
           // страховка — прямой элемент, как делает watchdog при тишине графа
           if (el !== player) {
@@ -206,6 +236,9 @@ const NRadioContainer = ({ slug }: Props) => {
 
   const pause = () => {
     try {
+      // пауза отменяет недозревший запуск: колбэки старой станции не должны
+      // заиграть после нажатия паузы
+      playTokenRef.current += 1;
       setPlayerState(PlayerStateEnum.Pause);
       if (player) {
         currentPlayer?.pause();
@@ -269,9 +302,11 @@ const NRadioContainer = ({ slug }: Props) => {
     }
   }, [station]);
 
-  // при смене станции продолжаем играть, если пользователь уже запустил плеер
+  // при смене станции продолжаем играть, если плеер играл ИЛИ грузится:
+  // клик по станции всегда переключает поток и сбрасывает запуск
+  // предыдущей (старый запуск отменяется токеном внутри play())
   useEffect(() => {
-    if (player && playerState === PlayerStateEnum.Playing) {
+    if (player && (playerState === PlayerStateEnum.Playing || playerState === PlayerStateEnum.Play)) {
       play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- реагируем только на смену станции
