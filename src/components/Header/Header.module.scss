@@ -4,6 +4,8 @@
   z-index: 100;
   display: flex;
   align-items: center;
+  // спокойная панель; снизу — тонкая линия, зеркальная к плееру
+  border-bottom: var(--border-color) solid 1px;
   padding: 14px 18px;
   background-color: var(--second-bg-color);
   gap: 10px;
