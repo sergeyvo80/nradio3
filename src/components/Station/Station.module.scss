@@ -11,8 +11,6 @@
   // липкий плеер), но НИЖЕ шапки (z-index 100): иначе плеер, будучи позже
   // в DOM при том же z-index, перекрывает выпадающее меню «⋮»
   z-index: 90;
-  // спокойная панель: тонкая серая линия сверху, без оранжевого свечения
-  border-top: var(--border-color) solid 1px;
   color: var(--item-color);
   background-color: var(--second-bg-color);
   align-items: center;

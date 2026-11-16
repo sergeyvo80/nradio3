@@ -66,6 +66,7 @@ const NRadio = ({
     <div className={styles.NRadio}>
       <Header
         title={title}
+        playerState={playerState}
         onOpenAbout={toggleAboutHandler}
         onOpenNewStation={toggleOpenNewStation}
       />

@@ -4,8 +4,6 @@
   z-index: 100;
   display: flex;
   align-items: center;
-  // спокойная панель; снизу — тонкая серая линия, как у плеера сверху
-  border-bottom: var(--border-color) solid 1px;
   padding: 14px 18px;
   background-color: var(--second-bg-color);
   gap: 10px;
@@ -75,13 +73,8 @@
   gap: 10px;
 }
 
-// лого «эквалайзер» (вариант C со стенда): акцентный квадрат со скруглением,
-// внутри три полоски цвета фона разной высоты. Геометрия — logo-mockup.html 1:1.
+// лого «эквалайзер» без подложки: только три полоски цвета надписи NRADIO
 .logoIcon {
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background-color: var(--current-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,19 +82,16 @@
   flex: none;
 
   @media #{main.$mob} {
-    width: main.vwMax(22px);
-    height: main.vwMax(22px);
-    border-radius: main.vwMax(6px);
     gap: main.vwMax(2px);
   }
 }
 
-// полоски эквалайзера: средняя выше, по краям ниже; белые — на любом
-// акценте темы смотрятся чисто (в т.ч. на светлых темах)
+// полоски эквалайзера: средняя выше, по краям ниже; цвет — как у надписи
+// NRADIO (акцент темы/пикера)
 .logoBar {
   width: 3px;
   border-radius: 1px;
-  background-color: #ffffff;
+  background-color: var(--current-color);
   display: block;
 
   &:nth-child(1) { height: 9px; }

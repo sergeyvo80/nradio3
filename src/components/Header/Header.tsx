@@ -5,17 +5,20 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import LangSwitcher from '../LangSwitcher/LangSwitcher';
+import Visualizer from '../Visualizer/Visualizer';
+import PlayerStateEnum from '@/types/PlayerStateEnum';
 import { PRODUCT_VERSION, PRODUCT_VERSION_DATE } from '@/constants/version';
 
 import styles from './Header.module.scss';
 
 interface Props {
   title: string;
+  playerState?: PlayerStateEnum;
   onOpenAbout: () => void;
   onOpenNewStation: () => void;
 }
 
-const Header = memo(({ title }: Props) => {
+const Header = memo(({ title, playerState }: Props) => {
   // выпадающее меню «⋮»: пикер цвета + версия продукта
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
@@ -30,6 +33,8 @@ const Header = memo(({ title }: Props) => {
           <span className={styles.logoBar} />
         </div>
         <h1 className={styles.title}>{title}</h1>
+        {/* визуализатор в шапке: сразу после надписи NRADIO */}
+        <Visualizer playerState={playerState} />
       </div>
       <div className={styles.menu}>
         {/* подложка на весь экран: клик вне меню закрывает его */}
