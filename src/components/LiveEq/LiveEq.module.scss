@@ -1,0 +1,35 @@
+@use '../../styles/main';
+
+// живой мини-эквалайзер у текущей станции: 4 полоски цвета акцента.
+// Высоты задаёт LiveEq.tsx: живой режим - из AnalyserNode, псевдо - той же
+// формулой, что псевдо-VU визуализатора. Дефолтные высоты видны в статике.
+.eq {
+  display: flex;
+  gap: 3.6px;
+  align-items: flex-end;
+  height: 20.4px;
+  flex: none;
+
+  span {
+    width: 4.3px;
+    border-radius: 1px;
+    background-color: var(--current-color);
+    display: block;
+
+    &:nth-child(1) { height: 40%; }
+    &:nth-child(2) { height: 90%; }
+    &:nth-child(3) { height: 60%; }
+    &:nth-child(4) { height: 100%; }
+  }
+
+  @media #{main.$mob} {
+    height: main.vwMax(17.3px);
+    gap: main.vwMax(3.6px);
+
+    span { width: 4.3px; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq span { height: 40% !important; }
+}
