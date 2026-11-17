@@ -23,7 +23,7 @@
     "@tanstack/react-query-devtools": "^5.105.0",
     "@tanstack/react-query-persist-client": "^5.105.0",
     "color": "^4.2.3",
-    "next": "^16.4.3",
+    "next": "^16.4.6",
     "postcss": "^8.5.32",
     "react": "^19.3.1",
     "react-color": "^2.19.3",
