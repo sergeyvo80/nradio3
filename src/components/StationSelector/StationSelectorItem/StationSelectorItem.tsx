@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { memo, useCallback } from 'react';
 
 import StationInterface from '@/types/StationInterface';
+import LiveEq from '../../LiveEq/LiveEq';
 
 import styles from './StationSelectorItem.module.scss';
 
@@ -66,11 +67,7 @@ const StationSelectorItem = memo(({
         </div>
       </Link>
       {/* эквалайзер «играет» — только пока станция реально воспроизводится */}
-      {isCurrent && isPlaying && (
-        <div className={styles.eq} aria-hidden="true">
-          <i /><i /><i /><i />
-        </div>
-      )}
+      {isCurrent && isPlaying && <LiveEq />}
       {station.isLocal && (
         <div className={styles.local}>
           local

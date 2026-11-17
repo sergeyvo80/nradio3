@@ -5,6 +5,7 @@ import { faPlay, faPause, faSpinner, faStar } from '@fortawesome/free-solid-svg-
 import StationInterface from '@/types/StationInterface';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import getStationSource from '@/utils/getStationSource';
+import LiveEq from '../LiveEq/LiveEq';
 
 import styles from './Station.module.scss';
 
@@ -57,6 +58,8 @@ const Station = memo(({
     </div>
 
     <div className={styles.actions}>
+      {/* живой эквалайзер — пока станция реально воспроизводится */}
+      {playerState === PlayerStateEnum.Playing && <LiveEq />}
       <FontAwesomeIcon
         icon={faStar}
         className={styles.like}
