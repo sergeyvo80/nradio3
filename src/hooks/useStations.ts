@@ -1,7 +1,5 @@
-/* eslint-disable */
 import getStations from '@/api/stations';
 import { getLocalStorage, setLocalStorage } from '@/api/localStorage';
-import StationsInterface from '@/types/StationsInterface';
 import NewStationInterface from '@/types/NewStationInterface';
 import StationInterface from '@/types/StationInterface';
 
@@ -11,22 +9,45 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-const useStations = (): any => {
+const STATIONS_KEY = ['stations'];
+
+// лайкнутые — первыми; порядок применяется и к кэшу, и к localStorage
+const sortLikedFirst = (stations: StationInterface[]): StationInterface[] =>
+  [...stations].sort((a, b) => Number(b.isLiked) - Number(a.isLiked));
+
+interface UseStationsResult {
+  stations: StationInterface[];
+  likeMutate: (slug: string) => void;
+  clientStateMergeMutate: () => void;
+  newStationMutate: (station: NewStationInterface) => void;
+  deleteStationMutate: (slug: string) => void;
+}
+
+const useStations = (): UseStationsResult => {
   const queryClient = useQueryClient();
 
   // используется только для кэша/гидрации - данные приходят из layout.tsx (json-файл)
   const { data } = useQuery({
-    queryKey: ['stations'],
+    queryKey: STATIONS_KEY,
     queryFn: () => getStations(),
     enabled: false,
   });
 
+  // единая запись каталога: кэш React Query + localStorage
+  const writeStations = (stations: StationInterface[]): void => {
+    queryClient.setQueryData<StationInterface[]>(STATIONS_KEY, stations);
+    setLocalStorage<StationInterface[]>('stations', stations);
+  };
+
+  const readStations = (): StationInterface[] | undefined =>
+    queryClient.getQueryData<StationInterface[]>(STATIONS_KEY);
+
   const clientStateMergeMutate = useMutation({
 
     mutationFn: async () => {
-      await queryClient.cancelQueries({ queryKey: ['stations'] });
+      await queryClient.cancelQueries({ queryKey: STATIONS_KEY });
 
-      const stations = queryClient.getQueryData<StationInterface[]>(['stations']);
+      const stations = readStations();
 
       if (!stations) return;
 
@@ -47,17 +68,16 @@ const useStations = (): any => {
         (localStation) => localStation.isLocal,
       );
 
-      const mergedStations: StationInterface[] = [
+      const mergedStations: StationInterface[] = sortLikedFirst([
         ...localOnlyStations,
         ...stations.map((station: StationInterface) => ({
           ...station,
           isLocal: !!station.uuid,
           isLiked: likedSlugs.has(station.slug),
         })),
-      ].sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked));
+      ]);
 
-      queryClient.setQueryData<StationInterface[]>(['stations'], mergedStations);
-      setLocalStorage<StationInterface[]>('stations', mergedStations);
+      writeStations(mergedStations);
 
       return mergedStations;
     },
@@ -67,9 +87,9 @@ const useStations = (): any => {
   const likeMutate = useMutation({
 
     mutationFn: async (slug: string) => {
-      await queryClient.cancelQueries({ queryKey: ['stations'] });
+      await queryClient.cancelQueries({ queryKey: STATIONS_KEY });
 
-      const stations = queryClient.getQueryData<StationsInterface>(['stations']);
+      const stations = readStations();
 
       if (!stations) return;
 
@@ -79,12 +99,7 @@ const useStations = (): any => {
           : station
       ));
 
-      queryClient.setQueryData<StationsInterface>(
-        ['stations'],
-        [...newStations].sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
-      );
-
-      setLocalStorage<StationInterface[]>('stations', newStations);
+      writeStations(sortLikedFirst(newStations));
 
       return newStations.find((station: StationInterface) => station.slug === slug);
     },
@@ -93,13 +108,13 @@ const useStations = (): any => {
   const deleteStationMutate = useMutation({
 
     mutationFn: async (slug: string) => {
-      await queryClient.cancelQueries({ queryKey: ['stations'] });
+      await queryClient.cancelQueries({ queryKey: STATIONS_KEY });
 
-      const stations = queryClient.getQueryData<StationsInterface>(['stations']);
+      const stations = readStations();
 
       if (!stations) return;
 
-      const station = stations.find((station) => station.slug === slug);
+      const station = stations.find((filteredStation) => filteredStation.slug === slug);
 
       if (!station) return false;
 
@@ -107,9 +122,7 @@ const useStations = (): any => {
         (filteredStation: StationInterface) => filteredStation.slug !== slug,
       );
 
-      queryClient.setQueryData<StationsInterface>(['stations'], newStations);
-
-      setLocalStorage<StationInterface[]>('stations', newStations);
+      writeStations(newStations);
 
       return station;
     },
@@ -117,58 +130,48 @@ const useStations = (): any => {
 
   const newStationMutate = useMutation({
 
-      // без сервера: новая станция добавляется только локально (localStorage)
-      mutationFn: async (newStation: NewStationInterface) => newStation,
+    // без сервера: новая станция добавляется только локально (localStorage)
+    mutationFn: async (newStation: NewStationInterface) => newStation,
 
-      // оптимистичная мутация - добавление станции локально
-      onMutate: async (newStation: NewStationInterface) => {
+    // оптимистичная мутация - добавление станции локально
+    onMutate: async (newStation: NewStationInterface) => {
+      await queryClient.cancelQueries({ queryKey: STATIONS_KEY });
 
-        await queryClient.cancelQueries({ queryKey: ['stations'] });
+      const stations = readStations();
 
-        const stations = queryClient.getQueryData<StationInterface[]>(['stations']);
+      if (!stations) return;
 
-        if (!stations) return;
+      const newStations = sortLikedFirst([
+        {
+          ...newStation,
+          isLocal: true,
+          isLiked: true,
+          dateAdded: new Date().toDateString(),
+          dateUpdated: new Date().toDateString(),
+        },
+        ...stations,
+      ]);
 
-        const newStations = [
-          {
-            ...newStation,
-            isLocal: true,
-            isLiked: true,
-            dateAdded: new Date().toDateString(),
-            dateUpdated: new Date().toDateString(),
-          },
-          ...stations,
-        ];
+      writeStations(newStations);
 
-        queryClient.setQueryData<StationsInterface>(
-          ['stations'],
-          newStations.sort((a: StationInterface, b: StationInterface) => Number(b.isLiked) - Number(a.isLiked)),
-        );
-
-        setLocalStorage<StationInterface[]>('stations', newStations);
-
-        return { newStations };
-      },
-      onError: (err, variables, context) => {
-
-        console.log('>>> newStationMutate  err', err);
-
-        if (context?.newStations) {
-          queryClient.setQueryData<StationInterface[]>(['stations'], context.newStations);
-        }
-      },
-      onSuccess: async (newStation, variables, context) => {
-
-        queryClient.setQueryData<StationInterface[]>(['stations'], context?.newStations);
-      },
-      onSettled: (data, error, variables, context) => {
-        console.log('>> newStationMutate onSettled', data, error, variables, context);
-      },
-
+      return { newStations };
+    },
+    onError: (err, variables, context) => {
+      if (context?.newStations) {
+        writeStations(context.newStations);
+      }
+    },
+    onSuccess: async (newStation, variables, context) => {
+      if (context?.newStations) {
+        writeStations(context.newStations);
+      }
+    },
   });
 
   return {
-    stations: data,
+    // гидрация даёт данные сразу; пустой массив — только страховка
+    // для редкого рендера до готовности кэша
+    stations: data ?? [],
     likeMutate: likeMutate.mutate,
     clientStateMergeMutate: clientStateMergeMutate.mutate,
     newStationMutate: newStationMutate.mutate,

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import StationInterface from '@/types/StationInterface';
 import useLang from '@/hooks/useLang';
 
-import StationSelectorItem from '../StationSelectorItem/StationSelectorItem';
+import StationSelectorItem, { StationItemLabels } from '../StationSelectorItem/StationSelectorItem';
 
 import styles from './StationSelectorList.module.scss';
 
@@ -22,6 +22,7 @@ const renderGroup = (
   stations: StationInterface[],
   slug: string,
   playingSlug: Props['playingSlug'],
+  labels: StationItemLabels,
   onLike: Props['onLike'],
   onSelect: Props['onSelect'],
   onDeleteStation: Props['onDeleteStation'],
@@ -41,6 +42,7 @@ const renderGroup = (
           isCurrent={station.slug === slug}
           isPlaying={playingSlug === station.slug}
           isLiked={station.isLiked || false}
+          labels={labels}
           onLike={onLike}
           onSelect={onSelect}
           onDeleteStation={onDeleteStation}
@@ -64,10 +66,17 @@ const StationSelectorList = ({
   const rest = stations.filter((station) => !station.isLiked);
   const { t } = useLang();
 
+  // стабильный объект: не ломает memo у 91 элемента при обычных ре-рендерах
+  const labels = useMemo<StationItemLabels>(() => ({
+    like: t('like'),
+    unlike: t('unlike'),
+    deleteStation: t('deleteStation'),
+  }), [t]);
+
   return (
     <ul className={styles.StationSelectorList}>
-      {renderGroup(liked, slug, playingSlug, onLike, onSelect, onDeleteStation, t('favorites'))}
-      {renderGroup(rest, slug, playingSlug, onLike, onSelect, onDeleteStation, liked.length > 0 ? t('all') : undefined)}
+      {renderGroup(liked, slug, playingSlug, labels, onLike, onSelect, onDeleteStation, t('favorites'))}
+      {renderGroup(rest, slug, playingSlug, labels, onLike, onSelect, onDeleteStation, liked.length > 0 ? t('all') : undefined)}
     </ul>
   );
 };

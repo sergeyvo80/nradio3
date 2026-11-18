@@ -7,13 +7,17 @@ import NRadio from '@/components/NRadio/NRadio';
 import StationInterface from '@/types/StationInterface';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import useStations from '@/hooks/useStations';
-import stationData from '@/data/station.json';
+import stationDataRaw from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
 import { META_TITLE } from '@/constants/meta';
 import { initTheme } from '@/theme/theme';
 import { getVisualizerAudio, resumeVisualizer, probeCorsStream, visualizerContextState, isAnalyserSilent } from '@/api/visualizerEngine';
 
 const LAST_STATION_KEY = 'lastStation';
+
+// стартовая станция-фолбэк: json без служебных полей и с числовым bitrate,
+// поэтому приводим к рантайм-типу станции (как findStationBySlug)
+const stationData = stationDataRaw as unknown as StationInterface;
 
 const player = typeof Audio !== 'undefined' ? new Audio() : undefined;
 
@@ -208,7 +212,7 @@ const NRadioContainer = ({ slug }: Props) => {
             return;
           }
           setPlayerState(PlayerStateEnum.Paused);
-          setError(err instanceof Error ? `Error playing: ${err.message}` : 'Error playing: unknown');
+          setError(err instanceof Error ? err.message : 'unknown');
         });
     };
 
@@ -231,7 +235,6 @@ const NRadioContainer = ({ slug }: Props) => {
 
   const onDeleteStationHandler = (slug: string) => {
     deleteStationMutate(slug);
-    console.log('>>> onDeleteStationHandler', slug);
   };
 
   const pause = () => {
@@ -245,7 +248,7 @@ const NRadioContainer = ({ slug }: Props) => {
         setPlayerState(PlayerStateEnum.Paused);
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? `Error pause: ${err.message}` : 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Unknown error');
     }
   };
 

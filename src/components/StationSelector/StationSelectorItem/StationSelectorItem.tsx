@@ -5,9 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { memo, useCallback } from 'react';
 
 import StationInterface from '@/types/StationInterface';
+
 import LiveEq from '../../LiveEq/LiveEq';
 
 import styles from './StationSelectorItem.module.scss';
+
+// подписи для скринридера приходят из списка (один useLang на весь список,
+// а не 91 подписка на смену языка в каждом элементе)
+export interface StationItemLabels {
+  like: string;
+  unlike: string;
+  deleteStation: string;
+}
 
 interface Props {
   station: StationInterface;
@@ -15,6 +24,7 @@ interface Props {
   // станция реально воспроизводится — показываем эквалайзер
   isPlaying?: boolean;
   isLiked?: boolean;
+  labels: StationItemLabels;
   onLike?: (slug: string) => void;
   onSelect?: (slug: string) => void;
   onDeleteStation: (slug: string) => void;
@@ -25,18 +35,13 @@ const StationSelectorItem = memo(({
   isCurrent,
   isPlaying,
   isLiked,
+  labels,
   onLike,
   onSelect,
   onDeleteStation,
 }: Props): React.ReactNode => {
 
   const onDeleteStationHandler = useCallback(() => onDeleteStation(station.slug), [station, onDeleteStation]);
-
-  const onLikeHandler = useCallback((event: React.MouseEvent) => {
-    // звезда-лайк живёт вне Link: клик по ней только лайкает
-    event.preventDefault();
-    onLike?.(station.slug);
-  }, [station, onLike]);
 
   // PWA/serverless: переключение станции — на клиенте (данные уже загружены),
   // без запроса к серверу; href остаётся для SEO и «открыть в новой вкладке»
@@ -71,14 +76,25 @@ const StationSelectorItem = memo(({
       {station.isLocal && (
         <div className={styles.local}>
           local
-          <FontAwesomeIcon icon={faRemove} onClick={onDeleteStationHandler} className={styles.remove} />
+          <button
+            type="button"
+            className={`iconButton ${styles.remove}`}
+            onClick={onDeleteStationHandler}
+            aria-label={labels.deleteStation}
+          >
+            <FontAwesomeIcon icon={faRemove} aria-hidden="true" />
+          </button>
         </div>
       )}
-      <FontAwesomeIcon
-        icon={faStar}
-        className={`${styles.like} stationSelectorLike`}
-        onClick={onLikeHandler}
-      />
+      <button
+        type="button"
+        className={`iconButton ${styles.likeButton}`}
+        onClick={() => onLike?.(station.slug)}
+        aria-label={isLiked ? labels.unlike : labels.like}
+        aria-pressed={!!isLiked}
+      >
+        <FontAwesomeIcon icon={faStar} className={styles.like} aria-hidden="true" />
+      </button>
     </li>
   );
 });

@@ -36,12 +36,23 @@
 .playCircle {
   width: 46px;
   height: 46px;
+  border: 0;
+  padding: 0;
   border-radius: 50%;
   background: linear-gradient(180deg, var(--current-color) 0%, color-mix(in srgb, var(--current-color) 78%, #000) 100%);
   box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--bg-color) 22%, transparent);
   display: grid;
   place-items: center;
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--current-color);
+    outline-offset: 3px;
+  }
 
   @media #{main.$mob} {
     width: main.vwMax(38px);
@@ -95,6 +106,12 @@
   @media #{main.$mob} {
     font-size: main.vwMax(18px);
   }
+}
+
+// кнопка-звезда: сбрасывает размеры иконки в кликабельную область
+.likeButton {
+  flex: none;
+  border-radius: 50%;
 }
 
 

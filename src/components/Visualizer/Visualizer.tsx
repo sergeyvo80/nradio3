@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import PlayerStateEnum from '@/types/PlayerStateEnum';
+import useLang from '@/hooks/useLang';
 import { getAnalyser } from '@/api/visualizerEngine';
 
 import styles from './Visualizer.module.scss';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
+  const { t } = useLang();
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [full, setFull] = useState(false);      // нативный фуллскрин или оверлей
@@ -265,12 +267,27 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       ref={wrapRef}
       className={[styles.Visualizer, full ? styles['--full'] : '', overlay ? styles['--overlay'] : ''].join(' ')}
       onClick={onWrapClick}
+      onKeyDown={(e) => {
+        // клавиатура: Enter/Space — как клик (фуллскрин или смена режима)
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onWrapClick();
+        }
+      }}
       role="button"
-      aria-label="Visualizer"
+      tabIndex={0}
+      aria-label={t('visualizer')}
     >
       <canvas ref={canvasRef} className={styles.canvas} />
       {full && (
-        <FontAwesomeIcon icon={faXmark} className={styles.close} onClick={(e) => { e.stopPropagation(); exitFull(); }} />
+        <button
+          type="button"
+          className={`iconButton ${styles.close}`}
+          aria-label={t('close')}
+          onClick={(e) => { e.stopPropagation(); exitFull(); }}
+        >
+          <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
+        </button>
       )}
     </div>
   );
