@@ -35,3 +35,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+// семантические кнопки-иконки (play, звезда, «⋮», удаление): без фона,
+// рамки и отступов — размеры и цвет задаёт модуль компонента
+.iconButton {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+
+  &:focus-visible {
+    outline: 2px solid var(--current-color);
+    outline-offset: 3px;
+  }
+}

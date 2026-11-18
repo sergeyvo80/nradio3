@@ -15,10 +15,16 @@ const useLang = (): {
   const [lang, setLangState] = useState<Lang>('ru');
 
   useEffect(() => {
-    setLangState(getLang());
-    const onChange = () => setLangState(getLang());
-    window.addEventListener(LANG_EVENT, onChange);
-    return () => window.removeEventListener(LANG_EVENT, onChange);
+    // html lang тоже переключаем: от него зависят переносы, озвучка, SEO
+    const apply = () => {
+      const current = getLang();
+      setLangState(current);
+      document.documentElement.lang = current;
+    };
+
+    apply();
+    window.addEventListener(LANG_EVENT, apply);
+    return () => window.removeEventListener(LANG_EVENT, apply);
   }, []);
 
   const setLang = useCallback((next: Lang) => {

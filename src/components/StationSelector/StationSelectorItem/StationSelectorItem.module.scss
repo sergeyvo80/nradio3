@@ -102,12 +102,10 @@
   }
 }
 
-.remove {
-  cursor: pointer;
-
-  @media #{main.$mob} {
-    font-size: main.vwMax(13px);
-  }
+// кнопка-звезда: кликабельная область вокруг иконки
+.likeButton {
+  flex: none;
+  border-radius: 50%;
 }
 
 .remove {

@@ -26,7 +26,9 @@ describe('New station', () => {
   });
 
 
-  it('adding a new station', () => {
+  // Кнопка «добавить станцию» в шапке скрыта по просьбе пользователя
+  // (см. Header.tsx), поэтому сценарий пока недоступен — включить вместе с кнопкой.
+  it.skip('adding a new station', () => {
     const newStationTitle = 'newStation-title';
     cy.get('header .newStationButton').click();
     cy.get('.NewStation input[name="title"').type(newStationTitle, { delay: typeDelay });

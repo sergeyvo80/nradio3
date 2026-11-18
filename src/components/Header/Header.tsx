@@ -7,6 +7,7 @@ import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import LangSwitcher from '../LangSwitcher/LangSwitcher';
 import Visualizer from '../Visualizer/Visualizer';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
+import useLang from '@/hooks/useLang';
 import { PRODUCT_VERSION, PRODUCT_VERSION_DATE } from '@/constants/version';
 
 import styles from './Header.module.scss';
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const Header = memo(({ title, playerState }: Props) => {
+  const { t } = useLang();
   // выпадающее меню «⋮»: пикер цвета + версия продукта
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
@@ -38,12 +40,17 @@ const Header = memo(({ title, playerState }: Props) => {
       </div>
       <div className={styles.menu}>
         {/* подложка на весь экран: клик вне меню закрывает его */}
-        {menuOpen && <div className={styles.menuCover} onClick={closeMenu} />}
-        <FontAwesomeIcon
-          icon={faEllipsisVertical}
-          className={styles.menuButton}
+        {menuOpen && <div className={styles.menuCover} onClick={closeMenu} aria-hidden="true" />}
+        <button
+          type="button"
+          className={`iconButton ${styles.menuButton}`}
           onClick={toggleMenu}
-        />
+          aria-label={t('menu')}
+          aria-haspopup="true"
+          aria-expanded={menuOpen}
+        >
+          <FontAwesomeIcon icon={faEllipsisVertical} aria-hidden="true" />
+        </button>
         {menuOpen && (
           <div className={styles.menuDropdown}>
             <div className={styles.menuItem}><LangSwitcher /></div>
