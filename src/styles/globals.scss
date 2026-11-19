@@ -2,20 +2,23 @@
 
 :root {
   --font-size: 20px;
-  --bg-color: #292A2D;
-  --second-bg-color: #202124;
-  --border-color: #4A4C50;
-  --current-color: #E8AD47;
-  --shadow-color: #000000bf;
-  --error-bg-color: #250201;;
+  // дефолт = тема yaru: первый кадр до применения сохранённой темы должен
+  // совпадать с дефолтной темой, иначе виден «прыжок» палитры
+  --bg-color: #1B1922;
+  --second-bg-color: #26232E;
+  --border-color: #322E3D;
+  --current-color: #E95420;
+  --shadow-color: #0000008c;
+  --error-bg-color: #250201;
   --error-border-color: #540C06;
 
-  --color: #fff;;
-  --item-color: #fff;
+  --color: #F4F2F7;
+  --item-color: #F4F2F7;
   --error-color: #E98380;
 
-  --link-color: #E59A6F;
-  --visited-color: #6AD1C7;
+  --link-color: #F4F2F7;
+  --visited-color: #C9C5D4;
+  --positive-color: #33D17A;
 
   --padding-left: 20px;
   --padding-right: 20px;
@@ -55,5 +58,69 @@ code {
   &:focus-visible {
     outline: 2px solid var(--current-color);
     outline-offset: 3px;
+  }
+}
+
+// Стартовая заставка (splash, см. layout.tsx и api/splash.ts): закрывает экран,
+// пока не применены настройки из localStorage. Тема уже восстановлена
+// inline-скриптом в <head>, поэтому фон и акцент — выбранной темы.
+// Синусоида повторяет рисунок визуализатора шапки в режиме wave:
+// амплитуда ±7px, толщина 2px, акцент --current-color, бесконечная прокрутка.
+#nr-splash {
+  position: fixed;
+  inset: 0;
+  // выше шапки (100) и плеера (90)
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background-color: var(--bg-color);
+  // фолбэк: если JS не снял заставку, она уйдёт сама через 5 c
+  animation: nrSplashTimeout 300ms ease 5s forwards;
+
+  &.nrSplashOut {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+}
+
+.nrSplashWave {
+  width: 120px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.nrSplashWaveSvg {
+  display: block;
+  animation: nrSplashWave 1.8s linear infinite;
+}
+
+.nrSplashWavePath {
+  fill: none;
+  stroke: var(--current-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+@keyframes nrSplashWave {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    // сдвиг на один период волны (60px) — стык незаметен
+    transform: translateX(-60px);
+  }
+}
+
+@keyframes nrSplashTimeout {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nrSplashWaveSvg {
+    animation: none;
   }
 }

@@ -1,6 +1,7 @@
 import Color from 'color';
 
 import ColorsInterface from '@/types/ColorsInterface';
+import { persistThemeVars } from './themeVars';
 
 // Базовая палитра custom-темы: схема произвольного цвета считается как
 // сдвиг HSL каждой переменной относительно этой базы (было в ColorPicker).
@@ -46,4 +47,7 @@ export const applyCustomColors = (pickedColor: string): void => {
 
     document.documentElement.style.setProperty(color, newColor.hex());
   }
+
+  // снимок для восстановления темы до первой отрисовки (см. themeVars.ts)
+  persistThemeVars();
 };

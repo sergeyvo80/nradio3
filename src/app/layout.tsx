@@ -7,6 +7,8 @@ import getStations from '@/api/stations';
 import NRadioQueryContainer from '@/containers/NRadioQueryContainer';
 import StationsInterface from '@/types/StationsInterface';
 import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar/ServiceWorkerRegistrar';
+import Splash from '@/components/Splash/Splash';
+import { THEME_BOOTSTRAP_SCRIPT } from '@/theme/themeVars';
 
 import type { Metadata, Viewport } from 'next';
 
@@ -51,22 +53,33 @@ const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) =
 
   return (
     <html lang="ru">
-      {process.env.NEXT_PUBLIC_GTM_ID && (
-        <head>
-          {/*<!-- Global Site Tag (gtag.js) - Google Analytics -->*/}
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GTM_ID}`}></script>
-          <script dangerouslySetInnerHTML={{__html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+      <head>
+        {/* до первой отрисовки: вернуть CSS-переменные сохранённой темы,
+            иначе на кадр видна дефолтная (см. theme/themeVars.ts) */}
+        <script dangerouslySetInnerHTML={{__html: THEME_BOOTSTRAP_SCRIPT}} />
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <>
+            {/*<!-- Global Site Tag (gtag.js) - Google Analytics -->*/}
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GTM_ID}`}></script>
+            <script dangerouslySetInnerHTML={{__html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
 
-            gtag('config', '${process.env.NEXT_PUBLIC_GTM_ID}', {
-                page_path: window.location.pathname,
-            });
-          `}} />                              
-        </head>
-      )}          
+              gtag('config', '${process.env.NEXT_PUBLIC_GTM_ID}', {
+                  page_path: window.location.pathname,
+              });
+            `}} />
+          </>
+        )}
+      </head>
       <body>
+        {/* стартовая заставка: закрывает экран, пока не применены настройки
+            из localStorage (синусоида — как в визуализаторе шапки) */}
+        <Splash />
+        <noscript>
+          <style>{'#nr-splash{display:none}'}</style>
+        </noscript>
         <NRadioQueryContainer state={state}>
           {children}
         </NRadioQueryContainer>
