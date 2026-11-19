@@ -46,6 +46,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   меню не смонтирован). Новый ключ палитры
   `--positive-color` (версия/дата/подписи/лайкнутые звёзды). Карточки станций — без рамок/теней;
   текущая станция: `inset 3px` планка `--current-color` + подмес 14% акцента в фон (color-mix).
+  **Без мигания темы**: `applyColors`/`applyCustomColors` пишут снимок переменных в
+  `localStorage('themeVars')`, а inline-скрипт в `<head>` (`THEME_BOOTSTRAP_SCRIPT`,
+  `src/theme/themeVars.ts`) возвращает их до первого пейнта; `:root` в globals.scss равен
+  палитре yaru (дефолт). Пока не применены настройки, экран закрывает стартовая
+  заставка `Splash` (`src/components/Splash/`) — синусоида как у визуализатора шапки,
+  снимается `hideSplash()` из NRadioContainer (фолбэк — CSS-таймаут 5 c, `<noscript>`,
+  `prefers-reduced-motion`). Подробно — docs/skill-themes.md §4a.
   Все элементы макета применены: список разбит на секции «Понравившиеся»/«Все станции»
   (StationSelectorList, заголовки только при двух группах), у текущей станции подпись
   «`tags[0]`» (слово «играет» убрано по просьбе пользователя) + мини-эквалайзер `LiveEq`

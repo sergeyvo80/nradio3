@@ -11,6 +11,7 @@ import stationDataRaw from '@/data/station.json';
 import NewStationInterface from '@/types/NewStationInterface';
 import { META_TITLE } from '@/constants/meta';
 import { initTheme } from '@/theme/theme';
+import { hideSplash } from '@/api/splash';
 import { getVisualizerAudio, resumeVisualizer, probeCorsStream, visualizerContextState, isAnalyserSilent } from '@/api/visualizerEngine';
 
 const LAST_STATION_KEY = 'lastStation';
@@ -259,9 +260,13 @@ const NRadioContainer = ({ slug }: Props) => {
   }, [activeSlug, stations]);
 
   // тема: восстановить выбранную (Yaru/Aurora) при старте;
-  // custom-тему пикера восстанавливает сам ColorPicker
+  // custom-тему пикера восстанавливает сам ColorPicker.
+  // Заставку снимаем следующим тиком: к этому моменту применены тема, язык
+  // и восстановленная станция (эффекты этого же коммита)
   useEffect(() => {
     initTheme();
+    const timer = window.setTimeout(hideSplash, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   // запуск: URL имеет приоритет (глубокая ссылка), затем восстановление последней

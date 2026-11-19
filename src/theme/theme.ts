@@ -1,6 +1,7 @@
 import ColorsInterface from '@/types/ColorsInterface';
 
 import { applyCustomColors } from './customTheme';
+import { persistThemeVars } from './themeVars';
 
 // Темы продукта (см. макет public/design-mockup.html):
 // - yaru     — современный Ubuntu (Yaru): графитово-фиолетовый, оранжевый акцент
@@ -134,6 +135,8 @@ export const applyColors = (colors: ColorsInterface): void => {
   for (const name in colors) {
     document.documentElement.style.setProperty(name, colors[name as keyof ColorsInterface]);
   }
+  // снимок для восстановления темы до первой отрисовки (см. themeVars.ts)
+  persistThemeVars();
 };
 
 // Последняя custom-тема пикера (объект colorFull из react-color).
