@@ -1,13 +1,15 @@
 /* NRadio service worker: PWA офлайн-кэш (план - docs/pwa-plan.md)
  *
  * Стратегии:
- *  - навигация (HTML)          -> network-first, офлайн-фолбэк на кэш '/' (app-shell)
+ *  - навигация (HTML)          -> stale-while-revalidate: кэш сразу, сеть обновляет в фоне
  *  - статика /_next/static/**  -> cache-first (хэшированные файлы иммутабельны)
- *  - прочие same-origin        -> network-first c фолбэком на кэш
+ *  - прочие same-origin        -> network-first с таймаутом (медленная сеть → кэш)
  *  - cross-origin (аудио-стримы, GTM) -> не кэшируется вообще
  */
-const CACHE_NAME = 'nradio-v4'; // v4: иконки — прозрачные полоски акцентом (cache-first для /icons/)
+const CACHE_NAME = 'nradio-v5'; // v5: навигация — stale-while-revalidate (мгновенная отдача из кэша)
 const PRECACHE_URLS = ['/', '/manifest.webmanifest'];
+// сколько ждём сеть для НЕ-навигационных запросов при наличии кэша
+const NETWORK_TIMEOUT = 2500;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -38,7 +40,11 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (request.mode === 'navigate') {
-    event.respondWith(networkFirst(request));
+    // обновление запускаем синхронно (waitUntil валиден в обработчике),
+    // ответ формируем отдельно — из кэша, не дожидаясь сети
+    const update = refreshCache(request);
+    event.waitUntil(update);
+    event.respondWith(navigationResponse(request, update));
     return;
   }
 
@@ -47,16 +53,65 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // прочие same-origin GET (RSC-пейлоады, иконки и пр.) - network-first
-  event.respondWith(networkFirst(request));
+  // RSC-пейлоады (`?_rsc=<hash>`) уникальны для каждой навигации и префетча —
+  // кэшировать их бессмысленно (только распухает кэш), пусть идут напрямую
+  if (url.searchParams.has('_rsc')) return;
+
+  // прочие same-origin GET (иконки и пр.)
+  event.respondWith(networkFirstWithTimeout(event));
 });
 
 function isImmutableStatic(pathname) {
   return (
     pathname.startsWith('/_next/static/') ||
     pathname.startsWith('/icons/') ||
+    pathname.startsWith('/_next/image') ||
     pathname === '/favicon.ico'
   );
+}
+
+/** Обновляет кэш из сети; ошибки глотает, чтобы не ломать фоновое обновление. */
+async function refreshCache(request) {
+  try {
+    const response = await fetch(request);
+    if (response.ok && response.type === 'basic') {
+      const cache = await caches.open(CACHE_NAME);
+      // HTML кладём под URL без query (SSR от него не зависит) — один ключ
+      // на страницу, и заход на `/?station=…` обновляет app-shell `/`
+      await cache.put(cacheKey(request), response.clone());
+    }
+  } catch {
+    // сеть недоступна - остаёмся на кэше
+  }
+}
+
+function cacheKey(request) {
+  if (request.mode !== 'navigate') return request;
+  const url = new URL(request.url);
+  url.search = '';
+  return url.href;
+}
+
+/**
+ * Навигация: отдаём кэш мгновенно (никаких 10-секундных белых экранов),
+ * а свежий HTML докатывается в фоне — он будет отдан на следующем заходе.
+ */
+async function navigationResponse(request, networkUpdate) {
+  const cache = await caches.open(CACHE_NAME);
+  // ignoreSearch: SSR-HTML не зависит от ?station= (выбор станции — клиентский),
+  // поэтому все query-варианты одной страницы переиспользуют одну копию
+  const cached = (await cache.match(request, { ignoreSearch: true }))
+    || (await cache.match('/', { ignoreSearch: true }));
+
+  if (cached) return cached;
+
+  // кэша нет (первый заход) - ждём сеть
+  await networkUpdate;
+  const fresh = (await cache.match(request, { ignoreSearch: true }))
+    || (await cache.match('/', { ignoreSearch: true }));
+  if (fresh) return fresh;
+
+  return fetch(request);
 }
 
 async function cacheFirst(request) {
@@ -71,26 +126,26 @@ async function cacheFirst(request) {
   return response;
 }
 
-async function networkFirst(request) {
-  const response = await fetch(request).catch(() => null);
-
-  if (response && response.ok && response.type === 'basic') {
-    const copy = response.clone();
-    caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-    return response;
-  }
-  if (response && response.ok) return response;
-
-  // сеть недоступна или отдала ошибку (502/503, каптивный портал) - из кэша
+async function networkFirstWithTimeout(event) {
+  const request = event.request;
   const cached = await caches.match(request);
-  if (cached) return cached;
 
-  // офлайн-фолбэк навигации: app-shell с главной
-  if (request.mode === 'navigate') {
-    const shell = await caches.match('/');
-    if (shell) return shell;
-  }
+  const networkRequest = fetch(request).then((response) => {
+    if (response.ok && response.type === 'basic') {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+    }
+    return response;
+  });
+  // если победит таймаут, позднее падение сети не должно давать unhandledrejection
+  networkRequest.catch(() => {});
 
-  if (response) return response;
-  throw new Error(`${CACHE_NAME}: no cached response for ${request.url}`);
+  if (!cached) return networkRequest;
+
+  // есть кэш: не ждём зависшую сеть дольше таймаута
+  const timeout = new Promise((resolve) => setTimeout(resolve, NETWORK_TIMEOUT, null));
+  const response = await Promise.race([networkRequest.catch(() => null), timeout]);
+
+  if (response && response.ok) return response;
+  return cached;
 }

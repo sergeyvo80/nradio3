@@ -34,7 +34,7 @@
 
 | Ресурс | Стратегия |
 |---|---|
-| Навигация (HTML) | network-first, fallback → кэш `/` (offline app-shell) |
+| Навигация (HTML) | stale-while-revalidate: кэш сразу, сеть обновляет в фоне, fallback → кэш `/` (offline app-shell) |
 | `_next/static/**` (бандлы), favicon, manifest | cache-first + разовая загрузка в runtime |
 | Аудио-потоки (cross-origin, ice*.somafm.com и др.) | **не кэшировать вообще** |
 
