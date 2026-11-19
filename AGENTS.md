@@ -110,7 +110,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   **функцию**, а не константу (иначе сборка: «Default export is missing»); favicon — file-convention
   `src/app/favicon.ico`, иконки в page-metadata не дублировать (заданы глобально в layout);
   в dev SW не регистрируется (глушит HMR), разово — `navigator.serviceWorker.register('/sw.js')`
-  из консоли; кэш-версия SW меняется вручную `nradio-v1` → `nradio-v2`.
+  из консоли; кэш-версия SW меняется вручную `nradio-v4` → `nradio-v5`. Навигация —
+  **stale-while-revalidate**: HTML из кэша отдаётся сразу, сеть обновляет его в фоне
+  (`event.waitUntil`), поэтому зависший коннект не даёт белого экрана; новая версия HTML
+  появляется на втором заходе. Прочие same-origin GET — network-first с таймаутом 2.5 с.
 - **Смена станции — клиентская** (`selectStation` в `NRadioContainer`): состояние + `history.replaceState`,
   без запроса к серверу — работает офлайн. Последняя воспроизводимая станция — в
   `localStorage('lastStation')`, при старте приоритет: `?station=` → `lastStation` → дефолт.

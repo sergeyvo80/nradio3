@@ -8,7 +8,7 @@
 | Файл | Роль |
 |---|---|
 | `src/app/manifest.ts` | генерирует `/manifest.webmanifest` (name NRadio, `standalone`, `start_url: '/'`, цвета `#202124`/`#292A2D`, 4 иконки) |
-| `public/sw.js` | service worker: кэш `nradio-v1`, офлайн app-shell |
+| `public/sw.js` | service worker: кэш `nradio-v5`, офлайн app-shell, stale-while-revalidate для HTML |
 | `src/components/ServiceWorkerRegistrar/ServiceWorkerRegistrar.tsx` | регистрация `/sw.js` после `load`, только при `NODE_ENV === 'production'` |
 | `src/app/layout.tsx` | монтирование регистратора в конце `<body>`, `viewport.themeColor`, `appleWebApp`, иконки favicon/apple-touch |
 | `public/icons/` | PNG: `icon-192/512`, `icon-maskable-192/512`, `apple-touch-icon` 180, `favicon-64` |
@@ -17,18 +17,26 @@
 
 | Запрос | Отдача |
 |---|---|
-| `request.mode === 'navigate'` (HTML) | network-first; офлайн-фолбэк → кэш `/` (app-shell) |
-| `/_next/static/**`, `/icons/**`, `/favicon.ico` | cache-first (иммутабельная статика) |
-| прочие same-origin GET (RSC-пейлоады и пр.) | network-first |
+| `request.mode === 'navigate'` (HTML) | **stale-while-revalidate**: кэш отдаётся сразу, свежий HTML докатывается в фоне (`event.waitUntil`) и будет отдан на следующем заходе; нет кэша → ждём сеть, офлайн-фолбэк → кэш `/` (app-shell) |
+| `/_next/static/**`, `/icons/**`, `/favicon.ico`, `/_next/image` | cache-first (иммутабельная статика) |
+| прочие same-origin GET | network-first **с таймаутом 2.5 с**: сеть медленнее — отдаём кэш |
+| RSC-пейлоады (`?_rsc=<hash>`) | не кэшируются (уникальны для каждого префетча), идут напрямую |
 | **cross-origin** (аудио-стримы, GTM) | не кэшируется никогда |
 
-Жизненный цикл: `install` — прекэш `/` + `/manifest.webmanifest`, `skipWaiting`; `activate` — удалить все кэши кроме `nradio-v1`, `clients.claim`. Кэшируются только `response.ok && type === 'basic'` (same-origin).
+Жизненный цикл: `install` — прекэш `/` + `/manifest.webmanifest`, `skipWaiting`; `activate` — удалить все кэши кроме `nradio-v5`, `clients.claim`. Кэшируются только `response.ok && type === 'basic'` (same-origin).
+
+Почему SWR для навигации: раньше был network-first, и при зависшем TCP/TLS-коннекте
+(у `*.vercel.app` два anycast-IP, один может быть заблокирован провайдером) пользователь
+видел белый экран до 10 с таймаута, хотя HTML уже лежал в кэше. Теперь первый кадр приходит
+из кэша мгновенно, а обновление идёт фоном — «цена» в том, что после деплоя новая версия HTML
+появляется на **втором** заходе (CSS/JS-чанки при этом уже новые, т.к. статика cache-first
+по хэшированным именам).
 
 ## Выход новой версии
 
-Имя кэша меняется вручную: `nradio-v1` → `nradio-v2` — старый кэш удалится на activate.
+Имя кэша меняется вручную: `nradio-v4` → `nradio-v5` — старый кэш удалится на activate.
 В обычном случае достаточно задеплоить: `skipWaiting` ставит новый SW сразу,
-HTML обновляется через network-first.
+HTML обновляется в фоне (SWR) и подхватывается на следующем переходе/перезагрузке.
 
 ## Иконки
 
