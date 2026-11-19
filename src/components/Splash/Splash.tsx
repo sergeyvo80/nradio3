@@ -39,7 +39,7 @@ const Splash = (): React.ReactNode => {
         >
           <path
             className="nrSplashWavePath"
-            d="M0 20Q15 13 30 20T60 20T90 20T120 20T150 20T180 20T210 20T240 20"
+            d="M0 20Q15 6 30 20T60 20T90 20T120 20T150 20T180 20T210 20T240 20"
           />
         </svg>
       </div>
