@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { QueryClientProvider, DehydratedState } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { HydrationBoundary } from '@tanstack/react-query';
 
 import queryClient from '@/api/reactQueryClient';
@@ -21,7 +20,8 @@ const NRadioQueryContainer = ({ state, children }: Props) => (
         {children}
       </NRadioStateMergeContainer>
     </HydrationBoundary>
-    <ReactQueryDevtools initialIsOpen={false} />
+    {/* кнопка React Query Devtools рендерится в шапке (Header, dev-only),
+        чтобы не висеть поверх плеера в правом нижнем углу */}
   </QueryClientProvider>
 );
 

@@ -1,6 +1,7 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
@@ -9,6 +10,7 @@ import Visualizer from '../Visualizer/Visualizer';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import useLang from '@/hooks/useLang';
 import { PRODUCT_VERSION, PRODUCT_VERSION_DATE } from '@/constants/version';
+import alignNextDevBadge from '@/utils/alignNextDevBadge';
 
 import styles from './Header.module.scss';
 
@@ -21,10 +23,21 @@ interface Props {
 
 const Header = memo(({ title, playerState }: Props) => {
   const { t } = useLang();
+  // dev-бейджи (React Query Devtools и индикатор Next) — только в dev-сборке;
+  // process.env.NODE_ENV инлайнится при сборке, в проде ветка вырезается
+  const isDev = process.env.NODE_ENV !== 'production';
+  const devToolsRef = useRef<HTMLDivElement>(null);
   // выпадающее меню «⋮»: пикер цвета + версия продукта
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  // индикатор dev-режима Next прибит к углу вьюпорта — подтягиваем его к
+  // dev-зоне в шапке (см. utils/alignNextDevBadge)
+  useEffect(() => {
+    if (!isDev || !devToolsRef.current) return undefined;
+    return alignNextDevBadge(devToolsRef.current);
+  }, [isDev]);
 
   return (
     <header className={styles.Header}>
@@ -41,6 +54,13 @@ const Header = memo(({ title, playerState }: Props) => {
       <div className={styles.menu}>
         {/* подложка на весь экран: клик вне меню закрывает его */}
         {menuOpen && <div className={styles.menuCover} onClick={closeMenu} aria-hidden="true" />}
+        {/* dev-бейджи слева от «⋮» (только в dev): кнопка React Query Devtools,
+            рядом — индикатор Next (его позицию выравнивает alignNextDevBadge) */}
+        {isDev && (
+          <div className={styles.devTools} ref={devToolsRef}>
+            <ReactQueryDevtools buttonPosition="relative" initialIsOpen={false} />
+          </div>
+        )}
         <button
           type="button"
           className={`iconButton ${styles.menuButton}`}

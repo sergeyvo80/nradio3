@@ -114,6 +114,9 @@
 // fixed-подложка закрывает экран и ловит клик вне меню
 .menu {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex: none;
   margin-left: auto;
 }
@@ -128,6 +131,27 @@
 
   @media #{main.$mob} {
     font-size: main.vwMax(17px);
+  }
+}
+
+// dev-зона слева от «⋮» (только dev): слот под индикатор Next (он fixed,
+// позицию выравнивает alignNextDevBadge) + кнопка React Query Devtools.
+// Слот занимает место в потоке, чтобы бейджи не наезжали на список станций.
+.devTools {
+  flex: none;
+  position: relative;
+  width: 74px;
+  height: 24px;
+
+  // TanStack при buttonPosition="relative" рендерит кнопку 48×48 в потоке —
+  // вынимаем её из потока, прижимаем к правому краю слота и уменьшаем
+  // (правый край слота — это соседняя с «⋮» сторона)
+  :global(.tsqd-open-btn-container) {
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%) scale(0.7);
+    transform-origin: center center;
   }
 }
 

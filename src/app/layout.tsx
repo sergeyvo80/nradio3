@@ -52,7 +52,10 @@ const RootLayout = async ({ children }: Readonly<{children: React.ReactNode}>) =
   const state = dehydrate(queryClient, { shouldDehydrateQuery: () => true });
 
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
+      {/* suppressHydrationWarning на <html>: bootstrap-скрипт темы пишет
+          CSS-переменные в inline-style до гидрации, иначе React ругается
+          на несовпадение атрибутов и в dev-индикаторе Next висит «1 Issue» */}
       <head>
         {/* до первой отрисовки: вернуть CSS-переменные сохранённой темы,
             иначе на кадр видна дефолтная (см. theme/themeVars.ts) */}

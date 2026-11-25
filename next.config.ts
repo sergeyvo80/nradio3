@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
     // маркер security-апгрейда агента (Next 16.4.6)
     agentUpgrade: 'security',
   },
+  // индикатор dev-режима: стартовый угол top-right (по умолчанию он висел
+  // в левом нижнем углу и перекрывал кнопку play в плеере). Точное место —
+  // dev-зона в шапке слева от «⋮»: её выравнивает utils/alignNextDevBadge
+  devIndicators: {
+    position: 'top-right',
+  },
   // базовые security-заголовки (CSP намеренно не задаём: GTM и inline-скрипты
   // Next требуют nonce-инфраструктуры, иначе ломается аналитика)
   async headers() {
