@@ -336,7 +336,7 @@ const NRadioContainer = ({ slug }: Props) => {
 
   return (
     <NRadio
-      title="NRadio"
+      title="fm0"
       stations={stations}
       station={station}
       error={error}

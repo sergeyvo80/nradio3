@@ -10,7 +10,7 @@ describe('Page', () => {
       await render(<Home />);
 
       const heading = await screen.findByRole('heading', { level: 1 });
-      expect(heading).toHaveTextContent('NRadio');
+      expect(heading).toHaveTextContent('fm0');
     });
   });
 

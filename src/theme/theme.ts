@@ -55,7 +55,7 @@ export const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
     '--second-bg-color': '#131A45',
     // насыщенный синий: нелайкнутые звёзды и разделители
     '--border-color': '#2E3AB8',
-    // серебро: лого, NRADIO, play, планка текущей станции
+    // серебро: лого, FM0, play, планка текущей станции
     '--current-color': '#BCC1CC',
     '--shadow-color': '#0508178c',
     '--error-bg-color': '#2C0A33',
@@ -75,7 +75,7 @@ export const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
     '--second-bg-color': '#10261A',
     // приглушённый хвойный зелёный: нелайкнутые звёзды и разделители
     '--border-color': '#2F5A3E',
-    // мята: лого, NRADIO, play, планка текущей станции
+    // мята: лого, FM0, play, планка текущей станции
     '--current-color': '#4ED88C',
     '--shadow-color': '#04120B8c',
     '--error-bg-color': '#2A0D06',
@@ -95,7 +95,7 @@ export const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
     '--second-bg-color': '#FFFFFF',
     // светло-серый: нелайкнутые звёзды и разделители
     '--border-color': '#D9D6E0',
-    // оранжевый: лого, NRADIO, play, планка текущей станции
+    // оранжевый: лого, FM0, play, планка текущей станции
     '--current-color': '#E95420',
     '--shadow-color': '#00000026',
     '--error-bg-color': '#FBE9E7',
@@ -115,7 +115,7 @@ export const THEMES: Record<Exclude<ThemeName, 'custom'>, ColorsInterface> = {
     '--second-bg-color': '#FFFFFF',
     // приглушённый шалфейный: нелайкнутые звёзды и разделители
     '--border-color': '#C2D4C0',
-    // тёмно-зелёный: лого, NRADIO, play, планка текущей станции
+    // тёмно-зелёный: лого, FM0, play, планка текущей станции
     '--current-color': '#1F8A50',
     '--shadow-color': '#0000001a',
     '--error-bg-color': '#FBEAE4',

@@ -36,6 +36,10 @@ const alignNextDevBadge = (slot: HTMLElement): (() => void) => {
     if (badge.style.left !== 'auto') badge.style.setProperty('left', 'auto', 'important');
   };
 
+  // ResizeObserver нет в jsdom (тесты) и в старых браузерах — там выравнивание
+  // не нужно, вернём пустую очистку
+  if (typeof ResizeObserver === 'undefined') return () => {};
+
   // портал появляется после гидрации, а при смене статуса сборки Next
   // возвращает бейдж в угол — поэтому сверяемся раз в секунду (только dev);
   // ResizeObserver сразу догоняет момент, когда слот получил финальные размеры

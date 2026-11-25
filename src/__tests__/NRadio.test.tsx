@@ -51,7 +51,7 @@ describe('Page', () => {
 
     render(
       <NRadio
-        title="NRadio"
+        title="fm0"
         stations={stations}
         station={stations[0]}
         // error={error}
@@ -65,7 +65,7 @@ describe('Page', () => {
       />
     );
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('NRadio');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('fm0');
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Groove Salad [SomaFM]');
 
     const headings = screen.getAllByRole('heading', { level: 3 });

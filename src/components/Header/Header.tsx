@@ -48,7 +48,7 @@ const Header = memo(({ title, playerState }: Props) => {
           <span className={styles.logoBar} />
         </div>
         <h1 className={styles.title}>{title}</h1>
-        {/* визуализатор в шапке: сразу после надписи NRADIO */}
+        {/* визуализатор в шапке: сразу после надписи FM0 */}
         <Visualizer playerState={playerState} />
       </div>
       <div className={styles.menu}>
