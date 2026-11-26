@@ -71,8 +71,9 @@ const StationSelectorItem = memo(({
           )}
         </div>
       </Link>
-      {/* эквалайзер «играет» — только пока станция реально воспроизводится */}
-      {isCurrent && isPlaying && <LiveEq />}
+      {/* эквалайзер «играет» — только пока станция реально воспроизводится;
+          модификация list: высота = высоте звезды справа (27px) */}
+      {isCurrent && isPlaying && <LiveEq variant="list" />}
       {station.isLocal && (
         <div className={styles.local}>
           local

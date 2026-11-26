@@ -62,8 +62,9 @@ const Station = memo(({
       </div>
 
       <div className={styles.actions}>
-        {/* живой эквалайзер — пока станция реально воспроизводится */}
-        {playing && <LiveEq />}
+        {/* живой эквалайзер — пока станция реально воспроизводится;
+            модификация player: высота = высоте звезды справа (22px) */}
+        {playing && <LiveEq variant="player" />}
         <button
           type="button"
           className={`iconButton ${styles.likeButton}`}

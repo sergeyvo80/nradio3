@@ -11,10 +11,18 @@ const BARS = 4;
 // (не-CORS станция играет напрямую, без аналайзера) - включаем псевдо-режим
 const SILENT_FRAMES = 20;
 
-// живой мини-эквалайзер в списке станций: полоски зависят от реального
+// модификации одного компонента: высота подстраивается под звезду справа
+// player - плеер снизу (звезда 22px), list - карточка в списке (звезда 27px)
+export type LiveEqVariant = 'list' | 'player';
+
+interface Props {
+  variant?: LiveEqVariant;
+}
+
+// живой мини-эквалайзер «играющей» станции: полоски зависят от реального
 // спектра потока через AnalyserNode; без данных (не-CORS поток) - плавная
 // псевдо-анимация (формула псевдо-VU из Visualizer), а не жёсткая CSS-петля
-const LiveEq = memo((): React.ReactNode => {
+const LiveEq = memo(({ variant = 'player' }: Props): React.ReactNode => {
   const barRefs = useRef<Array<HTMLSpanElement | null>>([]);
 
   useEffect(() => {
@@ -96,7 +104,7 @@ const LiveEq = memo((): React.ReactNode => {
   }, []);
 
   return (
-    <div className={styles.eq} aria-hidden="true">
+    <div className={`${styles.eq} ${styles[variant]}`} aria-hidden="true">
       {[0, 1, 2, 3].map((i) => (
         <span
           key={i}

@@ -7,12 +7,13 @@
   display: flex;
   gap: 3.6px;
   align-items: flex-end;
-  height: 20.4px;
   flex: none;
 
+  // ширина полосок фикс. px (одинакова в списке и плеере, без vwMax):
+  // чуть шире по просьбе - раньше было 4.3px
   span {
-    width: 4.3px;
-    border-radius: 1px;
+    width: 5.4px;
+    border-radius: 1.2px;
     background-color: var(--current-color);
     display: block;
 
@@ -23,10 +24,27 @@
   }
 
   @media #{main.$mob} {
-    height: main.vwMax(17.3px);
     gap: main.vwMax(3.6px);
+  }
 
-    span { width: 4.3px; }
+  // высота контейнера = высоте звезды справа от эквалайзера (см. .like
+  // в Station.module.scss / StationSelectorItem.module.scss)
+  // модификация player: плеер снизу, звезда 22px (моб. vwMax(18px))
+  &.player {
+    height: 22px;
+
+    @media #{main.$mob} {
+      height: main.vwMax(18px);
+    }
+  }
+
+  // модификация list: карточка в списке, звезда 27px (моб. vwMax(16px))
+  &.list {
+    height: 27px;
+
+    @media #{main.$mob} {
+      height: main.vwMax(16px);
+    }
   }
 }
 
