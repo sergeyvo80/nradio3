@@ -42,6 +42,26 @@
   }
 }
 
+// ноль в бренде «FM0» перечёркнут наискосок — как slashed zero в шрифтах:
+// рисуем косую линию псевдоэлементом (OpenType «zero» в Montserrat нет,
+// а combining-оверлеи по глифам нестабильны). Размеры в em — масштабируются
+// вместе со шрифтом; цвет = цвет надписи (currentColor)
+.zero {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 47%;
+    top: 50%;
+    width: 0.1em;
+    height: 1.02em;
+    background-color: currentColor;
+    border-radius: 0.06em;
+    transform: translate(-50%, -50%) rotate(40deg);
+  }
+}
+
 // версия и дата живут в меню «⋮» (первый пункт), выровнены вправо
 
 // версия продукта + дата в одной строке через длинное тире,

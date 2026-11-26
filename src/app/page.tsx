@@ -14,11 +14,14 @@ const DEFAULT_SLUG = 'groove-salad-soma-fm';
 export const generateMetadata = (): Metadata => {
   const stationItem = findStationBySlug();
 
+  // og:title / twitter:title — как и <title>: станция + бренд
+  const title = `${stationItem.title} — ${META_TITLE}`;
+
   return {
-    title: `${stationItem.title} — ${META_TITLE}`,
+    title,
     description: META_DESCRIPTION,
     openGraph: {
-      title: META_TITLE,
+      title,
       description: META_DESCRIPTION,
       url: process.env.BASE_URL,
       // images: {
@@ -27,6 +30,11 @@ export const generateMetadata = (): Metadata => {
       //   height: 630,
       // },
       siteName: process.env.BASE_URL,
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description: META_DESCRIPTION,
     },
     alternates: {
       canonical: process.env.BASE_URL,

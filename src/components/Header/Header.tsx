@@ -39,6 +39,15 @@ const Header = memo(({ title, playerState }: Props) => {
     return alignNextDevBadge(devToolsRef.current);
   }, [isDev]);
 
+  // бренд «FM0»: ноль зачёркнут — визуальный знак «FM-нуля».
+  // Только в шапке: document.title и метаданные остаются обычным текстом,
+  // для скринридера текст не меняется (внутри тот же символ «0»)
+  const renderTitle = (text: string): React.ReactNode => (
+    text.endsWith('0')
+      ? <>{text.slice(0, -1)}<span className={styles.zero}>{text.slice(-1)}</span></>
+      : text
+  );
+
   return (
     <header className={styles.Header}>
       <div className={styles.logo}>
@@ -47,7 +56,7 @@ const Header = memo(({ title, playerState }: Props) => {
           <span className={styles.logoBar} />
           <span className={styles.logoBar} />
         </div>
-        <h1 className={styles.title}>{title}</h1>
+        <h1 className={styles.title}>{renderTitle(title)}</h1>
         {/* визуализатор в шапке: сразу после надписи FM0 */}
         <Visualizer playerState={playerState} />
       </div>
