@@ -14,6 +14,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Use gitmoji notation in commit messages, e.g. `feat(station): :sparkles: description`,
   `fix(player): :bug: description`, `refactor(app): :recycle: description`,
   `docs: :memo: description`, `test: :white_check_mark: description`.
+- Write commit messages in English (gitmoji prefix stays the same).
 
 ## Project knowledge (skills)
 
