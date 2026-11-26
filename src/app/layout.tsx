@@ -18,10 +18,10 @@ export const metadata: Metadata = {
   other: {
     referrer: 'no-referrer',
   },
-  applicationName: 'fm0',
+  applicationName: 'FM0',
   appleWebApp: {
     capable: true,
-    title: 'fm0',
+    title: 'FM0',
     statusBarStyle: 'black-translucent',
   },
   icons: {

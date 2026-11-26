@@ -4,8 +4,8 @@ import type { MetadataRoute } from 'next';
 // см. docs/pwa-plan.md
 const manifest = (): MetadataRoute.Manifest => {
   return {
-    name: 'fm0',
-    short_name: 'fm0',
+    name: 'FM0',
+    short_name: 'FM0',
     description: 'Слушать станции: chillout, ambient, trance, drum and bass и др.',
     start_url: '/',
     display: 'standalone',

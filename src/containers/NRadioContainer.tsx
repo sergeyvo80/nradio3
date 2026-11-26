@@ -324,7 +324,7 @@ const NRadioContainer = ({ slug }: Props) => {
   // Next при hydration переписывает <title> своим RSC-метадата (для офлайн-shell
   // отдающей SSR «дефолтную» станцию), поэтому повторяем через 100 мс
   useEffect(() => {
-    const title = `${station.title} -- ${META_TITLE}`;
+    const title = `${station.title} — ${META_TITLE}`;
     document.title = title;
     const retry = window.setTimeout(() => {
       if (document.title !== title) {
@@ -336,7 +336,7 @@ const NRadioContainer = ({ slug }: Props) => {
 
   return (
     <NRadio
-      title="fm0"
+      title="FM0"
       stations={stations}
       station={station}
       error={error}

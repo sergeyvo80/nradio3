@@ -34,7 +34,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   const station = findStationBySlug(slug);
 
   return {
-    title: `${station.title} -- ${META_TITLE}`,
+    title: `${station.title} — ${META_TITLE}`,
     description: META_DESCRIPTION,
     openGraph: {
       title: META_TITLE,

@@ -15,7 +15,7 @@ export const generateMetadata = (): Metadata => {
   const stationItem = findStationBySlug();
 
   return {
-    title: `${stationItem.title} -- ${META_TITLE}`,
+    title: `${stationItem.title} — ${META_TITLE}`,
     description: META_DESCRIPTION,
     openGraph: {
       title: META_TITLE,
