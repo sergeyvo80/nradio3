@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
   devIndicators: {
     position: 'top-right',
   },
+  // просмотр дев-версии с телефона по LAN (192.168.0.194): без этого
+  // Next 16 блокирует HMR-сокет /_next/hmr с чужого origin
+  allowedDevOrigins: ['192.168.0.194'],
   // базовые security-заголовки (CSP намеренно не задаём: GTM и inline-скрипты
   // Next требуют nonce-инфраструктуры, иначе ломается аналитика)
   async headers() {
