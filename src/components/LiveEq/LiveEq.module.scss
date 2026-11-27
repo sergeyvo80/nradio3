@@ -3,16 +3,14 @@
 // живой мини-эквалайзер у текущей станции: 4 полоски цвета акцента.
 // Высоты задаёт LiveEq.tsx: живой режим - из AnalyserNode, псевдо - той же
 // формулой, что псевдо-VU визуализатора. Дефолтные высоты видны в статике.
+// Ширина полосок и высота контейнера - ПО МОДИФИКАЦИЯМ:
+// player (плеер) и list (список, на 20% меньше по просьбе)
 .eq {
   display: flex;
-  gap: 3.6px;
   align-items: flex-end;
   flex: none;
 
-  // ширина полосок фикс. px (одинакова в списке и плеере, без vwMax):
-  // чуть шире по просьбе - раньше было 4.3px
   span {
-    width: 5.4px;
     border-radius: 1.2px;
     background-color: var(--current-color);
     display: block;
@@ -23,27 +21,31 @@
     &:nth-child(4) { height: 100%; }
   }
 
-  @media #{main.$mob} {
-    gap: main.vwMax(3.6px);
-  }
-
-  // высота контейнера = высоте звезды справа от эквалайзера (см. .like
-  // в Station.module.scss / StationSelectorItem.module.scss)
-  // модификация player: плеер снизу, звезда 22px (моб. vwMax(18px))
+  // модификация player: плеер снизу, высота = высоте звезды (22px,
+  // моб. vwMax(18px)), полоски 5.4px
   &.player {
     height: 22px;
+    gap: 3.6px;
+
+    span { width: 5.4px; }
 
     @media #{main.$mob} {
       height: main.vwMax(18px);
+      gap: main.vwMax(3.6px);
     }
   }
 
-  // модификация list: карточка в списке, звезда 27px (моб. vwMax(16px))
+  // модификация list: карточка в списке — на 20% меньше
+  // (высота 27 -> 21.6px, полоски 5.4 -> 4.3px, зазор 3.6 -> 2.9px)
   &.list {
-    height: 27px;
+    height: 21.6px;
+    gap: 2.9px;
+
+    span { width: 4.3px; }
 
     @media #{main.$mob} {
-      height: main.vwMax(16px);
+      height: main.vwMax(12.8px);
+      gap: main.vwMax(2.9px);
     }
   }
 }

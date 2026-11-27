@@ -6,12 +6,16 @@
   align-items: center;
   // спокойная панель; снизу — тонкая линия, зеркальная к плееру
   border-bottom: var(--border-color) solid 1px;
-  padding: 14px 18px;
+  // вертикальные отступы уменьшены так, чтобы шапка стала ниже ~на 10%
+  // (контент задаёт визуализатор 40px: 28+40+1=69px было, 21+40+1=62px стало;
+  // второй заход: 15+40+1=56px — ещё ~10%)
+  padding: 7.5px 18px;
   background-color: var(--second-bg-color);
   gap: 10px;
 
   @media #{main.$mob} {
-    padding: main.vwMax(12px) main.vwMax(14px);
+    // то же на мобильных: контент = визуализатор vwMax(34px)
+    padding: main.vwMax(6.5px) main.vwMax(14px);
     gap: main.vwMax(10px);
   }
 }

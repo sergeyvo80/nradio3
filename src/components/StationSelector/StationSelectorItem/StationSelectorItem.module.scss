@@ -3,10 +3,12 @@
 
 .StationSelectorItem {
   // лёгкая карточка: только фон, без рамки и свечения —
-  // поверхность отделяется воздухом (см. макет design-mockup)
+  // поверхность отделяется воздухом (см. макет design-mockup).
+  // Вертикальные отступы увеличены ~на 10% высоты плашки (по запросу):
+  // обычная карточка 49.4 -> 54.4px, с жанром 72 -> 77px
   margin: 6px 0;
   border-radius: 10px;
-  padding: 10px 10px;
+  padding: 12.5px 10px;
   color: var(--item-color);
   background-color: var(--second-bg-color);
   font-weight: bold;
@@ -19,7 +21,9 @@
 
   @media #{main.$mob} {
     margin: main.vwMax(5px) 0;
-    padding: main.vwMax(5px) main.vwMax(6px) main.vwMax(5px) main.vwMax(8px);
+    // вертикальные отступы подобраны под +10% высоты плашки
+    // (контент — строка названия, 36px)
+    padding: main.vwMax(6.9px) main.vwMax(6px) main.vwMax(6.9px) main.vwMax(8px);
     border-radius: main.vwMax(10px);
     gap: main.vwMax(6px);
   }
@@ -92,13 +96,14 @@
   flex: none;
   cursor: pointer;
 
-  // размер звезды масштабируем вместе с текстом названия
-  height: 27px;
-  width: 27px;
+  // размер звезды масштабируем вместе с текстом названия;
+  // на 10% крупнее по просьбе (27 -> 29.7px, моб. 16 -> 17.6)
+  height: 29.7px;
+  width: 29.7px;
 
   @media #{main.$mob} {
-    height: main.vwMax(16px);
-    width: main.vwMax(16px);
+    height: main.vwMax(17.6px);
+    width: main.vwMax(17.6px);
   }
 }
 
