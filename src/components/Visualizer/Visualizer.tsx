@@ -7,44 +7,40 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import useLang from '@/hooks/useLang';
 import { getAnalyser } from '@/api/visualizerEngine';
-import { createAurora, createPulse, createRidges, type ModeRenderer, type Spectrum } from './modes';
+import {
+  createAurora,
+  createPulse,
+  createRidges,
+  WAVE_MONO_STEP,
+  type ModeRenderer,
+  type Spectrum,
+  type Step,
+} from './modes';
 
 import styles from './Visualizer.module.scss';
 
-// порядок фуллскрин-режимов: клик циклически переключает; для КАЖДОГО режима
-// идёт сначала монохромная версия, затем цветная. Компактная панель всегда
-// рисует wave (фирменная синусоида)
-const MODES = ['bars', 'wave', 'aurora', 'ridges', 'pulse'] as const;
-type Mode = (typeof MODES)[number];
-
-interface Step {
-  mode: Mode;
-  colorful: boolean;
-}
-
-// 10 шагов цикла: mono/color попарно
-const STEPS: Step[] = MODES.flatMap((m) => [{ mode: m, colorful: false }, { mode: m, colorful: true }]);
-const WAVE_MONO_STEP = STEPS.findIndex((s) => s.mode === 'wave' && !s.colorful);
-
 interface Props {
   playerState?: PlayerStateEnum;
+  /** текущий шаг визуализации (моно/цвет попарно) — живёт в Header */
+  step: Step;
+  /** клик в фуллскрине: следующий шаг цикла */
+  onCycle: () => void;
+  /** выход из фуллскрина: вернуть компактной панели фирменную синусоиду */
+  onReset: () => void;
 }
 
-const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
+const Visualizer = memo(({ playerState, step, onCycle, onReset }: Props): React.ReactNode => {
   const { t } = useLang();
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [full, setFull] = useState(false);      // нативный фуллскрин или оверлей
   const [overlay, setOverlay] = useState(false); // фолбэк, когда Fullscreen API недоступен (iOS Safari)
-  // по умолчанию — синусоида (осциллоскоп), как просили
-  const [step, setStep] = useState<Step>(STEPS[WAVE_MONO_STEP]);
 
   // компактный клик -> фуллскрин; клик в фуллскрине (нативном или оверлейном
   // фолбэке iOS/PWA) -> циклическая смена режима
   const onWrapClick = useCallback(() => {
     if (full || overlay) {
-      // bars -> bars(цвет) -> wave -> wave(цвет) -> aurora -> ... -> pulse(цвет)
-      setStep((prev) => STEPS[(STEPS.indexOf(prev) + 1) % STEPS.length]);
+      onCycle();
       return;
     }
 
@@ -74,7 +70,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
         setFull(false);
         setOverlay(false);
         // компактная панель всегда возвращается к фирменной синусоиде
-        setStep(STEPS[WAVE_MONO_STEP]);
+        onReset();
       } else {
         setFull(true);
       }
@@ -82,7 +78,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
 
     document.addEventListener('fullscreenchange', onChange);
     return () => document.removeEventListener('fullscreenchange', onChange);
-  }, []);
+  }, [onReset]);
 
   // Esc в оверлей-режиме (фолбэк без нативного фуллскрина)
   useEffect(() => {
@@ -364,7 +360,9 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       aria-label={t('visualizer')}
     >
       <canvas ref={canvasRef} className={styles.canvas} />
-      {(full || overlay) && (
+      {/* крестик — только в оверлей-фолбэке (iOS): там нет ни Esc,
+          ни системной кнопки «назад», которыми выходит нативный фуллскрин */}
+      {overlay && (
         <button
           type="button"
           className={`iconButton ${styles.close}`}

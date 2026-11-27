@@ -28,6 +28,21 @@ export type ModeRenderer = (
   spectrum: Spectrum,
 ) => void;
 
+// порядок режимов визуализатора: клики циклически идут по списку; для КАЖДОГО
+// режима сначала монохромная версия, затем цветная (10 шагов).
+// Компактная панель в шапке рисует текущий шаг; при выходе из фуллскрина
+// шаг сбрасывается на wave/mono (фирменная синусоида)
+export const MODES = ['bars', 'wave', 'aurora', 'ridges', 'pulse'] as const;
+export type Mode = (typeof MODES)[number];
+
+export interface Step {
+  mode: Mode;
+  colorful: boolean;
+}
+
+export const STEPS: Step[] = MODES.flatMap((m) => [{ mode: m, colorful: false }, { mode: m, colorful: true }]);
+export const WAVE_MONO_STEP = STEPS.findIndex((s) => s.mode === 'wave' && !s.colorful);
+
 // «Aurora»: три слоя волн — бас качает нижний широкий слой, середина —
 // средний, верха — тонкую яркую кромку. Монохром (акцент темы) по умолчанию;
 // цветная версия — «настоящее сияние»: фиолетовый низ, циан, зелёная кромка.

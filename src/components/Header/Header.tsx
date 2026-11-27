@@ -11,6 +11,7 @@ import PlayerStateEnum from '@/types/PlayerStateEnum';
 import useLang from '@/hooks/useLang';
 import { PRODUCT_VERSION, PRODUCT_VERSION_DATE } from '@/constants/version';
 import alignNextDevBadge from '@/utils/alignNextDevBadge';
+import { STEPS, WAVE_MONO_STEP, type Step } from '../Visualizer/modes';
 
 import styles from './Header.module.scss';
 
@@ -39,6 +40,15 @@ const Header = memo(({ title, playerState }: Props) => {
     return alignNextDevBadge(devToolsRef.current);
   }, [isDev]);
 
+  // шаг визуализации живёт здесь: клики по логотипу и FMØ циклят его
+  // (моно → цветная для каждого режима) без выхода в фуллскрин
+  const [step, setStep] = useState<Step>(STEPS[WAVE_MONO_STEP]);
+  const cycleStep = useCallback(
+    () => setStep((prev) => STEPS[(STEPS.indexOf(prev) + 1) % STEPS.length]),
+    [],
+  );
+  const resetStep = useCallback(() => setStep(STEPS[WAVE_MONO_STEP]), []);
+
   // бренд «FMØ»: ноль показан глифом Ø (зачёркнутая O из самого шрифта,
   // как в макете) — CSS-линия не нужна. Только в шапке: document.title
   // и метаданные остаются «FM0»
@@ -51,14 +61,29 @@ const Header = memo(({ title, playerState }: Props) => {
   return (
     <header className={styles.Header}>
       <div className={styles.logo}>
-        <div className={styles.logoIcon} aria-hidden="true">
-          <span className={styles.logoBar} />
-          <span className={styles.logoBar} />
-          <span className={styles.logoBar} />
-        </div>
-        <h1 className={styles.title}>{renderTitle(title)}</h1>
-        {/* визуализатор в шапке: сразу после надписи FM0 */}
-        <Visualizer playerState={playerState} />
+        {/* клик по логотипу — сменить визуализацию в компактной панели */}
+        <button
+          type="button"
+          className={`iconButton ${styles.logoButton}`}
+          onClick={cycleStep}
+          aria-label={t('switchViz')}
+        >
+          <div className={styles.logoIcon} aria-hidden="true">
+            <span className={styles.logoBar} />
+            <span className={styles.logoBar} />
+            <span className={styles.logoBar} />
+          </div>
+        </button>
+        {/* клик по FMØ — тоже сменить визуализацию */}
+        {/* клик по FMØ — тоже сменить визуализацию; кнопка внутри h1
+            сохраняет роль heading и даёт честную кнопочную семантику */}
+        <h1 className={styles.title}>
+          <button type="button" className={styles.titleButton} onClick={cycleStep} aria-label={t('switchViz')}>
+            {renderTitle(title)}
+          </button>
+        </h1>
+        {/* визуализатор в шапке: сразу после надписи FMØ */}
+        <Visualizer playerState={playerState} step={step} onCycle={cycleStep} onReset={resetStep} />
       </div>
       <div className={styles.menu}>
         {/* подложка на весь экран: клик вне меню закрывает его */}

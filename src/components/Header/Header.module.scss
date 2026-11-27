@@ -40,6 +40,18 @@
     font-size: main.vwMax(15px);
     letter-spacing: main.vwMax(1.6px);
   }
+
+  // клик по FMØ — сменить визуализацию: кнопка наследует шрифт заголовка
+  // (font: inherit), без собственных отступов и подложки
+  .titleButton {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
 }
 
 // версия и дата живут в меню «⋮» (первый пункт), выровнены вправо
@@ -75,7 +87,16 @@
   gap: 10px;
 }
 
-// лого «эквалайзер» без подложки: только три полоски цвета надписи FM0
+// лого «эквалайзер» без подложки: только три полоски цвета надписи FMØ.
+// Кнопка логотипа (клик — сменить визуализацию) сбрасывает кнопочные стили
+.logoButton {
+  background: none;
+  border: 0;
+  padding: 0;
+  display: flex;
+  cursor: pointer;
+}
+
 .logoIcon {
   display: flex;
   align-items: center;
