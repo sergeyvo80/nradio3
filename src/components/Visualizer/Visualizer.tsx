@@ -7,10 +7,24 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import PlayerStateEnum from '@/types/PlayerStateEnum';
 import useLang from '@/hooks/useLang';
 import { getAnalyser } from '@/api/visualizerEngine';
+import { createAurora, createPulse, createRidges, type ModeRenderer, type Spectrum } from './modes';
 
 import styles from './Visualizer.module.scss';
 
-type Mode = 'bars' | 'wave';
+// порядок фуллскрин-режимов: клик циклически переключает; для КАЖДОГО режима
+// идёт сначала монохромная версия, затем цветная. Компактная панель всегда
+// рисует wave (фирменная синусоида)
+const MODES = ['bars', 'wave', 'aurora', 'ridges', 'pulse'] as const;
+type Mode = (typeof MODES)[number];
+
+interface Step {
+  mode: Mode;
+  colorful: boolean;
+}
+
+// 10 шагов цикла: mono/color попарно
+const STEPS: Step[] = MODES.flatMap((m) => [{ mode: m, colorful: false }, { mode: m, colorful: true }]);
+const WAVE_MONO_STEP = STEPS.findIndex((s) => s.mode === 'wave' && !s.colorful);
 
 interface Props {
   playerState?: PlayerStateEnum;
@@ -23,12 +37,14 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
   const [full, setFull] = useState(false);      // нативный фуллскрин или оверлей
   const [overlay, setOverlay] = useState(false); // фолбэк, когда Fullscreen API недоступен (iOS Safari)
   // по умолчанию — синусоида (осциллоскоп), как просили
-  const [mode, setMode] = useState<Mode>('wave');
+  const [step, setStep] = useState<Step>(STEPS[WAVE_MONO_STEP]);
 
-  // компактный клик -> фуллскрин; клик в фуллскрине -> смена режима
+  // компактный клик -> фуллскрин; клик в фуллскрине (нативном или оверлейном
+  // фолбэке iOS/PWA) -> циклическая смена режима
   const onWrapClick = useCallback(() => {
-    if (full) {
-      setMode((prev) => (prev === 'bars' ? 'wave' : 'bars'));
+    if (full || overlay) {
+      // bars -> bars(цвет) -> wave -> wave(цвет) -> aurora -> ... -> pulse(цвет)
+      setStep((prev) => STEPS[(STEPS.indexOf(prev) + 1) % STEPS.length]);
       return;
     }
 
@@ -42,7 +58,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       // Fullscreen API недоступен (iOS Safari) - CSS-оверлей на весь вьюпорт
       setOverlay(true);
     }
-  }, [full]);
+  }, [full, overlay]);
 
   const exitFull = useCallback(() => {
     if (document.fullscreenElement) {
@@ -57,6 +73,8 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       if (document.fullscreenElement !== wrapRef.current) {
         setFull(false);
         setOverlay(false);
+        // компактная панель всегда возвращается к фирменной синусоиде
+        setStep(STEPS[WAVE_MONO_STEP]);
       } else {
         setFull(true);
       }
@@ -66,9 +84,9 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
     return () => document.removeEventListener('fullscreenchange', onChange);
   }, []);
 
-  // Esc в оверлей-режиме
+  // Esc в оверлей-режиме (фолбэк без нативного фуллскрина)
   useEffect(() => {
-    if (!full || document.fullscreenElement) return undefined;
+    if ((!full && !overlay) || document.fullscreenElement) return undefined;
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') exitFull();
@@ -76,7 +94,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [full, exitFull]);
+  }, [full, overlay, exitFull]);
 
   // цикл отрисовки
   useEffect(() => {
@@ -91,6 +109,11 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
     let t = 0;
     let deadFrames = 0;   // сколько кадров подряд спектр пуст (CORS-поток)
     let pseudo = false;   // псевдо-VU режим
+
+    // рендереры новых режимов: фабрики со своим состоянием
+    const aurora = createAurora();
+    const ridges = createRidges();
+    const pulse = createPulse();
 
     // состояние полос: высоты и «пики» (падают медленно, как в Winamp)
     let vals: number[] = [];
@@ -111,8 +134,13 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       return {
         accent: cs.getPropertyValue('--current-color').trim() || '#E95420',
         cap: cs.getPropertyValue('--item-color').trim() || '#fff',
+        bg: cs.getPropertyValue('--bg-color').trim() || '#1B1922',
       };
     };
+
+    // радуга по полосе: бас — красный, верх — маджента (для цветных версий)
+    const bandColor = (i: number, bands: number) =>
+      `hsl(${Math.round((i / bands) * 300)} 85% 60%)`;
 
     // плавная синусоида: пока реального сигнала нет (пауза, лоадер,
     // поток без аналайзера или данные молчат) — спокойная бегущая волна
@@ -140,7 +168,8 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
     const draw = () => {
       syncSize();
       const { width: w, height: h } = canvas;
-      const { accent, cap } = themeColors();
+      const { accent, cap, bg } = themeColors();
+      const { mode, colorful } = step;
       const playing = playerState === PlayerStateEnum.Playing;
       const analyserNode = getAnalyser();
 
@@ -154,7 +183,55 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
         return;
       }
 
-      if (mode === 'bars') {
+      // три новых режима рисуются из общего Spectrum: спектр читается
+      // один раз за кадр, лог-обход + псевдо-VU определены здесь
+      if (mode === 'aurora' || mode === 'ridges' || mode === 'pulse') {
+        const renderer: ModeRenderer =
+          mode === 'aurora' ? aurora : mode === 'ridges' ? ridges : pulse;
+
+        const data = new Uint8Array(analyserNode ? analyserNode.frequencyBinCount : 1024);
+        if (analyserNode) analyserNode.getByteFrequencyData(data);
+        const live = !!analyserNode && data.some((v) => v > 0);
+
+        if (!live) {
+          deadFrames += 1;
+          if (deadFrames > 20) pseudo = true;
+        } else {
+          deadFrames = 0;
+          pseudo = false;
+        }
+
+        const pseudoBand = (i: number, bands: number) => {
+          const weight = 1 - (i / bands) * 0.55;
+          return Math.max(0.06, weight * (0.18 + 0.72 * Math.abs(Math.sin(t * 0.017 + i * 0.7))
+            * Math.abs(Math.sin(t * 0.003 + i * 0.23))));
+        };
+
+        const read = (i: number, bands: number) => {
+          if (pseudo || !analyserNode) return pseudoBand(i, bands);
+          // логарифмический обход: низы шире, верхняя граница 0.68
+          const usable = Math.floor(data.length * 0.68);
+          const idx = Math.min(data.length - 2, Math.floor(Math.pow(i / bands, 1.6) * usable));
+          return Math.max(data[idx], data[idx + 1]) / 255;
+        };
+
+        const spectrum: Spectrum = {
+          read,
+          energy: (third, bands) => {
+            const n = Math.max(1, Math.floor(bands / 3));
+            let sum = 0;
+            for (let k = 0; k < n; k += 1) sum += read(third * n + k, bands);
+            return sum / n;
+          },
+          accent,
+          cap,
+          bg,
+          colorful,
+          bandColor,
+        };
+
+        renderer(ctx2d, w, h, dpr, t, spectrum);
+      } else if (mode === 'bars') {
         // две последние полоски убраны: mp3 128 kbps режет верха ~с 16 кГц,
         // они почти всегда пустые и визуализация выглядела обрезанной справа
         const bands = Math.max(14, Math.min(48, Math.floor(w / (7 * dpr))) - 2);
@@ -167,6 +244,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
         const barW = Math.max(2 * dpr, cell * 0.62);
 
         let live = false;
+        // монохром: градиент акцент -> светлый; цветная версия — радуга по полосам
         const grad = ctx2d.createLinearGradient(0, h, 0, 0);
         grad.addColorStop(0, accent);
         grad.addColorStop(1, cap);
@@ -211,7 +289,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
           const bh = Math.max(2 * dpr, vals[i] * h * 0.96);
           const x = i * cell + (cell - barW) / 2;
 
-          ctx2d.fillStyle = grad;
+          ctx2d.fillStyle = colorful ? bandColor(i, bands) : grad;
           ctx2d.fillRect(x, h - bh, barW, bh);
 
           // белый пик-«шапка»
@@ -235,7 +313,14 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
           drawSine(w, h);
         } else {
           ctx2d.lineWidth = 2 * dpr;
-          ctx2d.strokeStyle = accent;
+          // цветная версия: линия переливается по ширине через 5 оттенков
+          if (colorful) {
+            const g = ctx2d.createLinearGradient(0, 0, w, 0);
+            for (let k = 0; k <= 4; k += 1) g.addColorStop(k / 4, `hsl(${200 + k * 35} 85% 60%)`);
+            ctx2d.strokeStyle = g;
+          } else {
+            ctx2d.strokeStyle = accent;
+          }
           ctx2d.beginPath();
 
           const mid = h / 2;
@@ -260,7 +345,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
     draw();
 
     return () => cancelAnimationFrame(raf);
-  }, [playerState, mode, full]);
+  }, [playerState, step, full]);
 
   return (
     <div
@@ -279,7 +364,7 @@ const Visualizer = memo(({ playerState }: Props): React.ReactNode => {
       aria-label={t('visualizer')}
     >
       <canvas ref={canvasRef} className={styles.canvas} />
-      {full && (
+      {(full || overlay) && (
         <button
           type="button"
           className={`iconButton ${styles.close}`}

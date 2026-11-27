@@ -33,6 +33,10 @@
 .--overlay {
   position: fixed;
   inset: 0;
+  // сбросить компактные размеры панели: fixed с inset 0 не растягивает
+  // элемент сам (ширина осталась бы 96px)
+  width: 100%;
+  height: 100%;
   z-index: 1000;
   background-color: var(--bg-color);
 }
