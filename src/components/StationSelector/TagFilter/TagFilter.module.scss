@@ -1,0 +1,128 @@
+@use '../../../styles/main';
+
+// попап фильтра по тегам: модальный диалог по центру экрана — панель,
+// бордер, радиус, тень; шапка прибита, список тегов прокручивается
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 210;
+  width: min(400px, calc(100vw - 32px));
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--second-bg-color);
+  border: var(--border-color) solid 1px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px 0 var(--shadow-color);
+  padding: 12px;
+
+  @media #{main.$mob} {
+    padding: main.vwMax(10px);
+    border-radius: main.vwMax(12px);
+  }
+}
+
+.head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px 10px;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  // крупная шапка диалога: 11px * 1.7 ≈ 18.7px
+  font-size: 18.7px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--item-color);
+  opacity: 0.6;
+}
+
+// сброс: виден только когда есть выбранные теги
+.clear {
+  background: none;
+  border: 0;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--current-color);
+  cursor: pointer;
+}
+
+// крестик закрытия диалога: цветом шрифта заголовка (var(--item-color))
+.close {
+  flex: none;
+  background: none;
+  border: 0;
+  padding: 2px 4px;
+  font-size: 16px;
+  color: var(--item-color);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 6px;
+  // крупный список тегов: 13px * 1.7 ≈ 22px
+  font-size: 22.1px;
+  color: var(--item-color);
+  cursor: pointer;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: var(--bg-color);
+  }
+
+  @media #{main.$mob} {
+    font-size: main.vwMax(20.4px);
+    padding: main.vwMax(4px) main.vwMax(6px);
+  }
+}
+
+.box {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--current-color);
+  cursor: pointer;
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  flex: none;
+  font-size: 17px;
+  color: var(--item-color);
+  opacity: 0.5;
+}
