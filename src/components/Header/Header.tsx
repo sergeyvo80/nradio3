@@ -39,12 +39,12 @@ const Header = memo(({ title, playerState }: Props) => {
     return alignNextDevBadge(devToolsRef.current);
   }, [isDev]);
 
-  // бренд «FM0»: ноль зачёркнут — визуальный знак «FM-нуля».
-  // Только в шапке: document.title и метаданные остаются обычным текстом,
-  // для скринридера текст не меняется (внутри тот же символ «0»)
+  // бренд «FMØ»: ноль показан глифом Ø (зачёркнутая O из самого шрифта,
+  // как в макете) — CSS-линия не нужна. Только в шапке: document.title
+  // и метаданные остаются «FM0»
   const renderTitle = (text: string): React.ReactNode => (
     text.endsWith('0')
-      ? <>{text.slice(0, -1)}<span className={styles.zero}>{text.slice(-1)}</span></>
+      ? <>{text.slice(0, -1)}<span className={styles.zero}>Ø</span></>
       : text
   );
 

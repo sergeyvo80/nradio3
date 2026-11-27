@@ -65,7 +65,7 @@ describe('Page', () => {
       />
     );
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('FM0');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('FMØ');
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Groove Salad [SomaFM]');
 
     const headings = screen.getAllByRole('heading', { level: 3 });
